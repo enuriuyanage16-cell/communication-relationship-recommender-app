@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Your DISC Result</title>
+</head>
+<body>
+    <h1>Your DISC Result</h1>
+    <h2>{{ result_type }}</h2>
+    <ul>
+        {% for color, score in scores.items() %}
+        <li>{{ color }}: {{ score }} (out of 40)</li>
+        {% endfor %}
+    </ul>
+    <a href="/disc">Take test again</a> | <a href="/">Home</a>
+</body>
+</html>

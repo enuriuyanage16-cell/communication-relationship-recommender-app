@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DISC Questionnaire</title>
+</head>
+<body>
+    <h1>DISC Questionnaire</h1>
+    <p>Answer from 1 (strongly disagree) to 5 (strongly agree)</p>
+    <form method="POST" action="/disc">
+        {% for question in questions %}
+        {% set number = loop.index %}
+        <p><b>{{ number }}.</b> {{ question }}</p>
+        <p>
+            {% for value in [1, 2, 3, 4, 5] %}
+            <label>
+                <input type="radio" name="q{{ number }}" value="{{ value }}" required
+                    oninvalid="this.setCustomValidity('Please answer this question')"
+                    oninput="document.getElementsByName('q{{ number }}').forEach(r => r.setCustomValidity(''))">
+                {{ value }}
+            </label>
+            {% endfor %}
+        </p>
+        {% endfor %}
+        <button type="submit">See my result</button>
+    </form>
+</body>
+</html>
