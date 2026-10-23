@@ -1,0 +1,68 @@
+{
+  "scale": {
+    "min": 1,
+    "max": 5
+  },
+  "statements_per_color": 8,
+  "color_key": {
+    "Green": [
+      1,
+      5,
+      9,
+      13,
+      17,
+      21,
+      25,
+      29
+    ],
+    "Yellow": [
+      2,
+      6,
+      10,
+      14,
+      18,
+      22,
+      26,
+      30
+    ],
+    "Blue": [
+      3,
+      7,
+      11,
+      15,
+      19,
+      23,
+      27,
+      31
+    ],
+    "Red": [
+      4,
+      8,
+      12,
+      16,
+      20,
+      24,
+      28,
+      32
+    ]
+  },
+  "threshold": 4,
+  "opposite_pairs": [
+    [
+      "Green",
+      "Red"
+    ],
+    [
+      "Blue",
+      "Yellow"
+    ]
+  ],
+  "classification_order": [
+    "Pure: gap(1st, 2nd) > threshold",
+    "Inconsistent: top two colours are opposites",
+    "Two-way blend: gap(2nd, 3rd) > threshold",
+    "Three-way blend: gap(3rd, 4th) > threshold",
+    "Unclear: none of the above"
+  ],
+  "exclusion_rule": "Remove respondents who use two or fewer different answer values"
+}
