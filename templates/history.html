@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Saved DISC Results</title>
+</head>
+<body>
+    <h1>Saved DISC Results</h1>
+    <p>{{ results|length }} result(s) saved in the database.</p>
+    <table border="1" cellpadding="6">
+        <tr>
+            <th>Time</th>
+            <th>Type</th>
+            <th>Green</th>
+            <th>Yellow</th>
+            <th>Blue</th>
+            <th>Red</th>
+        </tr>
+        {% for r in results %}
+        <tr>
+            <td>{{ r.created_at.strftime("%Y-%m-%d %H:%M") }}</td>
+            <td>{{ r.result_type }}</td>
+            <td>{{ r.scores.Green }}</td>
+            <td>{{ r.scores.Yellow }}</td>
+            <td>{{ r.scores.Blue }}</td>
+            <td>{{ r.scores.Red }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <br>
+    <a href="/">Home</a> | <a href="/disc">DISC test</a>
+</body>
+</html>
