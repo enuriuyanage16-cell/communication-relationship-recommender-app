@@ -33,6 +33,12 @@ def full_scores(answers):
         result[trait] = total
     return result
 
+def short_test_items():
+    return [item for info in model.values() for item in info["items"]]
+
+def to_percent(score):
+    return round((score - 10) / 40 * 100, 1)
+
 if __name__ == "__main__":
     all_items = [i for t in model.values() for i in t["items"]]
     print(predict_traits({item: 3 for item in all_items}))
