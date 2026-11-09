@@ -1,9 +1,12 @@
 import json
+import random
 from datetime import datetime, timezone
 from flask import Flask, render_template, request
 from disc import color_scores, classify
 from db import db
 from bigfive import predict_traits, short_test_items, to_percent
+from attachment import attachment_scores, attachment_style
+from attachment import to_percent as attachment_percent
 
 app = Flask(__name__)
 
@@ -12,6 +15,12 @@ with open("rules/disc_questions.json", encoding="utf-8") as f:
 
 with open("rules/bigfive_questions.json", encoding="utf-8") as f:
     bigfive_questions = json.load(f)
+
+with open("rules/attachment_questions.json", encoding="utf-8") as f:
+    attachment_questions = json.load(f)
+
+attachment_order = list(range(1, 37))
+random.Random(42).shuffle(attachment_order)
 
 trait_names = {
     "EXT": "Extraversion",
@@ -76,6 +85,31 @@ def bigfive_test():
     return render_template("questionnaire.html", title="Big Five Short Test",
                            action="/bigfive", questions=questions, scale_max=5,
                            low_label="Strongly disagree", high_label="Strongly agree")
+
+@app.route("/attachment", methods=["GET", "POST"])
+def attachment_test():
+    if request.method == "POST":
+        answers = []
+        for number in range(1, 37):
+            answers.append(int(request.form["a" + str(number)]))
+        scores = attachment_scores(answers)
+        style = attachment_style(scores)
+        db.attachment_results.insert_one({
+            "answers": answers,
+            "scores": scores,
+            "style": style,
+            "created_at": datetime.now(timezone.utc),
+        })
+        return render_template("attachment_result.html", scores=scores, style=style,
+                               anxiety_percent=attachment_percent(scores["Anxiety"]),
+                               avoidance_percent=attachment_percent(scores["Avoidance"]))
+    questions = [{"id": "a" + str(n), "text": attachment_questions[n - 1]} for n in attachment_order]
+    return render_template("questionnaire.html", title="Attachment Questionnaire",
+                           action="/attachment", questions=questions, scale_max=7,
+                           low_label="Strongly disagree", high_label="Strongly agree",
+                           intro="The statements below are about how you feel in close relationships. "
+                                 "Think about how you generally experience relationships, "
+                                 "not just what is happening in a current relationship.")
 
 if __name__ == "__main__":
     app.run(debug=True)
