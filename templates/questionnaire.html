@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ title }}</title>
+</head>
+<body>
+    <h1>{{ title }}</h1>
+    <p>Answer from 1 ({{ low_label }}) to {{ scale_max }} ({{ high_label }}).</p>
+    <form method="POST" action="{{ action }}">
+        {% for question in questions %}
+        <p><b>{{ loop.index }}.</b> {{ question.text }}</p>
+        <p>
+            {% for value in range(1, scale_max + 1) %}
+            <label>
+                <input type="radio" name="{{ question.id }}" value="{{ value }}" required
+                    oninvalid="this.setCustomValidity('Please answer this question')"
+                    oninput="document.getElementsByName('{{ question.id }}').forEach(r => r.setCustomValidity(''))">
+                {{ value }}
+            </label>
+            {% endfor %}
+        </p>
+        {% endfor %}
+        <button type="submit">See my result</button>
+    </form>
+</body>
+</html>
