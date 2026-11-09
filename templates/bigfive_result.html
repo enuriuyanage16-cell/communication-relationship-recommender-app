@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Your Big Five Result</title>
+</head>
+<body>
+    <h1>Your Big Five Result</h1>
+    <p>These scores are estimated from 20 questions. Each is between 10 and 50.</p>
+    <ul>
+        {% for r in results %}
+        <li>{{ r.name }}: {{ r.score }} out of 50 ({{ r.percent }}%)</li>
+        {% endfor %}
+    </ul>
+    <a href="/bigfive">Take it again</a> | <a href="/">Home</a>
+</body>
+</html>
