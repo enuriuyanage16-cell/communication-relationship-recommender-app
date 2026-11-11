@@ -1,7 +1,8 @@
 import json
 import random
 from datetime import datetime, timezone
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, session
+from werkzeug.security import generate_password_hash, check_password_hash
 from disc import color_scores, classify
 from db import db
 from bigfive import predict_traits, short_test_items, to_percent
@@ -9,6 +10,7 @@ from attachment import attachment_scores, attachment_style
 from attachment import to_percent as attachment_percent
 
 app = Flask(__name__)
+app.secret_key = "Ej3o(jdn2,Df$kv798a8^jm)@h4oqM"
 
 with open("rules/disc_questions.json", encoding="utf-8") as f:
     disc_questions = json.load(f)
@@ -110,6 +112,43 @@ def attachment_test():
                            intro="The statements below are about how you feel in close relationships. "
                                  "Think about how you generally experience relationships, "
                                  "not just what is happening in a current relationship.")
+
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    if request.method == "POST":
+        name = request.form["name"].strip()
+        email = request.form["email"].strip().lower()
+        password = request.form["password"]
+        if db.users.find_one({"email": email}):
+            return render_template("register.html", error="This email is already registered.")
+        result = db.users.insert_one({
+            "name": name,
+            "email": email,
+            "password_hash": generate_password_hash(password),
+            "created_at": datetime.now(timezone.utc),
+        })
+        session["user_id"] = str(result.inserted_id)
+        session["user_name"] = name
+        return redirect("/")
+    return render_template("register.html")
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        email = request.form["email"].strip().lower()
+        password = request.form["password"]
+        user = db.users.find_one({"email": email})
+        if user is None or not check_password_hash(user["password_hash"], password):
+            return render_template("login.html", error="Wrong email or password.")
+        session["user_id"] = str(user["_id"])
+        session["user_name"] = user["name"]
+        return redirect("/")
+    return render_template("login.html")
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect("/")
 
 if __name__ == "__main__":
     app.run(debug=True)
