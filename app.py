@@ -42,6 +42,8 @@ def about():
 
 @app.route("/disc", methods=["GET", "POST"])
 def disc_test():
+    if "user_id" not in session:
+        return redirect("/login")
     if request.method == "POST":
         answers = []
         for number in range(1, 33):
@@ -49,6 +51,7 @@ def disc_test():
         scores = color_scores(answers)
         result_type = classify(scores)
         db.disc_results.insert_one({
+            "user_id": session["user_id"],
             "answers": answers,
             "scores": scores,
             "result_type": result_type,
@@ -59,11 +62,15 @@ def disc_test():
 
 @app.route("/history")
 def history():
-    results = list(db.disc_results.find().sort("created_at", -1))
+    if "user_id" not in session:
+        return redirect("/login")
+    results = list(db.disc_results.find({"user_id": session["user_id"]}).sort("created_at", -1))
     return render_template("history.html", results=results)
 
 @app.route("/bigfive", methods=["GET", "POST"])
 def bigfive_test():
+    if "user_id" not in session:
+        return redirect("/login")
     items = short_test_items()
     if request.method == "POST":
         answers = {}
@@ -78,6 +85,7 @@ def bigfive_test():
                 "percent": to_percent(score),
             })
         db.bigfive_results.insert_one({
+            "user_id": session["user_id"],
             "answers": answers,
             "scores": scores,
             "created_at": datetime.now(timezone.utc),
@@ -90,6 +98,8 @@ def bigfive_test():
 
 @app.route("/attachment", methods=["GET", "POST"])
 def attachment_test():
+    if "user_id" not in session:
+        return redirect("/login")
     if request.method == "POST":
         answers = []
         for number in range(1, 37):
@@ -97,6 +107,7 @@ def attachment_test():
         scores = attachment_scores(answers)
         style = attachment_style(scores)
         db.attachment_results.insert_one({
+            "user_id": session["user_id"],
             "answers": answers,
             "scores": scores,
             "style": style,
