@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Profile</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1"></script>
+</head>
+<body>
+    <h1>My Profile</h1>
+    <p>Hello, {{ session["user_name"] }}. These are your latest results.</p>
+
+    <h2>DISC</h2>
+    {% if disc %}
+    <p>Type: <b>{{ disc.result_type }}</b></p>
+    <div style="max-width: 500px;"><canvas id="discChart"></canvas></div>
+    {% else %}
+    <p>You haven't taken this test yet. <a href="/disc">Take the DISC test</a></p>
+    {% endif %}
+
+    <h2>Big Five</h2>
+    {% if bigfive %}
+    <div style="max-width: 500px;"><canvas id="bigfiveChart"></canvas></div>
+    {% else %}
+    <p>You haven't taken this test yet. <a href="/bigfive">Take the Big Five test</a></p>
+    {% endif %}
+
+    <h2>Attachment</h2>
+    {% if attachment %}
+    <p>Style: <b>{{ attachment.style }}</b></p>
+    <div style="max-width: 500px;"><canvas id="attachmentChart"></canvas></div>
+    {% else %}
+    <p>You haven't taken this test yet. <a href="/attachment">Take the Attachment test</a></p>
+    {% endif %}
+
+    <p><a href="/">Home</a></p>
+
+    <script>
+        {% if disc %}
+        new Chart(document.getElementById("discChart"), {
+            type: "bar",
+            data: {
+                labels: ["Red", "Yellow", "Green", "Blue"],
+                datasets: [{
+                    label: "Score (8 to 40)",
+                    data: {{ disc_values | tojson }},
+                    backgroundColor: ["#d9534f", "#f0c419", "#5cb85c", "#428bca"]
+                }]
+            },
+            options: { scales: { y: { min: 0, max: 40 } } }
+        });
+        {% endif %}
+
+        {% if bigfive %}
+        new Chart(document.getElementById("bigfiveChart"), {
+            type: "bar",
+            data: {
+                labels: {{ bigfive_labels | tojson }},
+                datasets: [{
+                    label: "Percent",
+                    data: {{ bigfive_values | tojson }},
+                    backgroundColor: "#6c757d"
+                }]
+            },
+            options: { indexAxis: "y", scales: { x: { min: 0, max: 100 } } }
+        });
+        {% endif %}
+
+        {% if attachment %}
+        new Chart(document.getElementById("attachmentChart"), {
+            type: "bar",
+            data: {
+                labels: ["Anxiety", "Avoidance"],
+                datasets: [{
+                    label: "Percent",
+                    data: {{ attachment_values | tojson }},
+                    backgroundColor: ["#9b59b6", "#16a085"]
+                }]
+            },
+            options: { scales: { y: { min: 0, max: 100 } } }
+        });
+        {% endif %}
+    </script>
+</body>
+</html>
