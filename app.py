@@ -124,6 +124,36 @@ def attachment_test():
                                  "Think about how you generally experience relationships, "
                                  "not just what is happening in a current relationship.")
 
+@app.route("/profile")
+def profile():
+    if "user_id" not in session:
+        return redirect("/login")
+    user_id = session["user_id"]
+    newest = [("created_at", -1)]
+    disc = db.disc_results.find_one({"user_id": user_id}, sort=newest)
+    bigfive = db.bigfive_results.find_one({"user_id": user_id}, sort=newest)
+    attachment = db.attachment_results.find_one({"user_id": user_id}, sort=newest)
+
+    disc_values = []
+    if disc:
+        disc_values = [disc["scores"][c] for c in ["Red", "Yellow", "Green", "Blue"]]
+
+    bigfive_labels = []
+    bigfive_values = []
+    if bigfive:
+        for trait, score in bigfive["scores"].items():
+            bigfive_labels.append(trait_names[trait])
+            bigfive_values.append(to_percent(score))
+
+    attachment_values = []
+    if attachment:
+        attachment_values = [attachment_percent(attachment["scores"]["Anxiety"]),
+                             attachment_percent(attachment["scores"]["Avoidance"])]
+
+    return render_template("profile.html", disc=disc, bigfive=bigfive, attachment=attachment,
+                           disc_values=disc_values, bigfive_labels=bigfive_labels,
+                           bigfive_values=bigfive_values, attachment_values=attachment_values)
+
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
