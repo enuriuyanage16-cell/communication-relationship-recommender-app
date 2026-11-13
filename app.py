@@ -8,6 +8,7 @@ from db import db
 from bigfive import predict_traits, short_test_items, to_percent
 from attachment import attachment_scores, attachment_style
 from attachment import to_percent as attachment_percent
+from descriptions import disc_description, bigfive_description, attachment_description
 
 app = Flask(__name__)
 app.secret_key = "Ej3o(jdn2,Df$kv798a8^jm)@h4oqM"
@@ -135,24 +136,32 @@ def profile():
     attachment = db.attachment_results.find_one({"user_id": user_id}, sort=newest)
 
     disc_values = []
+    disc_info = None
     if disc:
         disc_values = [disc["scores"][c] for c in ["Red", "Yellow", "Green", "Blue"]]
+        disc_info = disc_description(disc["scores"], disc["result_type"])
 
     bigfive_labels = []
     bigfive_values = []
+    bigfive_info = []
     if bigfive:
         for trait, score in bigfive["scores"].items():
+            percent = to_percent(score)
             bigfive_labels.append(trait_names[trait])
-            bigfive_values.append(to_percent(score))
+            bigfive_values.append(percent)
+            bigfive_info.append(bigfive_description(trait, percent))
 
     attachment_values = []
+    attachment_info = None
     if attachment:
         attachment_values = [attachment_percent(attachment["scores"]["Anxiety"]),
                              attachment_percent(attachment["scores"]["Avoidance"])]
+        attachment_info = attachment_description(attachment["style"])
 
     return render_template("profile.html", disc=disc, bigfive=bigfive, attachment=attachment,
-                           disc_values=disc_values, bigfive_labels=bigfive_labels,
-                           bigfive_values=bigfive_values, attachment_values=attachment_values)
+                           disc_values=disc_values, disc_info=disc_info, 
+                           bigfive_labels=bigfive_labels, bigfive_values=bigfive_values, bigfive_info=bigfive_info, 
+                           attachment_values=attachment_values, attachment_info=attachment_info)
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
