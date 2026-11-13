@@ -3,6 +3,10 @@
 <head>
     <title>My Profile</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1"></script>
+    <style>
+        .explain { font-size: 0.85em; color: #777; margin-top: -10px; }
+        .note { font-size: 0.9em; color: #555; font-style: italic; }
+    </style>
 </head>
 <body>
     <h1>My Profile</h1>
@@ -10,7 +14,9 @@
 
     <h2>DISC</h2>
     {% if disc %}
-    <p>Type: <b>{{ disc.result_type }}</b></p>
+    <h3>{{ disc_info.title }}</h3>
+    {% if disc_info.note %}<p class="note">{{ disc_info.note }}</p>{% endif %}
+    <p>{{ disc_info.text }}</p>
     <div style="max-width: 500px;"><canvas id="discChart"></canvas></div>
     {% else %}
     <p>You haven't taken this test yet. <a href="/disc">Take the DISC test</a></p>
@@ -19,14 +25,25 @@
     <h2>Big Five</h2>
     {% if bigfive %}
     <div style="max-width: 500px;"><canvas id="bigfiveChart"></canvas></div>
+    {% for t in bigfive_info %}
+    <h3>{{ t.name }}: {{ t.percent }}% ({{ t.level }})</h3>
+    <p class="explain">{{ t.explain }}</p>
+    <p>{{ t.text }}</p>
+    {% endfor %}
     {% else %}
     <p>You haven't taken this test yet. <a href="/bigfive">Take the Big Five test</a></p>
     {% endif %}
 
     <h2>Attachment</h2>
     {% if attachment %}
-    <p>Style: <b>{{ attachment.style }}</b></p>
     <div style="max-width: 500px;"><canvas id="attachmentChart"></canvas></div>
+    <h3>Anxiety: {{ attachment_values[0] }}%</h3>
+    <p class="explain">{{ attachment_info.anxiety_explain }}</p>
+    <h3>Avoidance: {{ attachment_values[1] }}%</h3>
+    <p class="explain">{{ attachment_info.avoidance_explain }}</p>
+    <h3>{{ attachment_info.title }}</h3>
+    <p>{{ attachment_info.text }}</p>
+    <p class="note">{{ attachment_info.note }}</p>
     {% else %}
     <p>You haven't taken this test yet. <a href="/attachment">Take the Attachment test</a></p>
     {% endif %}
