@@ -1,0 +1,80 @@
+{
+  "disc": {
+    "colours": {
+      "Red": "As a Red, you are someone who gets things done. You think fast, make decisions quickly, and like to keep moving towards your goals. When a group gets stuck, you are often the one who steps up and gets everyone going again. Your speed and confidence are real strengths, but people who like to take their time may sometimes feel rushed around you.",
+      "Yellow": "As a Yellow, you bring energy and warmth wherever you go. You love meeting people, sharing ideas and making things fun, and you often start conversations without even thinking about it. Your enthusiasm makes others feel welcome and excited about new plans. Your mind moves quickly, though, so sometimes you may move on to the next idea before others have caught up with the last one.",
+      "Green": "As a Green, you are calm, patient and easy to be around. You care about the people in your life and want everyone to get along, and others often trust you because you really listen. Your steady nature helps keep a group peaceful, even in stressful times. Because you don't like upsetting anyone, though, you may sometimes keep your own opinions to yourself.",
+      "Blue": "As a Blue, you like to understand things properly before you act. You notice details that others miss, plan carefully, and care about doing things the right way. People can rely on your work because you think things through. Your careful questions are a strength, but others may sometimes see them as doubt, even when you are simply making sure things are right."
+    },
+    "two_way": {
+      "Red+Yellow": "As a mix of Red and Yellow, you are full of energy and love to get things moving. You think quickly, speak up easily and enjoy being where the action is. You can get people excited about a plan and then push to make it happen. Because you move so fast, though, quieter people may sometimes find it hard to keep up or to get a word in.",
+      "Green+Yellow": "As a mix of Yellow and Green, you are warm, friendly and really care about people. You enjoy spending time with others, and you want everyone around you to feel happy and included. People often find it easy to talk to you and feel comfortable around you. Because getting along matters so much to you, though, you may sometimes avoid difficult conversations or find it hard to say no.",
+      "Blue+Green": "As a mix of Green and Blue, you are calm, careful and steady. You like to take your time, think things through and do things properly. People trust you because you are reliable and rarely act without thinking. Because you prefer to stay in the background, though, others may not always know what you are thinking, and you may need time to adjust when things change quickly.",
+      "Blue+Red": "As a mix of Blue and Red, you are focused, logical and determined. You set high standards and want things done properly, but you also want them finished. When there is a problem to solve, you are often the one who finds a clear plan and sees it through. Because you focus so much on the task, though, others may sometimes feel that you care more about the work than about how they are feeling."
+    },
+    "three_way_missing": {
+      "Red": "As a mix of Yellow, Green and Blue, you are friendly, patient and thoughtful. You get along easily with others, take time to think things through, and prefer to work things out together rather than push your own way. People feel comfortable around you because you rarely rush them or put pressure on them. Because pushing is not your style, though, you may sometimes hold back from taking charge or making a quick, difficult decision.",
+      "Yellow": "As a mix of Red, Green and Blue, you are focused, steady and practical. You like to get on with your work quietly and do it well, without needing to be the centre of attention. People can rely on you to stay on track and finish what you start. Because you prefer getting things done to chatting, though, others may sometimes see you as serious or hard to get to know at first.",
+      "Green": "As a mix of Red, Yellow and Blue, you are active, quick-thinking and full of drive. You enjoy new challenges, come up with ideas easily, and also care about doing things well. You often bring both energy and direction to a group. Because you like to keep moving, though, you may sometimes find it hard to slow down for people who need more time or a calmer pace.",
+      "Blue": "As a mix of Red, Yellow and Green, you are flexible, people-focused and ready for action. You can lead when needed, enjoy being with others, and care about keeping everyone together. You usually go with the flow and adapt easily to new situations. Because details and rules are not your main focus, though, you may sometimes skip over small things that others think are important."
+    },
+    "two_way_note": "You have two main styles that are equally strong in your personality.",
+    "three_way_note": "You have three main styles that are equally strong in your personality.",
+    "inconsistent": "Your answers contain opposite characteristics, which is unusual. Taking the test again, answering about how you usually act, may give a clearer result.",
+    "balanced": "Your answers show a mix of all four styles, so there is no one main style."
+  },
+  "bigfive": {
+    "levels": {
+      "high_above": 60,
+      "low_below": 40
+    },
+    "traits": {
+      "EXT": {
+        "name": "Extraversion",
+        "explain": "how much you enjoy being around people",
+        "High": "You get your energy from being around people. You enjoy busy places, meeting new people and being part of the action, and you usually feel at home in a crowd.",
+        "Medium": "You enjoy being with people, but you also like your quiet time. Depending on the situation, you can be the life of the party or happy on your own.",
+        "Low": "You get your energy from quiet time on your own or with a few close people. Big crowds can feel tiring, and you often prefer listening to talking."
+      },
+      "AGR": {
+        "name": "Agreeableness",
+        "explain": "how easily you get along with others",
+        "High": "You care a lot about other people and how they feel. You like to help, you trust easily, and you usually try to keep the peace.",
+        "Medium": "You care about others, but you can also stand your ground when it matters. You try to be fair to both yourself and the people around you.",
+        "Low": "You say what you think and you're not afraid to disagree. You focus on what makes sense rather than on pleasing everyone, which can make you a strong voice in a group."
+      },
+      "CSN": {
+        "name": "Conscientiousness",
+        "explain": "how organised and planned you like to be",
+        "High": "You like to be organised and prepared. You plan ahead, keep your promises and like to finish what you start.",
+        "Medium": "You can be organised when it matters, but you don't need everything planned. You find a balance between structure and going with the flow.",
+        "Low": "You like to keep things flexible and open. You'd rather decide as you go than follow a strict plan, and you can adapt quickly when things change."
+      },
+      "EST": {
+        "name": "Neuroticism",
+        "explain": "how strongly you feel stress and worry",
+        "High": "You feel things deeply. Stress, worry and changes in mood can affect you more strongly than they affect others, and you often notice when something isn't right.",
+        "Medium": "You usually handle stress well, but some situations can still worry or upset you, as they would anyone.",
+        "Low": "You usually stay calm, even when things get stressful. Worries don't stay with you for long, and others may see you as steady and relaxed."
+      },
+      "OPN": {
+        "name": "Openness",
+        "explain": "how much you enjoy new ideas and experiences",
+        "High": "You're curious about the world. You enjoy new ideas, creative things and trying out different ways of doing things.",
+        "Medium": "You enjoy some new ideas and experiences, but you also like what's familiar. You're open to change when it makes sense.",
+        "Low": "You like things that are practical and familiar. You prefer proven ways of doing things and keep your feet on the ground."
+      }
+    }
+  },
+  "attachment": {
+    "anxiety_explain": "how much you worry about being rejected or not loved enough",
+    "avoidance_explain": "how much you prefer to keep some distance and rely on yourself in close relationships",
+    "styles": {
+      "Secure": "You feel comfortable being close to people, and you also feel fine on your own. You can trust others and share how you feel, and you don't usually worry that people will leave you. When problems come up in a relationship, you are usually able to talk about them calmly.",
+      "Anxious (preoccupied)": "Close relationships matter a lot to you, and you put a lot of love and attention into them. Because of that, you may sometimes worry whether others care about you as much as you care about them, and you may feel better when people show it clearly.",
+      "Avoidant (dismissive)": "You value your independence and like to handle things on your own. You care about people, but getting very close or depending on others can feel uncomfortable, so you may keep a little distance, especially when emotions get strong.",
+      "Fearful-avoidant": "You want to feel close to others, but part of you also worries about getting hurt. Because of this, you may move closer to people and then pull back, and it can take time before you fully trust someone."
+    },
+    "note": "These are general patterns, not fixed labels, and they can change over time."
+  }
+}
