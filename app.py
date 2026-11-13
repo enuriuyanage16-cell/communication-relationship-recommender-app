@@ -61,13 +61,6 @@ def disc_test():
         return render_template("disc_result.html", scores=scores, result_type=result_type)
     return render_template("disc.html", questions=disc_questions)
 
-@app.route("/history")
-def history():
-    if "user_id" not in session:
-        return redirect("/login")
-    results = list(db.disc_results.find({"user_id": session["user_id"]}).sort("created_at", -1))
-    return render_template("history.html", results=results)
-
 @app.route("/bigfive", methods=["GET", "POST"])
 def bigfive_test():
     if "user_id" not in session:
@@ -124,6 +117,18 @@ def attachment_test():
                            intro="The statements below are about how you feel in close relationships. "
                                  "Think about how you generally experience relationships, "
                                  "not just what is happening in a current relationship.")
+
+@app.route("/history")
+def history():
+    if "user_id" not in session:
+        return redirect("/login")
+    mine = {"user_id": session["user_id"]}
+    disc_results = list(db.disc_results.find(mine).sort("created_at", -1))
+    bigfive_results = list(db.bigfive_results.find(mine).sort("created_at", -1))
+    attachment_results = list(db.attachment_results.find(mine).sort("created_at", -1))
+    return render_template("history.html", disc_results=disc_results,
+                           bigfive_results=bigfive_results,
+                           attachment_results=attachment_results)
 
 @app.route("/profile")
 def profile():
