@@ -1,0 +1,14 @@
+<div style="display: flex; width: 100%; max-width: 600px; height: 40px; border-radius: 8px; overflow: hidden;">
+    {% for part in bar %}
+    {% if part.percent > 0 %}
+    <div style="width: {{ part.percent }}%; background: {{ part.hex }}; color: white; display: flex;
+                align-items: center; justify-content: center; font-size: 0.85em;"
+         title="{{ part.color }} {{ part.percent }}%">
+        {% if part.percent >= 10 %}{{ part.color }} {{ part.percent }}%{% endif %}
+    </div>
+    {% endif %}
+    {% endfor %}
+</div>
+<p style="font-size: 0.85em; color: #555;">
+    {% for part in bar %}{{ part.color }} {{ part.percent }}%{% if not loop.last %} · {% endif %}{% endfor %}
+</p>
