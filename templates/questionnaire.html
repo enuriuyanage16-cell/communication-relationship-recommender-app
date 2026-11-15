@@ -5,6 +5,9 @@
 </head>
 <body>
     <h1>{{ title }}</h1>
+    {% if intro %}
+    <p>{{ intro }}</p>
+    {% endif %}
     <p>Answer from 1 ({{ low_label }}) to {{ scale_max }} ({{ high_label }}).</p>
     <form method="POST" action="{{ action }}">
         {% for question in questions %}
