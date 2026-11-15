@@ -22,13 +22,14 @@
         <tr>
             <td>{{ r.created_at.strftime("%Y-%m-%d %H:%M") }}</td>
             <td>{{ "Balanced" if r.result_type == "Unclear" else r.result_type }}</td>
-            <td>{{ r.scores.Green }}</td>
-            <td>{{ r.scores.Yellow }}</td>
-            <td>{{ r.scores.Blue }}</td>
-            <td>{{ r.scores.Red }}</td>
+            <td>{{ r.percentages.Green }}%</td>
+            <td>{{ r.percentages.Yellow }}%</td>
+            <td>{{ r.percentages.Blue }}%</td>
+            <td>{{ r.percentages.Red }}%</td>
         </tr>
         {% endfor %}
     </table>
+    <p>The percentages show how much of each colour is in your style.</p>
     {% endif %}
 
     <h2>Big Five test</h2>
