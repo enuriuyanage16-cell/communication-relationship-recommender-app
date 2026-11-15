@@ -1,0 +1,6 @@
+{
+  "group_size": 4,
+  "min_questions": 16,
+  "margin": 5,
+  "description": "After each group of 4 questions (from question 16), stop if the strongest colour leads the second by more than the margin, and give Pure of that colour."
+}
