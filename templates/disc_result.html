@@ -5,12 +5,12 @@
 </head>
 <body>
     <h1>Your DISC Result</h1>
-    <h2>{{ result_type }}</h2>
-    <ul>
-        {% for color, score in scores.items() %}
-        <li>{{ color }}: {{ score }} (out of 40)</li>
-        {% endfor %}
-    </ul>
-    <a href="/disc">Take test again</a> | <a href="/">Home</a>
+    {% if questions_answered < 32 %}
+    <p>Your result was already clear after {{ questions_answered }} questions, so the test finished early.</p>
+    {% endif %}
+    <h2>{{ "Balanced" if result_type == "Unclear" else result_type }}</h2>
+    <p>How much of your style comes from each colour:</p>
+    {% include "_disc_bar.html" %}
+    <a href="/profile">See my full profile</a> | <a href="/disc">Take test again</a> | <a href="/">Home</a>
 </body>
 </html>
