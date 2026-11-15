@@ -17,7 +17,7 @@
     <h3>{{ disc_info.title }}</h3>
     {% if disc_info.note %}<p class="note">{{ disc_info.note }}</p>{% endif %}
     <p>{{ disc_info.text }}</p>
-    <div style="max-width: 500px;"><canvas id="discChart"></canvas></div>
+    {% with bar = disc_bar %}{% include "_disc_bar.html" %}{% endwith %}
     {% else %}
     <p>You haven't taken this test yet. <a href="/disc">Take the DISC test</a></p>
     {% endif %}
@@ -51,21 +51,6 @@
     <p><a href="/">Home</a></p>
 
     <script>
-        {% if disc %}
-        new Chart(document.getElementById("discChart"), {
-            type: "bar",
-            data: {
-                labels: ["Red", "Yellow", "Green", "Blue"],
-                datasets: [{
-                    label: "Score (8 to 40)",
-                    data: {{ disc_values | tojson }},
-                    backgroundColor: ["#d9534f", "#f0c419", "#5cb85c", "#428bca"]
-                }]
-            },
-            options: { scales: { y: { min: 0, max: 40 } } }
-        });
-        {% endif %}
-
         {% if bigfive %}
         new Chart(document.getElementById("bigfiveChart"), {
             type: "bar",
