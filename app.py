@@ -3,7 +3,7 @@ import random
 from datetime import datetime, timezone
 from flask import Flask, render_template, request, redirect, session
 from werkzeug.security import generate_password_hash, check_password_hash
-from disc import color_scores, classify
+from disc import classify, group_numbers, partial_scores, check_stop, scale_scores, color_percentages, color_bar
 from db import db
 from bigfive import predict_traits, short_test_items, to_percent
 from attachment import attachment_scores, attachment_style
@@ -45,21 +45,43 @@ def about():
 def disc_test():
     if "user_id" not in session:
         return redirect("/login")
-    if request.method == "POST":
-        answers = []
-        for number in range(1, 33):
-            answers.append(int(request.form["q" + str(number)]))
-        scores = color_scores(answers)
-        result_type = classify(scores)
-        db.disc_results.insert_one({
-            "user_id": session["user_id"],
-            "answers": answers,
-            "scores": scores,
-            "result_type": result_type,
-            "created_at": datetime.now(timezone.utc),
-        })
-        return render_template("disc_result.html", scores=scores, result_type=result_type)
-    return render_template("disc.html", questions=disc_questions)
+    if request.method == "GET":
+        session["disc_answers"] = {}
+        group = 1
+    else:
+        group = int(request.form["group"])
+        answers = session.get("disc_answers", {})
+        for number in group_numbers(group):
+            answers[str(number)] = int(request.form["q" + str(number)])
+        session["disc_answers"] = answers
+        if len(answers) != 4 * group:
+            return redirect("/disc")
+        stop_colour = check_stop(answers, group)
+        if stop_colour or group == 8:
+            raw = partial_scores(answers, group)
+            scores = scale_scores(raw, group)
+            if stop_colour:
+                result_type = "Pure " + stop_colour
+            else:
+                result_type = classify(raw)
+            db.disc_results.insert_one({
+                "user_id": session["user_id"],
+                "answers": answers,
+                "scores": scores,
+                "raw_scores": raw,
+                "questions_answered": 4 * group,
+                "stopped_early": stop_colour is not None,
+                "result_type": result_type,
+                "created_at": datetime.now(timezone.utc),
+            })
+            session.pop("disc_answers", None)
+            return render_template("disc_result.html", bar=color_bar(color_percentages(scores)),
+                                   result_type=result_type, questions_answered=4 * group)
+        group = group + 1
+    numbers = group_numbers(group)
+    questions = [{"number": n, "text": disc_questions[n - 1]} for n in numbers]
+    return render_template("disc.html", group=group, questions=questions,
+                           first=numbers[0], last=numbers[-1])
 
 @app.route("/bigfive", methods=["GET", "POST"])
 def bigfive_test():
@@ -124,6 +146,8 @@ def history():
         return redirect("/login")
     mine = {"user_id": session["user_id"]}
     disc_results = list(db.disc_results.find(mine).sort("created_at", -1))
+    for r in disc_results:
+        r["percentages"] = color_percentages(r["scores"])
     bigfive_results = list(db.bigfive_results.find(mine).sort("created_at", -1))
     attachment_results = list(db.attachment_results.find(mine).sort("created_at", -1))
     return render_template("history.html", disc_results=disc_results,
@@ -140,10 +164,10 @@ def profile():
     bigfive = db.bigfive_results.find_one({"user_id": user_id}, sort=newest)
     attachment = db.attachment_results.find_one({"user_id": user_id}, sort=newest)
 
-    disc_values = []
+    disc_bar = []
     disc_info = None
     if disc:
-        disc_values = [disc["scores"][c] for c in ["Red", "Yellow", "Green", "Blue"]]
+        disc_bar = color_bar(color_percentages(disc["scores"]))
         disc_info = disc_description(disc["scores"], disc["result_type"])
 
     bigfive_labels = []
@@ -164,7 +188,7 @@ def profile():
         attachment_info = attachment_description(attachment["style"])
 
     return render_template("profile.html", disc=disc, bigfive=bigfive, attachment=attachment,
-                           disc_values=disc_values, disc_info=disc_info, 
+                           disc_bar=disc_bar, disc_info=disc_info, 
                            bigfive_labels=bigfive_labels, bigfive_values=bigfive_values, bigfive_info=bigfive_info, 
                            attachment_values=attachment_values, attachment_info=attachment_info)
 
