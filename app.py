@@ -1,7 +1,7 @@
 import json
 import random
 from datetime import datetime, timezone
-from flask import Flask, render_template, request, redirect, session
+from flask import Flask, render_template, request, redirect, session, flash
 from werkzeug.security import generate_password_hash, check_password_hash
 from disc import classify, group_numbers, partial_scores, check_stop, scale_scores, color_percentages, color_bar
 from db import db
@@ -9,7 +9,7 @@ from bigfive import predict_traits, short_test_items, to_percent
 from attachment import attachment_scores, attachment_style
 from attachment import to_percent as attachment_percent
 from descriptions import disc_description, bigfive_description, attachment_description
-from connections import get_share_code, send_request, labels
+from connections import get_share_code, send_request, labels, incoming_requests, sent_requests, accept_request, decline_request
 
 app = Flask(__name__)
 app.secret_key = "Ej3o(jdn2,Df$kv798a8^jm)@h4oqM"
@@ -197,12 +197,22 @@ def profile():
 def relationships():
     if "user_id" not in session:
         return redirect("/login")
-    message = None
-    message_type = None
+    user_id = session["user_id"]
     if request.method == "POST":
-        message, message_type = send_request(session["user_id"], request.form["code"], request.form["label"])
-    code = get_share_code(session["user_id"])
-    return render_template("relationships.html", code=code, labels=labels, message=message, message_type=message_type)
+        action = request.form.get("action")
+        message = None
+        if action == "send":
+            message, message_type = send_request(user_id, request.form["code"], request.form["label"])
+        elif action == "accept":
+            message, message_type = accept_request(user_id, request.form["connection_id"], request.form["label"])
+        elif action == "decline":
+            message, message_type = decline_request(user_id, request.form["connection_id"])
+        if message:
+            flash(message, message_type)
+        return redirect("/relationships")
+    code = get_share_code(user_id)
+    return render_template("relationships.html", code=code, labels=labels, 
+                           incoming=incoming_requests(user_id), sent=sent_requests(user_id))
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
