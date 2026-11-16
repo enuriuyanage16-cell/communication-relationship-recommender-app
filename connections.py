@@ -47,3 +47,43 @@ def send_request(user_id, code, label):
         "created_at": datetime.now(timezone.utc),
     })
     return "Request sent to " + other["name"] + ". They need to accept it before you can see your tips.",  "success"
+
+def user_name(user_id):
+    user = db.users.find_one({"_id": ObjectId(user_id)})
+    return user["name"] if user else "Unknown"
+
+def incoming_requests(user_id):
+    requests = list(db.connections.find({"to_user": user_id, "status": "pending"}).sort("created_at", -1))
+    for r in requests:
+        r["other_name"] = user_name(r["from_user"])
+    return requests
+
+def sent_requests(user_id):
+    requests = list(db.connections.find({"from_user": user_id, "status": "pending"}).sort("created_at", -1))
+    for r in requests:
+        r["other_name"] = user_name(r["to_user"])
+    return requests
+
+def accept_request(user_id, connection_id, label):
+    if label not in labels:
+        return "Please choose a relationship type.", "error"
+    connection = db.connections.find_one(
+        {"_id": ObjectId(connection_id), "to_user": user_id, "status": "pending"}
+    )
+    if connection is None:
+        return "This request was already accepted or declined.", "info"
+    db.connections.update_one(
+        {"_id": connection["_id"]},
+        {"$set": {"to_label": label, "status": "accepted", "accepted_at": datetime.now(timezone.utc)}},
+    )
+    return "Request accepted. You are now connected with " + user_name(connection["from_user"]) + ".", "success"
+
+def decline_request(user_id, connection_id):
+    connection = db.connections.find_one(
+        {"_id": ObjectId(connection_id), "to_user": user_id, "status": "pending"}
+    )
+    if connection is None:
+        return "This request was already accepted or declined.", "info"
+    db.connections.delete_one({"_id": connection["_id"]})
+    return "You declined " + user_name(connection["from_user"]) + "'s request.", "info"
+
