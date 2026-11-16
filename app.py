@@ -9,7 +9,7 @@ from bigfive import predict_traits, short_test_items, to_percent
 from attachment import attachment_scores, attachment_style
 from attachment import to_percent as attachment_percent
 from descriptions import disc_description, bigfive_description, attachment_description
-from connections import get_share_code, send_request, labels, incoming_requests, sent_requests, accept_request, decline_request
+from connections import get_share_code, send_request, labels, incoming_requests, sent_requests, accept_request, decline_request, my_connections, remove_connection
 
 app = Flask(__name__)
 app.secret_key = "Ej3o(jdn2,Df$kv798a8^jm)@h4oqM"
@@ -207,12 +207,15 @@ def relationships():
             message, message_type = accept_request(user_id, request.form["connection_id"], request.form["label"])
         elif action == "decline":
             message, message_type = decline_request(user_id, request.form["connection_id"])
+        elif action == "remove":
+            message, message_type = remove_connection(user_id, request.form["connection_id"])
         if message:
             flash(message, message_type)
         return redirect("/relationships")
     code = get_share_code(user_id)
     return render_template("relationships.html", code=code, labels=labels, 
-                           incoming=incoming_requests(user_id), sent=sent_requests(user_id))
+                           incoming=incoming_requests(user_id), sent=sent_requests(user_id),
+                           groups=my_connections(user_id))
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
