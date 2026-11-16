@@ -6,6 +6,51 @@
 <body>
     <h1>My Relationships</h1>
 
+    <p>Logged in as <strong>{{ session["user_name"] }}</strong></p>
+
+    {% set box_colors = {
+        "success": ["#dff0d8", "#3c763d"],
+        "error": ["#f2dede", "#a94442"],
+        "info": ["#d9edf7", "#31708f"]
+    } %}
+    {% for message_type, message in get_flashed_messages(with_categories=true) %}
+    <p style="padding: 10px; border-radius: 6px; max-width: 600px;
+              background: {{ box_colors[message_type][0] }};
+              color: {{ box_colors[message_type][1] }};">
+        {{ message }}
+    </p>
+    {% endfor %}
+
+    <h2>Requests waiting for you</h2>
+    {% if incoming %}
+    {% for r in incoming %}
+    <div style="border: 1px solid #ccc; border-radius: 6px; padding: 10px; margin-bottom: 10px; max-width: 600px;">
+        <p><strong>{{ r.other_name }}</strong> wants to connect with you.</p>
+        <p>If you accept, you will both get tips about each other, based on both of your test results.</p>
+        <form method="post" action="/relationships" style="display: inline;">
+            <input type="hidden" name="action" value="accept">
+            <input type="hidden" name="connection_id" value="{{ r._id }}">
+            <label>Relationship:
+                <select name="label" required>
+                    <option value="">Choose...</option>
+                    {% for l in labels %}
+                    <option value="{{ l }}">{{ l }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+            <button type="submit">Accept</button>
+        </form>
+        <form method="post" action="/relationships" style="display: inline;">
+            <input type="hidden" name="action" value="decline">
+            <input type="hidden" name="connection_id" value="{{ r._id }}">
+            <button type="submit">Decline</button>
+        </form>
+    </div>
+    {% endfor %}
+    {% else %}
+    <p>No requests right now.</p>
+    {% endif %}
+
     <h2>Your code</h2>
     <p>Want tips for getting along with someone? Share your code with them.</p>
     <ol>
@@ -18,19 +63,8 @@
     <span id="copied" style="color: green;"></span>
 
     <h2>Connect with someone</h2>
-    {% set box_colors = {
-        "success": ["#dff0d8", "#3c763d"],
-        "error": ["#f2dede", "#a94442"],
-        "info": ["#d9edf7", "#31708f"]
-    } %}
-    {% if message %}
-    <p style="padding: 10px; border-radius: 6px; max-width: 600px;
-          background: {{ box_colors[message_type][0] }};
-          color: {{ box_colors[message_type][1] }};">
-          {{ message }}
-    </p>
-    {% endif %}
     <form method="post" action="/relationships">
+        <input type="hidden" name="action" value="send">
         <label>Their code: <input name="code" maxlength="6" required></label>
         <br><br>
         <label>Relationship:
@@ -44,6 +78,17 @@
         <br><br>
         <button type="submit">Send request</button>
     </form>
+
+    <h2>Requests you sent</h2>
+    {% if sent %}
+    <ul>
+        {% for r in sent %}
+        <li>{{ r.other_name }}: waiting for them to accept</li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>No requests waiting.</p>
+    {% endif %}
 
     <p><a href="/">Home</a> | <a href="/profile">My Profile</a></p>
 
