@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Relationships</title>
+</head>
+<body>
+    <h1>My Relationships</h1>
+
+    <h2>Your code</h2>
+    <p>Share this code with someone so they can connect with you.</p>
+    <p style="font-size: 1.5em; font-weight: bold; letter-spacing: 3px;">{{ code }}</p>
+    <button onclick="copyCode()">Copy code</button>
+    <span id="copied" style="color: green;"></span>
+
+    <p><a href="/">Home</a> | <a href="/profile">My Profile</a></p>
+
+    <script>
+        function copyCode() {
+            navigator.clipboard.writeText("{{ code }}").then(function () {
+                document.getElementById("copied").textContent = " Copied!";
+            });
+        }
+    </script>
+</body>
+</html>
