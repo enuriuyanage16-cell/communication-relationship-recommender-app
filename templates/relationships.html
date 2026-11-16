@@ -51,6 +51,33 @@
     <p>No requests right now.</p>
     {% endif %}
 
+    <h2>My connections</h2>
+    {% set group_titles = {"Partner": "Partner", "Friend": "Friends", "Family": "Family", "Coworker": "Coworkers"} %}
+    {% set ns = namespace(any=false) %}
+    {% for label in labels %}
+    {% if groups[label] %}
+    {% set ns.any = true %}
+    <h3>{{ group_titles[label] }}</h3>
+    <ul>
+        {% for person in groups[label] %}
+        <li>
+            {{ person.name }}
+            <form method="post" action="/relationships" style="display: inline;"
+                data-question="Remove {{ person.name }} from your connections?"
+                onsubmit="return confirm(this.dataset.question);">
+                <input type="hidden" name="action" value="remove">
+                <input type="hidden" name="connection_id" value="{{ person.id }}">
+                <button type="submit">Remove</button>
+            </form>
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endfor %}
+    {% if not ns.any %}
+    <p>You haven't connected with anyone yet.</p>
+    {% endif %}
+
     <h2>Your code</h2>
     <p>Want tips for getting along with someone? Share your code with them.</p>
     <ol>
