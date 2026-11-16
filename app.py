@@ -9,6 +9,7 @@ from bigfive import predict_traits, short_test_items, to_percent
 from attachment import attachment_scores, attachment_style
 from attachment import to_percent as attachment_percent
 from descriptions import disc_description, bigfive_description, attachment_description
+from connections import get_share_code
 
 app = Flask(__name__)
 app.secret_key = "Ej3o(jdn2,Df$kv798a8^jm)@h4oqM"
@@ -191,6 +192,13 @@ def profile():
                            disc_bar=disc_bar, disc_info=disc_info, 
                            bigfive_labels=bigfive_labels, bigfive_values=bigfive_values, bigfive_info=bigfive_info, 
                            attachment_values=attachment_values, attachment_info=attachment_info)
+
+@app.route("/relationships")
+def relationships():
+    if "user_id" not in session:
+        return redirect("/login")
+    code = get_share_code(session["user_id"])
+    return render_template("relationships.html", code=code)
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
