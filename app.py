@@ -9,7 +9,9 @@ from bigfive import predict_traits, short_test_items, to_percent
 from attachment import attachment_scores, attachment_style
 from attachment import to_percent as attachment_percent
 from descriptions import disc_description, bigfive_description, attachment_description
-from connections import get_share_code, send_request, labels, incoming_requests, sent_requests, accept_request, decline_request, my_connections, remove_connection, missing_tests, connection_details
+from connections import (get_share_code, send_request, labels, incoming_requests, sent_requests, accept_request, 
+                         decline_request, my_connections, remove_connection, missing_tests, connection_details, 
+                         has_attachment, get_attachment_share, set_attachment_share)
 from compatibility import compatibility
 
 app = Flask(__name__)
@@ -210,6 +212,8 @@ def relationships():
             message, message_type = decline_request(user_id, request.form["connection_id"])
         elif action == "remove":
             message, message_type = remove_connection(user_id, request.form["connection_id"])
+        elif action == "share":
+            message, message_type = set_attachment_share(user_id, request.form["share_with"])
         if message:
             flash(message, message_type)
         return redirect("/relationships")
@@ -219,7 +223,8 @@ def relationships():
     code = get_share_code(user_id)
     return render_template("relationships.html", code=code, labels=labels, 
                            incoming=incoming_requests(user_id), sent=sent_requests(user_id),
-                           groups=my_connections(user_id), missing=missing)
+                           groups=my_connections(user_id), missing=missing,
+                           share_with=get_attachment_share(user_id), has_attachment=has_attachment(user_id))
 
 @app.route("/relationships/<connection_id>")
 def connection_tips(connection_id):
@@ -230,7 +235,7 @@ def connection_tips(connection_id):
     if details is None:
         flash("This connection was not found.", "error")
         return redirect("/relationships")
-    tips = compatibility(user_id, details["other_id"], details["other_name"], details["my_label"])
+    tips = compatibility(user_id, details["other_id"], details["other_name"], details["my_label"], connection_id)
     if tips is None:
         flash("Your guide isn't ready yet because some test results are missing.", "info")
         return redirect("/relationships")
