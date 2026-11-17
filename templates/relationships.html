@@ -90,6 +90,25 @@
     <p>You haven't connected with anyone yet.</p>
     {% endif %}
 
+    <h2>Who can see your Attachment guide?</h2>
+    <p>Your Attachment results are private. You can choose to share your guide with one partner. They will only see advice, never your scores.</p>
+    {% if not has_attachment %}
+    <p>To share it, first <a href="/attachment">take the Attachment test</a>.</p>
+    {% elif groups["Partner"] %}
+    <form method="post" action="/relationships">
+        <input type="hidden" name="action" value="share">
+        <select name="share_with">
+            <option value="nobody">Nobody</option>
+            {% for person in groups["Partner"] %}
+            <option value="{{ person.id }}" {% if person.id == share_with %}selected{% endif %}>Only {{ person.name }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Save</button>
+    </form>
+    {% else %}
+    <p>Once you connect with someone as your Partner, you can choose to share it with them here.</p>
+    {% endif %}
+
     <h2>Your code</h2>
     <p>Want a guide to getting along with someone? Share your code with them.</p>
     <ol>
