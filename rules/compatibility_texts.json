@@ -1,0 +1,432 @@
+{
+    "disc_about": {
+        "Red": {
+            "heading": "Talking to [name]? Here's what helps.",
+            "paragraphs": [
+                "[name] is full of energy and confidence. When they're relaxed, they're fun to be around.",
+                "They enjoy chatting, friendly competition and trying new things, and they're often the one who suggests what to do next. They're honest and usually say what they think, so it's easy to know how they feel.",
+                "When things get serious, like work or important plans, they switch into a more focused mode and like you to get straight to the point.",
+                "Start with the main point, then say what you did about it and how it turned out. After that, check if they have any questions. If they do, give them a short, direct answer with a clear reason.",
+                "In this focused mode, the way you ask questions makes a big difference. Questions that sound like a test or a challenge can make them annoyed or start an argument.",
+                "When you want to know what they think or what they like, ask for their help instead. For example, you could say \"I need your help with this. What do you think is the best way?\" They enjoy sharing their ideas and will happily tell you.",
+                "The same goes for decisions. Give them a few choices and let them pick, because they like to move fast and feel in control.",
+                "If you disagree, say it openly and give a clear reason. They respect people who speak up.",
+                "Because they care so much about getting things done, they may sometimes sound too direct, but they don't mean to hurt you.",
+                "When they help you or finish something, thank them for it. They like knowing their effort made a difference."
+            ]
+        },
+        "Yellow": {
+            "heading": "Talking to [name]? Here's what helps.",
+            "paragraphs": [
+                "[name] is cheerful, chatty and full of energy. When they're relaxed, they're the one telling stories, making jokes and getting everyone to join in.",
+                "If someone looks left out, they often notice and bring them into the conversation. People usually enjoy spending time with them.",
+                "Even when you need to talk about something serious, like work or important plans, it helps to start with a quick, friendly chat. They feel more comfortable when they feel close to you first. A warm \"How was your day?\" is enough.",
+                "After that, explain the big picture and how it will affect the people around them, since that matters most to them. Too many small details can make them lose focus, so keep it simple.",
+                "Before you finish, send them a short message with the main points and the next steps. That way, they won't forget anything.",
+                "Asking questions is easy with [name]. They love being asked for their opinion and often come back with several suggestions at once. Let them share freely, then decide together which one would work best, so you both think about the fun side and the practical side.",
+                "Decisions work in a similar way. They tend to go with what feels exciting, so show them what's fun or new about the plan and how it helps others.",
+                "After you decide, a friendly reminder a few days later helps them finish what you planned.",
+                "Because they love to talk, conversations with them can move off topic. That's simply how they get close to others.",
+                "If you need to get back on track, do it gently. For example, you could say \"I love that, let's talk more about it after we finish this.\" They won't feel ignored, and you'll still get things done.",
+                "When they come up with a good suggestion or cheer someone up, tell them. A little praise means a lot to them, and they feel happiest when people notice the energy they bring."
+            ]
+        },
+        "Green": {
+            "heading": "Talking to [name]? Here's what helps.",
+            "paragraphs": [
+                "[name] is calm, kind and easy to be around. When they're relaxed, they enjoy quiet time with people they're close to, like a long chat or a cosy evening.",
+                "They're usually a great listener, and friends often go to them for support. Once they care about someone, they tend to stay loyal for a long time.",
+                "When things get serious, like work or important plans, they like to understand things step by step. Explain what's happening and why, and give them a little time to take it in.",
+                "Sudden changes can make them feel stressed. If something is going to change, try to tell them early, so they have time to get ready.",
+                "They may not say it out loud when they disagree or feel unsure, because they don't like causing trouble. So it helps to ask gently, in a calm and private moment.",
+                "For example, you could say \"No rush, have a think and tell me what you feel later.\" Giving them that space makes it much easier for them to be honest with you.",
+                "Decisions work in a similar way. Try not to push them for a quick answer. Share how the plan will affect the people involved, and let them take their time.",
+                "Sometimes things need to happen fast, and there's no time to wait. In those moments, tell them clearly what needs to be done first. Give one or two steps at a time instead of everything at once, and let them know you're there if they need help.",
+                "Once things calm down, take a moment to explain why it had to be rushed. That helps them feel okay about it.",
+                "If you disagree about something, try to talk calmly. When someone shouts or gets angry, they usually stop talking. But that doesn't mean they're okay. They may still feel hurt inside.",
+                "They often help others quietly, without being asked, and they don't talk much about it. When you notice that, thank them. It means a lot to them to know their care and support are seen."
+            ]
+        },
+        "Blue": {
+            "heading": "Talking to [name]? Here's what helps.",
+            "paragraphs": [
+                "[name] is thoughtful, curious and careful. When they're relaxed, they enjoy deep conversations about things that interest them, and they can be surprisingly funny once they feel comfortable.",
+                "They often have hobbies or topics they know a lot about. Asking them about these is a great way to get them talking.",
+                "When things get serious, like work or important plans, they like to have the facts and details. Explain things clearly and in order, and if you can, share the information in writing so they can read it again later.",
+                "They usually want to check things properly before moving on. Giving them a little time to look through everything helps them feel sure about it.",
+                "They may ask a lot of questions. This doesn't mean they doubt you. They just want to understand things fully.",
+                "Try to answer with clear facts and reasons. If you don't know the answer, it's fine to say \"I'm not sure, let me find out and tell you.\" They'll respect that more than a guess.",
+                "When you need their opinion, ask a clear and specific question, and give them time to think. For example, you could say \"Can you have a look at this and tell me what you think by tomorrow?\"",
+                "Decisions work in a similar way. Show them the good and bad sides of each choice, and let them think about it before deciding.",
+                "Sometimes things need to happen fast, like when a deadline moves forward or a problem needs fixing today. There's no time for them to check everything. In those moments, tell them only what they need to get started, like what the problem is, what needs to be done and by when. If some details are still unclear, say so honestly. For example, \"We don't know the full cost yet, but we need to decide today.\"",
+                "Because they like to be sure, moving fast without all the facts can make them worried. So once the rush is over, offer to go back and check the details together. Knowing they'll get that chance helps them feel okay moving ahead now.",
+                "If you disagree about something, explain your reasons clearly, and use facts or examples where you can. Saying only \"I don't like it\" may not change their mind, because they want to understand why.",
+                "They may also go quiet or look serious while they think. That doesn't mean they're upset or ignoring you. They're usually thinking carefully about what you said, and they may come back later with a well-thought-out answer.",
+                "They put a lot of care into doing things properly, even when others don't notice. When you see the effort they put in, let them know you noticed those small details. It means a lot to them to know their hard work is seen."
+            ]
+        }
+    },
+    "disc_balanced_note": "[name]'s style is quite balanced, so they may act differently in different situations. These tips are based on their strongest side.",
+    "disc_together": {
+        "Green+Red": {
+            "heading": "You and [name]",
+            "paragraphs": [
+                "You and [name] move at very different speeds. One of you likes to act fast and get things done, while the other prefers to take time and keep things calm.",
+                "Your differences can also help you. The faster one gets things moving, and the calmer one makes sure nobody gets rushed into a bad choice. Together, you can balance each other out.",
+                "Problems can start when the faster one wants a quick answer and the calmer one feels pressured. The calmer one may go quiet instead of saying how they feel, and the faster one may think everything is fine when it isn't.",
+                "Small things can build up over time. One of you may feel the other is too slow, while the other feels rushed and not listened to.",
+                "To avoid this, agree on a time for decisions. For example, you could say \"Let's both think about it and decide by tomorrow evening.\" That way, one of you doesn't feel rushed and the other doesn't feel stuck waiting.",
+                "It also helps to check in with each other now and then. The faster one can ask \"Are you okay with this?\" and really listen to the answer. The calmer one can try to share small worries early, before they turn into bigger problems."
+            ]
+        },
+        "Blue+Yellow": {
+            "heading": "You and [name]",
+            "paragraphs": [
+                "You and [name] see things in very different ways. One of you is chatty and full of ideas, while the other is quiet, careful and likes to check the details.",
+                "Your differences can also help you. The chatty one brings energy and new ideas, and the careful one makes sure those ideas are well planned and can work in real life. Together, you can turn good ideas into real plans.",
+                "Problems can start when the chatty one wants to jump into something exciting and the careful one wants more time and facts first. The chatty one may feel the other is too serious, while the careful one may feel things are being rushed without enough thought.",
+                "The way you talk can cause trouble too. The chatty one may share lots of thoughts at once, while the careful one goes quiet to think. The chatty one might take that silence as not caring, when the careful one is simply thinking.",
+                "To avoid this, try to give each other what you need. The chatty one can write down the main points and give the careful one some time to look at them. The careful one can show some interest in the idea, even before every detail is checked. For example, you could say \"I like this idea. Let me look at the details and get back to you tomorrow.\"",
+                "It also helps to make time for both fun and focus. Spend some time just chatting and sharing ideas, then set a separate time to work out the details together. That way, both of you feel heard."
+            ]
+        },
+        "Red+Yellow": {
+            "heading": "You and [name]",
+            "paragraphs": [
+                "You and [name] both like to move fast and keep things exciting. But one of you cares most about getting things done, while the other cares most about people and having fun along the way.",
+                "Your shared energy can help you a lot. You both like to decide quickly, try new things and keep plans moving. Together, you can get a lot done and enjoy it too.",
+                "Problems can start when you want different things from the same moment. The one who cares about getting things done may want to start working straight away, while the other wants to chat and make sure everyone feels good first.",
+                "Because you're both quick to speak, small disagreements can also get loud fast. One of you may sound too direct, and the other may feel hurt or ignored, even though neither of you meant any harm.",
+                "To avoid this, make room for both. Start with a few minutes of friendly chat, then move on to the task. For example, you could say \"Let's catch up for five minutes, then sort out the plan.\"",
+                "It also helps to slow down a little when things get heated. Take a short break, then come back and talk calmly. Since you both move fast, a quick pause can stop a small argument from turning into a big one."
+            ]
+        },
+        "Blue+Green": {
+            "heading": "You and [name]",
+            "paragraphs": [
+                "You and [name] both like a calm pace and prefer to think carefully before acting. But one of you cares most about people and how everyone feels, while the other cares most about facts and getting things right.",
+                "Your calm nature can help you a lot. You both listen well, plan ahead and don't usually rush into things. Together, you can build something steady and well planned.",
+                "Problems can start when one of you focuses on feelings and the other focuses on facts. The caring one may feel the careful one is too focused on finding mistakes, while the careful one may feel the caring one isn't paying enough attention to the details.",
+                "Because you both like to avoid arguments, problems can also stay hidden. You may both stay quiet to keep the peace, and small worries can grow without anyone saying anything. Important decisions might also get delayed because neither of you wants to rush.",
+                "To avoid this, each of you can do one small thing. When the careful one sees a problem, they can first say something they like, then mention the problem. For example, \"I really like how this is going. I just noticed one small thing we could fix.\"",
+                "When the caring one feels unsure about something, they can also explain why, so the careful one understands. For example, instead of only saying \"I don't feel good about this plan,\" they could say \"I don't feel good about this plan because two people already told me they can't come that day.\"",
+                "If one of you seems quieter than usual, gently ask about it in the moment, like \"You seem a bit quiet. Is everything okay?\" And when the other person does share a worry, listen kindly. That makes it easier for them to speak up next time.",
+                "When a decision keeps getting delayed, one of you can make the first suggestion to get things started. For example, \"How about we try this, and change it later if we need to?\""
+            ]
+        },
+        "Blue+Red": {
+            "heading": "You and [name]",
+            "paragraphs": [
+                "You and [name] both care about getting things done and doing them well. But one of you likes to move fast and decide quickly, while the other likes to slow down and check the details first.",
+                "Your shared focus can help you a lot. You both take plans seriously and like having a clear goal. The faster one keeps things moving, and the careful one makes sure nothing important is missed. Together, you can get things done quickly and properly.",
+                "Problems can start when the faster one wants to decide now and the careful one wants more time to check. The faster one may feel held back, while the careful one may feel pushed to skip important steps.",
+                "Because you both care about being right, disagreements can turn into a contest about who is correct. The faster one may sound too direct, while the careful one may answer with a long list of facts, and neither of you wants to give in.",
+                "To avoid this, agree on what matters most before you start. Decide together which parts need careful checking and which parts can be done quickly. For example, you could say \"Let's check the costs carefully, but we can choose the design quickly.\"",
+                "When you disagree, remember that you're on the same side. You both want things to go well. You could say \"We both want this to work. Let's look at the facts together and decide.\""
+            ]
+        },
+        "Green+Yellow": {
+            "heading": "You and [name]",
+            "paragraphs": [
+                "You and [name] both care a lot about people and want everyone to get along. But one of you is outgoing and full of energy, while the other is calmer and enjoys a quieter pace.",
+                "Your shared warmth can help you a lot. You both like making others feel welcome, and you're usually kind to each other. The outgoing one brings fun and new plans, and the calmer one brings comfort and support. People often feel happy and comfortable around you both.",
+                "Problems can start when the outgoing one wants to go out, meet new people or try something new, and the calmer one would rather have a quiet time. The calmer one may feel tired or pushed, while the outgoing one may feel the other isn't excited about their plans.",
+                "Because you both want to keep each other happy, you might say yes when you really mean no. Over time, this can leave one of you feeling unheard, even though you both care about each other.",
+                "To avoid this, give each other room to enjoy what you like. The outgoing one doesn't need to bring the calmer one to every outing, and the calmer one can enjoy some quiet time without feeling bad about it. Then plan time that suits you both. For example, you could say \"You go out with your friends on Saturday, and on Sunday let's have a quiet movie night together.\"",
+                "It also helps to be honest, even about small things. A kind but clear \"I'd love to, but I need a quiet night today\" is better than saying yes and feeling unhappy later. When the other person says this, try not to take it personally."
+            ]
+        },
+        "Red+Red": {
+            "heading": "You and [name]",
+            "paragraphs": [
+                "You and [name] are very alike. You both like to move fast, make decisions and get things done.",
+                "Being alike can help you a lot. You understand each other easily, you don't need long explanations, and you can get a lot done together in a short time. You may also enjoy a bit of friendly competition.",
+                "Problems can start when you both want to be in charge. Since you both have strong opinions, you may each push for your own way, and a small disagreement can quickly turn into a big argument.",
+                "You may also both speak very directly. Most of the time you can handle it, but on a bad day it can feel harsh, and neither of you may want to say sorry first.",
+                "To avoid this, decide early who leads which part. For example, you could say \"You handle the bookings, and I'll handle the budget.\" That way, you each have your own area and don't clash over every choice.",
+                "When an argument starts getting heated, take a short break before it grows. And remember that saying sorry first isn't losing. It just helps you both get back to what you're good at, which is getting things done together."
+            ]
+        },
+        "Yellow+Yellow": {
+            "heading": "You and [name]",
+            "paragraphs": [
+                "You and [name] are very alike. You're both chatty, full of energy and love being around people.",
+                "Being alike can help you a lot. You can talk for hours, laugh easily and come up with fun ideas together. Time with each other usually feels exciting, and others enjoy being around you both too.",
+                "Problems can start when it's time to get things done. You may both love starting new plans but forget the details, like dates, money or who is doing what. Things can get left half-finished because you're already excited about the next idea.",
+                "Because you both enjoy talking, it can also be hard for either of you to really listen. You may both talk at the same time, and one of you may feel their story wasn't heard.",
+                "To avoid this, write the main points somewhere you can both see, like a shared note or your chat. For example, you could say \"Let's put the dates and what we each need to do in our chat, so we don't forget.\"",
+                "It also helps to take turns when you talk. When one of you is sharing something important, the other can listen fully before jumping in. A simple \"Tell me more\" shows you really care about what they're saying."
+            ]
+        },
+        "Green+Green": {
+            "heading": "You and [name]",
+            "paragraphs": [
+                "You and [name] are very alike. You are both calm and kind, and you both care a lot about others.",
+                "This can help you a lot. You feel safe and relaxed with each other, and you don't fight much. You both listen well, so you can share your thoughts without worry. Together, you make a calm and happy team.",
+                "Problems can start when you need to make a hard choice. You may both be too polite to say what you really want. So each of you waits for the other to decide, and the choice takes a long time.",
+                "You both want to keep things peaceful. Because of this, you may not talk about small problems. Over time, these small problems can grow, and one of you may feel hurt without the other knowing.",
+                "To avoid this, take turns making the first choice. For example, you could say \"This time I'll choose, and next time you choose.\" This way, nobody has to guess what the other person wants.",
+                "It also helps to remind each other that it's okay to disagree. Saying \"I see it a little differently\" in a kind way won't hurt your relationship. Being honest about your feelings can even make you closer."
+            ]
+        },
+        "Blue+Blue": {
+            "heading": "You and [name]",
+            "paragraphs": [
+                "You and [name] are very alike. You both like to think carefully, check the facts and do things the right way.",
+                "This can help you a lot. You understand why the other person needs time and details, and you both like good planning. Together, you can do very good work and make smart choices.",
+                "Problems can start when you both want to be completely sure before deciding. You may keep looking for more information, and the choice can take a long time.",
+                "You may also both notice small mistakes and point them out. Even when you only want to help, this can feel like being blamed. Over time, one of you may feel the other only sees what's wrong.",
+                "Because you both focus on facts, you may also forget to show how you feel. Kind words and thanks can easily get missed.",
+                "To avoid this, agree on how much checking is enough. For example, you could say \"Let's look at three options and choose one by Friday.\" This helps you decide without needing every detail.",
+                "When you point out a mistake, also say what you like about the work. And try to show you care, even in small ways. A simple \"Thanks, this looks great\" means a lot."
+            ]
+        }
+    },
+    "bigfive_about": {
+        "CSN": {
+            "heading": "How [name] handles plans and tasks",
+            "High": [
+                "[name] likes to plan ahead and keep things organised. They usually finish what they start, and they feel good when things are done on time.",
+                "To get along well with them, share plans and deadlines early, and try to stick to what you agreed. If something changes, tell them as soon as you can, so they have time to adjust.",
+                "They may sometimes seem a little strict about details or time. This is usually because they care about doing things well."
+            ],
+            "Low": [
+                "[name] is relaxed and flexible about plans. They're usually happy to change things at the last minute, and surprises don't bother them much.",
+                "If something is important, like a deadline or a booking, give them a friendly reminder a little before. Writing it in your chat or a shared calendar can help too.",
+                "If they forget a small detail, try not to take it as not caring. They just focus more on the moment than on schedules. Their relaxed side can also help you both enjoy things without too much stress."
+            ],
+            "Medium": [
+                "[name] likes to plan ahead when something matters, but they're also happy to be flexible with smaller things."
+            ]
+        },
+        "EXT": {
+            "heading": "How [name] enjoys spending time",
+            "High": [
+                "[name] gets energy from being around people. They usually enjoy going out, meeting new people and having lots of plans.",
+                "They like it when you join in or invite them to things. Even a quick message or call can make their day.",
+                "If you don't want to go out as often as they do, that's okay. Just tell them kindly. You don't have to join every plan to stay close."
+            ],
+            "Low": [
+                "[name] enjoys quiet time and usually prefers small groups or time with one person over big crowds. Some time alone helps them relax and get their energy back.",
+                "Plans with just a few close people often suit them best. If you invite them to something big and they say no or leave early, try not to feel upset. It's not about you.",
+                "They may not talk much at first, but once they feel comfortable, they can be great company. A calm chat over coffee is often a lovely way to spend time with them."
+            ],
+            "Medium": [
+                "[name] enjoys both time with people and quiet time on their own, depending on their mood."
+            ]
+        },
+        "OPN": {
+            "heading": "How [name] feels about new things",
+            "High": [
+                "[name] loves new ideas and new experiences. They often enjoy trying new food, new places or new hobbies.",
+                "They like talking about interesting topics and big \"what if\" questions. Sharing something new you found, like a song, a place or an idea, is a great way to spend time with them.",
+                "If you don't enjoy new things as much as they do, that's okay too. Tell them what you enjoy as well, so you can plan things you both like. Sometimes you can try their new idea, and sometimes they can join your favourite plan."
+            ],
+            "Low": [
+                "[name] enjoys the things they already know and like. They often have favourite places, foods or ways of doing things, and these help them feel comfortable.",
+                "They usually like practical and clear plans more than big ideas. Simple plans often suit them best.",
+                "If you want to try something new with them, tell them a little about it first, so they know what to expect. Mixing something new with something they already like can make it easier for them to enjoy."
+            ],
+            "Medium": [
+                "[name] likes trying new things now and then, but also enjoys their familiar favourites."
+            ]
+        },
+        "AGR": {
+            "heading": "How [name] gets along with others",
+            "High": [
+                "[name] is warm and easy to get along with. They usually try to keep the peace and are happy to help others.",
+                "Because they care about keeping things friendly, they may agree to things even when they don't really want to. It helps to ask what they really think, and to let them know it's okay to say no.",
+                "When you disagree, be gentle. Kind words and a calm voice help them feel safe to share their side."
+            ],
+            "Low": [
+                "[name] is honest and says what they really think. They aren't easily pushed into things, and they stand up for what they believe is right.",
+                "Their honesty can sometimes feel strong, but it also means you can trust what they say. If their words ever hurt your feelings, calmly tell them how it made you feel. They may not have noticed, and they'll usually want to know.",
+                "When you disagree, give clear reasons instead of just asking them to agree. They respect people who can talk about things openly."
+            ],
+            "Medium": [
+                "[name] is usually friendly and easy to talk to, but they'll also speak up when something matters to them."
+            ]
+        },
+        "EST": {
+            "heading": "How [name] handles stress",
+            "High": [
+                "[name] feels things deeply and often notices problems that others miss. Stressful days can affect their mood more than they affect some people.",
+                "On hard days, a little support helps a lot. Ask how they're doing, and listen without rushing to fix everything. Sometimes, just knowing you're there is enough.",
+                "If they seem upset, try not to take it personally. Give them a little time, and talk about the problem once they feel calmer."
+            ],
+            "Low": [
+                "[name] usually stays calm under pressure. Problems don't upset them easily, and they can often think clearly when things go wrong.",
+                "Their calm side can help you feel steady when you're stressed. It's okay to ask them for support when things are hard.",
+                "Because they don't show much worry, they may not notice when you're upset. If something is bothering you, tell them directly. They're usually happy to help once they know."
+            ],
+            "Medium": [
+                "[name] handles most everyday stress well, though very hard days can affect them like anyone else."
+            ]
+        }
+    },
+    "bigfive_together": {
+        "CSN": {
+            "clash": {
+                "heading": "How you two handle plans",
+                "paragraphs": [
+                    "One of you likes to plan ahead and keep things organised, while the other is more relaxed and flexible.",
+                    "This can help you, because one keeps things on track and the other helps you both stay calm when plans change. But it can also lead to small fights. For example, one of you may want the dishes done straight away, while the other is happy to do them later. Or one of you may get upset about being late, while the other doesn't mind much.",
+                    "To avoid this, agree on which things really need a plan, like bills, deadlines or important events, and which things can stay relaxed. The organised one can let small things go, and the relaxed one can make an extra effort for the things that matter most to the other."
+                ]
+            },
+            "similar": "You handle plans in a similar way, which makes everyday life together easier."
+        },
+        "EXT": {
+            "clash": {
+                "heading": "How you two like to spend time",
+                "paragraphs": [
+                    "One of you loves being around people and going out, while the other enjoys quiet time and small groups.",
+                    "This can help you, because one brings fun and new people, and the other brings calm and relaxed time. But it can also cause problems when one wants to go out and the other wants to stay in. One may feel left alone, and the other may feel pushed.",
+                    "To avoid this, find a middle way. Sometimes go to a bigger event together and leave a little early. Other times, invite just a few close friends, or spend a quiet evening together. That way, you both get some of what you enjoy."
+                ]
+            },
+            "similar": "You enjoy spending time in a similar way, so it's easy to plan things you both like."
+        },
+        "OPN": {
+            "clash": {
+                "heading": "How you two feel about new things",
+                "paragraphs": [
+                    "One of you loves trying new things, while the other enjoys what they already know and like.",
+                    "This can help you, because one brings new ideas and fun experiences, and the other keeps things simple and comfortable. But it can also cause problems when one wants to try something new and the other doesn't. One may feel held back, and the other may feel pushed.",
+                    "To avoid this, take turns. Sometimes try the new idea, and sometimes do a favourite plan you both know. When trying something new, share a little about it first, so it doesn't feel like a big surprise."
+                ]
+            },
+            "similar": "You feel the same way about new things, so it's easy to agree on what to do."
+        },
+        "AGR": {
+            "either_low": {
+                "heading": "How you two handle disagreements",
+                "paragraphs": [
+                    "One or both of you is very honest and says what they think, even when others might not agree. This means problems usually get talked about instead of hidden.",
+                    "But disagreements between you can get heated quickly, and words may come out stronger than you meant.",
+                    "To avoid this, take a short break when a talk starts to get heated, and come back when you're both calmer. Try to talk about the problem, not the person. For example, say \"I didn't like how the plan changed\" instead of \"You ruin every plan.\""
+                ]
+            },
+            "both_high": {
+                "heading": "How you two get along",
+                "paragraphs": [
+                    "You're both warm and kind, and you both try to keep the peace. This usually makes it easy to get along and help each other.",
+                    "Just remember that keeping the peace shouldn't mean hiding what you really want. It's okay to disagree kindly. Being honest helps you understand each other better."
+                ]
+            }
+        },
+        "EST": {
+            "either_high": {
+                "heading": "How you two handle stress",
+                "paragraphs": [
+                    "One or both of you feels things deeply, so stressful times can affect your mood more. When one of you is stressed, it can easily affect the other too.",
+                    "To help each other, check in on hard days. A simple \"How are you feeling today?\" can mean a lot. Try to stay calm during stressful times, and talk about big problems when you both feel more relaxed."
+                ]
+            },
+            "both_low": {
+                "heading": "How you two handle stress",
+                "paragraphs": [
+                    "You both usually stay calm under pressure. This helps you handle hard times together without stress taking over.",
+                    "Just remember to check in with each other, because calm people may not notice when the other is upset."
+                ]
+            }
+        }
+    },
+    "bigfive_traits_by_label": {
+        "Partner": [
+            "EST",
+            "AGR",
+            "CSN"
+        ],
+        "Family": [
+            "EST",
+            "AGR",
+            "CSN"
+        ],
+        "Friend": [
+            "EXT",
+            "OPN",
+            "AGR"
+        ],
+        "Coworker": [
+            "CSN",
+            "AGR",
+            "EST"
+        ]
+    },
+    "attachment_about": {
+        "anxiety": {
+            "heading": "How [name] feels in a relationship",
+            "paragraphs": [
+                "[name] cares deeply about the relationship and wants to feel close to you. Feeling loved and valued means a lot to them.",
+                "Sometimes they may worry about where they stand with you, especially when things feel unclear. A late reply or a quiet day can make them wonder if something is wrong.",
+                "Small things help a lot. Reply when you can, tell them how you feel, and let them know if you need some time, so they don't have to guess."
+            ]
+        },
+        "avoidance": {
+            "heading": "How [name] feels in a relationship",
+            "paragraphs": [
+                "[name] values their own space and freedom. They care about you, but they may show it in quiet ways, like doing things for you, more than through words.",
+                "Talking about deep feelings can feel uncomfortable for them, especially if it all happens at once. Pushing for a big talk may make them pull back.",
+                "Give them space when they need it, and bring up important topics gently. Short, calm talks often work better than one long, heavy one."
+            ]
+        },
+        "both": {
+            "heading": "How [name] feels in a relationship",
+            "paragraphs": [
+                "[name] wants to feel close to you, but getting close can also feel a little scary for them. They may want closeness one moment and need space the next.",
+                "This can be confusing, but it doesn't mean they don't care. Being patient and steady helps them feel safe.",
+                "Try to keep your words and actions the same over time, tell them how you feel, and give them space when they ask for it, without taking it personally."
+            ]
+        },
+        "calm": {
+            "heading": "How [name] feels in a relationship",
+            "paragraphs": [
+                "[name] usually feels comfortable with closeness and trust. They can share their feelings openly and also enjoy time on their own.",
+                "This often makes it easier to talk about problems honestly. You can share how you feel, and they'll usually listen calmly.",
+                "Keep being open with them. When you both talk honestly, it helps your relationship stay strong."
+            ]
+        }
+    },
+    "attachment_together": {
+        "closeness_and_space": {
+            "heading": "How you two handle closeness",
+            "paragraphs": [
+                "One of you may want more closeness and reassurance, while the other may need more space and time alone.",
+                "This is a common pattern in couples. When one reaches out more, the other may pull back, and then the first one reaches out even more. Both of you can end up feeling hurt, even though you both care.",
+                "To avoid this, talk about what each of you needs when things are calm. The one who needs space can say when they'll be back, like \"I need an hour to myself, then let's talk.\" The one who wants closeness can try to give that space, knowing it isn't a rejection."
+            ]
+        },
+        "both_closeness": {
+            "heading": "How you two handle closeness",
+            "paragraphs": [
+                "You both care a lot about the relationship and want to feel close and sure of each other.",
+                "Because you can both worry about where you stand, small things like a late reply can feel bigger than they are. Sometimes one person's worry can make the other worry too.",
+                "To help each other, give reassurance often, even in small ways, like a quick \"Thinking of you.\" When something feels off, ask kindly instead of guessing."
+            ]
+        },
+        "both_space": {
+            "heading": "How you two handle closeness",
+            "paragraphs": [
+                "You both value your own space and freedom, and you respect that in each other.",
+                "But because neither of you enjoys heavy talks, important feelings or problems may not get talked about. Over time, you might feel a little distant without knowing why.",
+                "To stay close, make small chances to share how you feel, like a short chat during a walk or over dinner. It doesn't need to be a big talk. Small moments like these help you stay close."
+            ]
+        },
+        "calm": {
+            "heading": "How you two handle closeness",
+            "paragraphs": [
+                "At least one of you feels comfortable with closeness and trust. This can help the relationship feel calm and steady, even during hard times.",
+                "The calmer one can help by staying patient and open, especially when the other feels unsure. And both of you can keep talking honestly, so small worries don't grow."
+            ]
+        },
+        "both_both": {
+            "heading": "How you two handle closeness",
+            "paragraphs": [
+                "You both want to feel close, but getting close can also feel a little scary for both of you. You may both pull back at times, even when you want to be near each other.",
+                "Be patient with each other and take things slowly. Small, steady signs of care, like keeping promises and checking in, help you both feel safe over time.",
+                "Research note for the report: the anxious + avoidant pairing is a well-known pattern (check Kirkpatrick & Davis, 1994, before citing). Texts are not yet tested on people."
+            ]
+        }
+    }
+}
