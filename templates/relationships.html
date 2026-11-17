@@ -73,7 +73,7 @@
     <ul>
         {% for person in groups[label] %}
         <li>
-            {{ person.name }}
+            {{ person.name }} <a href="/relationships/{{ person.id }}">See tips</a>
             <form method="post" action="/relationships" style="display: inline;"
                 data-question="Remove {{ person.name }} from your connections?"
                 onsubmit="return confirm(this.dataset.question);">
