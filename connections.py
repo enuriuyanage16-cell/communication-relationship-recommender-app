@@ -128,6 +128,7 @@ def remove_connection(user_id, connection_id):
     else:
         other_id = connection["from_user"]
     db.connections.delete_one({"_id": connection["_id"]})
+    db.users.update_many({"attachment_share": str(connection["_id"])}, {"$set": {"attachment_share": None}})
     return "You are no longer connected with " + user_name(other_id) + ".", "info"
 
 def connection_details(user_id, connection_id):
@@ -147,3 +148,21 @@ def connection_details(user_id, connection_id):
         other_id = connection["from_user"]
         my_label = connection["to_label"]
     return {"other_id": other_id, "other_name": user_name(other_id), "my_label": my_label}
+
+def has_attachment(user_id):
+    return db.attachment_results.find_one({"user_id": user_id}) is not None
+
+def get_attachment_share(user_id):
+    user = db.users.find_one({"_id": ObjectId(user_id)})
+    return user.get("attachment_share")
+
+def set_attachment_share(user_id, choice):
+    if choice == "nobody":
+        db.users.update_one({"_id": ObjectId(user_id)}, {"$set": {"attachment_share": None}})
+        return "Your Attachment guide is now private.", "success"
+    partners = my_connections(user_id)["Partner"]
+    for person in partners:
+        if person["id"] == choice:
+            db.users.update_one({"_id": ObjectId(user_id)}, {"$set": {"attachment_share": choice}})
+            return person["name"] + " can now see your Attachment guide.", "success"
+    return "Please choose one of your partner connections.", "error"
