@@ -9,7 +9,7 @@ from bigfive import predict_traits, short_test_items, to_percent
 from attachment import attachment_scores, attachment_style
 from attachment import to_percent as attachment_percent
 from descriptions import disc_description, bigfive_description, attachment_description
-from connections import get_share_code, send_request, labels, incoming_requests, sent_requests, accept_request, decline_request, my_connections, remove_connection
+from connections import get_share_code, send_request, labels, incoming_requests, sent_requests, accept_request, decline_request, my_connections, remove_connection, missing_tests
 
 app = Flask(__name__)
 app.secret_key = "Ej3o(jdn2,Df$kv798a8^jm)@h4oqM"
@@ -212,10 +212,13 @@ def relationships():
         if message:
             flash(message, message_type)
         return redirect("/relationships")
+    missing = missing_tests(user_id)
+    if missing:
+        return render_template("relationships.html", missing=missing)
     code = get_share_code(user_id)
     return render_template("relationships.html", code=code, labels=labels, 
                            incoming=incoming_requests(user_id), sent=sent_requests(user_id),
-                           groups=my_connections(user_id))
+                           groups=my_connections(user_id), missing=missing)
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
