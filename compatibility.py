@@ -1,6 +1,7 @@
 import json
 from db import db
 from bigfive import to_percent
+from bson import ObjectId
 
 with open("rules/compatibility_texts.json", encoding="utf-8") as f:
     texts = json.load(f)
@@ -77,14 +78,58 @@ def bigfive_tips(my_bigfive, their_bigfive, their_name, label):
                 together.append(fill_block(rules["both_low"], their_name))
     return {"about": about, "together": together}
 
-def compatibility(my_id, their_id, their_name, label):
+def attachment_group(result):
+    anxious = result["scores"]["Anxiety"] > 4
+    avoidant = result["scores"]["Avoidance"] > 4
+    if anxious and avoidant:
+        return "both"
+    if anxious:
+        return "anxiety"
+    if avoidant:
+        return "avoidance"
+    return "calm"
+
+def attachment_tips(my_attachment, their_attachment, their_name):
+    mine = attachment_group(my_attachment)
+    theirs = attachment_group(their_attachment)
+    wants_closeness = ["anxiety", "both"]
+    needs_space = ["avoidance", "both"]
+    if mine == "both" and theirs == "both":
+        key = "both_both"
+    elif (mine in wants_closeness and theirs in needs_space) or (theirs in wants_closeness and mine in needs_space):
+        key = "closeness_and_space"
+    elif mine == "anxiety" and theirs == "anxiety":
+        key = "both_closeness"
+    elif mine == "avoidance" and theirs == "avoidance":
+        key = "both_space"
+    else:
+        key = "calm"
+    return {
+        "about": fill_block(texts["attachment_about"][theirs], their_name),
+        "together": fill_block(texts["attachment_together"][key], their_name),
+    }
+
+def can_see_attachment(their_id, label, connection_id):
+    if label != "Partner":
+        return False
+    owner = db.users.find_one({"_id": ObjectId(their_id)})
+    return owner is not None and owner.get("attachment_share") == connection_id
+
+def compatibility(my_id, their_id, their_name, label, connection_id):
     my_disc = latest(db.disc_results, my_id)
     their_disc = latest(db.disc_results, their_id)
     my_bigfive = latest(db.bigfive_results, my_id)
     their_bigfive = latest(db.bigfive_results, their_id)
     if not (my_disc and their_disc and my_bigfive and their_bigfive):
         return None
+    attachment = None
+    if can_see_attachment(their_id, label, connection_id):
+        my_attachment = latest(db.attachment_results, my_id)
+        their_attachment = latest(db.attachment_results, their_id)
+        if my_attachment and their_attachment:
+            attachment = attachment_tips(my_attachment, their_attachment, their_name)
     return {
         "disc": disc_tips(my_disc, their_disc, their_name),
         "bigfive": bigfive_tips(my_bigfive, their_bigfive, their_name, label),
+        "attachment": attachment,
     }
