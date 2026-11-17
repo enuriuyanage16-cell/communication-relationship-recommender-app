@@ -22,6 +22,8 @@ def get_share_code(user_id):
 
 def send_request(user_id, code, label):
     code = code.strip().upper()
+    if missing_tests(user_id):
+        return "Please finish the DISC and Big Five tests before connecting with someone.", "error"
     if label not in labels:
         return "Please choose a relationship type.", "error"
     other = db.users.find_one({"share_code": code})
@@ -52,6 +54,14 @@ def user_name(user_id):
     user = db.users.find_one({"_id": ObjectId(user_id)})
     return user["name"] if user else "Unknown"
 
+def missing_tests(user_id):
+    missing = []
+    if db.disc_results.find_one({"user_id": user_id}) is None:
+        missing.append("DISC")
+    if db.bigfive_results.find_one({"user_id": user_id}) is None:
+        missing.append("Big Five")
+    return missing
+
 def incoming_requests(user_id):
     requests = list(db.connections.find({"to_user": user_id, "status": "pending"}).sort("created_at", -1))
     for r in requests:
@@ -65,6 +75,8 @@ def sent_requests(user_id):
     return requests
 
 def accept_request(user_id, connection_id, label):
+    if missing_tests(user_id):
+        return "Please finish the DISC and Big Five tests before accepting a request.", "error"
     if label not in labels:
         return "Please choose a relationship type.", "error"
     connection = db.connections.find_one(
