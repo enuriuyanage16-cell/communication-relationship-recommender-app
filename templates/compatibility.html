@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>You and {{ name }}</title>
+    <style>
+        .card { border: 1px solid #ccc; border-radius: 6px; padding: 5px 15px; margin-bottom: 15px; max-width: 700px; }
+        .note { font-size: 0.9em; color: #555; font-style: italic; }
+    </style>
+</head>
+<body>
+    {% set label_words = {"Partner": "partner", "Friend": "friend", "Family": "family member", "Coworker": "coworker"} %}
+    <h1>You and {{ name }}</h1>
+    <p>You see {{ name }} as your {{ label_words[label] }}. These tips are based on both of your test results.</p>
+
+    <h2>Communication</h2>
+    <div class="card">
+        <h3>{{ tips.disc.about.heading }}</h3>
+        {% if tips.disc.note %}<p class="note">{{ tips.disc.note }}</p>{% endif %}
+        {% for p in tips.disc.about.paragraphs %}
+        <p>{{ p }}</p>
+        {% endfor %}
+    </div>
+    <div class="card">
+        <h3>{{ tips.disc.together.heading }}</h3>
+        {% for p in tips.disc.together.paragraphs %}
+        <p>{{ p }}</p>
+        {% endfor %}
+    </div>
+
+    <h2>Everyday life</h2>
+    {% for block in tips.bigfive.about %}
+    <div class="card">
+        <h3>{{ block.heading }}</h3>
+        {% for p in block.paragraphs %}
+        <p>{{ p }}</p>
+        {% endfor %}
+    </div>
+    {% endfor %}
+
+    {% if tips.bigfive.together %}
+    <h2>You two together</h2>
+    {% for block in tips.bigfive.together %}
+    <div class="card">
+        <h3>{{ block.heading }}</h3>
+        {% for p in block.paragraphs %}
+        <p>{{ p }}</p>
+        {% endfor %}
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    <p><a href="/relationships">Back to My Relationships</a> | <a href="/">Home</a></p>
+</body>
+</html>
