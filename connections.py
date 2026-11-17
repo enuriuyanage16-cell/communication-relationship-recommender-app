@@ -130,3 +130,20 @@ def remove_connection(user_id, connection_id):
     db.connections.delete_one({"_id": connection["_id"]})
     return "You are no longer connected with " + user_name(other_id) + ".", "info"
 
+def connection_details(user_id, connection_id):
+    if not ObjectId.is_valid(connection_id):
+        return None
+    connection = db.connections.find_one({
+        "_id": ObjectId(connection_id),
+        "status": "accepted",
+        "$or": [{"from_user": user_id}, {"to_user": user_id}],
+    })
+    if connection is None:
+        return None
+    if connection["from_user"] == user_id:
+        other_id = connection["to_user"]
+        my_label = connection["from_label"]
+    else:
+        other_id = connection["from_user"]
+        my_label = connection["to_label"]
+    return {"other_id": other_id, "other_name": user_name(other_id), "my_label": my_label}
