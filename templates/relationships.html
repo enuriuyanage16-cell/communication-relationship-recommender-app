@@ -21,6 +21,18 @@
     </p>
     {% endfor %}
 
+    {% if missing %}
+    {% set test_links = {"DISC": "/disc", "Big Five": "/bigfive"} %}
+    <div style="padding: 10px; border-radius: 6px; max-width: 600px; background: #fcf8e3; color: #8a6d3b;">
+        <p>To connect with someone, please finish the DISC and Big Five tests first. You still need:</p>
+        <ul>
+            {% for test in missing %}
+            <li><a href="{{ test_links[test] }}">{{ test }} test</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% else %}
+
     <h2>Requests waiting for you</h2>
     {% if incoming %}
     {% for r in incoming %}
@@ -117,8 +129,6 @@
     <p>No requests waiting.</p>
     {% endif %}
 
-    <p><a href="/">Home</a> | <a href="/profile">My Profile</a></p>
-
     <script>
         function copyCode() {
             navigator.clipboard.writeText("{{ code }}").then(function () {
@@ -126,5 +136,9 @@
             });
         }
     </script>
+    {% endif %}
+
+    <p><a href="/">Home</a> | <a href="/profile">My Profile</a></p>
+
 </body>
 </html>
