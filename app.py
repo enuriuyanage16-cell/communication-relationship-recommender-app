@@ -9,7 +9,8 @@ from bigfive import predict_traits, short_test_items, to_percent
 from attachment import attachment_scores, attachment_style
 from attachment import to_percent as attachment_percent
 from descriptions import disc_description, bigfive_description, attachment_description
-from connections import get_share_code, send_request, labels, incoming_requests, sent_requests, accept_request, decline_request, my_connections, remove_connection, missing_tests
+from connections import get_share_code, send_request, labels, incoming_requests, sent_requests, accept_request, decline_request, my_connections, remove_connection, missing_tests, connection_details
+from compatibility import compatibility
 
 app = Flask(__name__)
 app.secret_key = "Ej3o(jdn2,Df$kv798a8^jm)@h4oqM"
@@ -219,6 +220,22 @@ def relationships():
     return render_template("relationships.html", code=code, labels=labels, 
                            incoming=incoming_requests(user_id), sent=sent_requests(user_id),
                            groups=my_connections(user_id), missing=missing)
+
+@app.route("/relationships/<connection_id>")
+def connection_tips(connection_id):
+    if "user_id" not in session:
+        return redirect("/login")
+    user_id = session["user_id"]
+    details = connection_details(user_id, connection_id)
+    if details is None:
+        flash("This connection was not found.", "error")
+        return redirect("/relationships")
+    tips = compatibility(user_id, details["other_id"], details["other_name"], details["my_label"])
+    if tips is None:
+        flash("Tips aren't ready yet because some test results are missing.", "info")
+        return redirect("/relationships")
+    return render_template("compatibility.html", name=details["other_name"],
+                           label=details["my_label"], tips=tips)
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
