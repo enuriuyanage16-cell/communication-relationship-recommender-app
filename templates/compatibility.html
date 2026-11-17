@@ -37,6 +37,22 @@
     </div>
     {% endfor %}
 
+    {% if tips.attachment %}
+    <h2>Closeness and trust</h2>
+    <div class="card">
+        <h3>{{ tips.attachment.about.heading }}</h3>
+        {% for p in tips.attachment.about.paragraphs %}
+        <p>{{ p }}</p>
+        {% endfor %}
+    </div>
+    <div class="card">
+        <h3>{{ tips.attachment.together.heading }}</h3>
+        {% for p in tips.attachment.together.paragraphs %}
+        <p>{{ p }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+
     {% if tips.bigfive.together %}
     <h2>You two together</h2>
     {% for block in tips.bigfive.together %}
