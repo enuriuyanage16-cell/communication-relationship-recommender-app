@@ -48,7 +48,7 @@ def send_request(user_id, code, label):
         "status": "pending",
         "created_at": datetime.now(timezone.utc),
     })
-    return "Request sent to " + other["name"] + ". They need to accept it before you can see your tips.",  "success"
+    return "Request sent to " + other["name"] + ". They need to accept it before you can see your guide.",  "success"
 
 def user_name(user_id):
     user = db.users.find_one({"_id": ObjectId(user_id)})

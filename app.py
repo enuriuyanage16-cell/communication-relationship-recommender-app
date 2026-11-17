@@ -232,7 +232,7 @@ def connection_tips(connection_id):
         return redirect("/relationships")
     tips = compatibility(user_id, details["other_id"], details["other_name"], details["my_label"])
     if tips is None:
-        flash("Tips aren't ready yet because some test results are missing.", "info")
+        flash("Your guide isn't ready yet because some test results are missing.", "info")
         return redirect("/relationships")
     return render_template("compatibility.html", name=details["other_name"],
                            label=details["my_label"], tips=tips)

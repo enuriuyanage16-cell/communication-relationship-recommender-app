@@ -38,7 +38,7 @@
     {% for r in incoming %}
     <div style="border: 1px solid #ccc; border-radius: 6px; padding: 10px; margin-bottom: 10px; max-width: 600px;">
         <p><strong>{{ r.other_name }}</strong> wants to connect with you.</p>
-        <p>If you accept, you will both get tips about each other, based on both of your test results.</p>
+        <p>If you accept, you will both get a guide to getting along with each other, based on both of your test results.</p>
         <form method="post" action="/relationships" style="display: inline;">
             <input type="hidden" name="action" value="accept">
             <input type="hidden" name="connection_id" value="{{ r._id }}">
@@ -73,7 +73,7 @@
     <ul>
         {% for person in groups[label] %}
         <li>
-            {{ person.name }} <a href="/relationships/{{ person.id }}">See tips</a>
+            {{ person.name }} <a href="/relationships/{{ person.id }}">See guide</a>
             <form method="post" action="/relationships" style="display: inline;"
                 data-question="Remove {{ person.name }} from your connections?"
                 onsubmit="return confirm(this.dataset.question);">
@@ -91,11 +91,11 @@
     {% endif %}
 
     <h2>Your code</h2>
-    <p>Want tips for getting along with someone? Share your code with them.</p>
+    <p>Want a guide to getting along with someone? Share your code with them.</p>
     <ol>
         <li>Copy your code and send it to them.</li>
         <li>They enter your code in the app.</li>
-        <li>Accept their request, and you'll both get tips.</li>
+        <li>Accept their request, and you'll both get your guide.</li>
     </ol>
     <p style="font-size: 1.5em; font-weight: bold; letter-spacing: 3px;">{{ code }}</p>
     <button onclick="copyCode()">Copy code</button>
