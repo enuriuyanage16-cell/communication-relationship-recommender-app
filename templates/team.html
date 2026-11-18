@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ team.name }}</title>
+</head>
+<body>
+    <h1>{{ team.name }}</h1>
+    <p>Logged in as <strong>{{ session["user_name"] }}</strong></p>
+
+    {% include "_messages.html" %}
+
+    {% if is_leader %}
+    <h2>Team code</h2>
+    <p>Share this code with people you want in your team.</p>
+    <p style="font-size: 1.5em; font-weight: bold; letter-spacing: 3px;">{{ team.code }}</p>
+    <button type="button" onclick="navigator.clipboard.writeText('{{ team.code }}'); this.textContent = 'Copied';">Copy code</button>
+    {% endif %}
+
+    {% if is_leader and team.events %}
+    <h2>Recent changes</h2>
+    <ul>
+        {% for e in team.events[-5:]|reverse %}
+        <li>{{ e.text }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <h2>Members</h2>
+    <ul>
+        {% for m in members %}
+        <li>
+            {{ m.name }}
+            {% if m.is_leader %}<strong>Team leader</strong>{% endif %}
+            {% if is_leader and not m.is_leader %}
+            <form method="post" action="/teams/{{ team._id }}" style="display: inline;"
+                  data-question="Remove {{ m.name }} from the team?"
+                  onsubmit="return confirm(this.dataset.question);">
+                <input type="hidden" name="action" value="remove">
+                <input type="hidden" name="member_id" value="{{ m.id }}">
+                <button type="submit">Remove</button>
+            </form>
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+
+    {% if is_leader %}
+    <form method="post" action="/teams/{{ team._id }}"
+          data-question="Delete {{ team.name }}? This can't be undone."
+          onsubmit="return confirm(this.dataset.question);">
+        <input type="hidden" name="action" value="delete">
+        <button type="submit">Delete team</button>
+    </form>
+    {% else %}
+    <form method="post" action="/teams/{{ team._id }}"
+          data-question="Leave {{ team.name }}?"
+          onsubmit="return confirm(this.dataset.question);">
+        <input type="hidden" name="action" value="leave">
+        <button type="submit">Leave team</button>
+    </form>
+    {% endif %}
+
+    <p><a href="/teams">Back to My Teams</a> | <a href="/">Home</a></p>
+</body>
+</html>
