@@ -13,6 +13,7 @@ from connections import (get_share_code, send_request, labels, incoming_requests
                          decline_request, my_connections, remove_connection, missing_tests, connection_details, 
                          has_attachment, get_attachment_share, set_attachment_share)
 from compatibility import compatibility
+from teams import create_team, join_team, my_teams, get_team, team_members, remove_member, leave_team, delete_team
 
 app = Flask(__name__)
 app.secret_key = "Ej3o(jdn2,Df$kv798a8^jm)@h4oqM"
@@ -241,6 +242,51 @@ def connection_tips(connection_id):
         return redirect("/relationships")
     return render_template("compatibility.html", name=details["other_name"],
                            label=details["my_label"], tips=tips)
+
+@app.route("/teams", methods=["GET", "POST"])
+def teams():
+    if "user_id" not in session:
+        return redirect("/login")
+    user_id = session["user_id"]
+    if request.method == "POST":
+        action = request.form.get("action")
+        message = None
+        if action == "create":
+            message, message_type = create_team(user_id, request.form["name"])
+        elif action == "join":
+            message, message_type = join_team(user_id, request.form["code"])
+        if message:
+            flash(message, message_type)
+        return redirect("/teams")
+    return render_template("teams.html", teams=my_teams(user_id), missing=missing_tests(user_id))
+
+@app.route("/teams/<team_id>", methods=["GET", "POST"])
+def team_page(team_id):
+    if "user_id" not in session:
+        return redirect("/login")
+    user_id = session["user_id"]
+    team = get_team(user_id, team_id)
+    if team is None:
+        flash("This team was not found.", "error")
+        return redirect("/teams")
+    if request.method == "POST":
+        action = request.form.get("action")
+        if action == "leave":
+            message, message_type = leave_team(user_id, team)
+            flash(message, message_type)
+            if message_type != "error":
+                return redirect("/teams")
+        elif action == "delete":
+            message, message_type = delete_team(user_id, team)
+            flash(message, message_type)
+            if message_type != "error":
+                return redirect("/teams")
+        elif action == "remove":
+            message, message_type = remove_member(user_id, team, request.form["member_id"])
+            flash(message, message_type)
+        return redirect("/teams/" + team_id)
+    return render_template("team.html", team=team, members=team_members(team),
+                           is_leader=team["leader_id"] == user_id)
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
