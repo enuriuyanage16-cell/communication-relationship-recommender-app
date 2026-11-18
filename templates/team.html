@@ -44,6 +44,51 @@
         {% endfor %}
     </ul>
 
+    <h2>Tasks</h2>
+    {% if tasks %}
+    {% for task in tasks %}
+    <div style="border: 1px solid #ddd; border-radius: 6px; padding: 10px; margin-bottom: 10px; max-width: 600px;">
+        <p><strong>{{ task.name }}</strong> ({{ task.type_name }})</p>
+        {% if task.suggested %}
+        <p>Suggested for <strong>{{ task.suggested }}</strong>. {{ task.reasons }}</p>
+        {% if task.also_good %}
+        <p>{{ task.also_good }} is also a good fit.</p>
+        {% endif %}
+        {% endif %}
+        {% if is_leader %}
+        <form method="post" action="/teams/{{ team._id }}"
+              data-question="Delete the task {{ task.name }}?"
+              onsubmit="return confirm(this.dataset.question);">
+            <input type="hidden" name="action" value="delete_task">
+            <input type="hidden" name="task_id" value="{{ task._id }}">
+            <button type="submit">Delete task</button>
+        </form>
+        {% endif %}
+    </div>
+    {% endfor %}
+    <p>These are only suggestions. The team can still decide together who does each task.</p>
+    {% else %}
+    <p>There are no tasks yet.</p>
+    {% endif %}
+
+    {% if is_leader %}
+    <h2>Add a task</h2>
+    <form method="post" action="/teams/{{ team._id }}">
+        <input type="hidden" name="action" value="add_task">
+        <p><label>Task name <input name="name" maxlength="80" required></label></p>
+        <p>Task type</p>
+        {% for key, info in task_types.items() %}
+        <p>
+            <label>
+                <input type="radio" name="type" value="{{ key }}" required>
+                <strong>{{ info.name }}</strong>, for example {{ info.examples }}
+            </label>
+        </p>
+        {% endfor %}
+        <button type="submit">Add task</button>
+    </form>
+    {% endif %}
+
     {% if is_leader %}
     <form method="post" action="/teams/{{ team._id }}"
           data-question="Delete {{ team.name }}? This can't be undone."
