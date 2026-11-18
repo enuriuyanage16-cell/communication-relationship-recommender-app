@@ -1,0 +1,12 @@
+{% set box_colors = {
+    "success": ["#dff0d8", "#3c763d"],
+    "error": ["#f2dede", "#a94442"],
+    "info": ["#d9edf7", "#31708f"]
+} %}
+{% for message_type, message in get_flashed_messages(with_categories=true) %}
+<p style="padding: 10px; border-radius: 6px; max-width: 600px;
+          background: {{ box_colors[message_type][0] }};
+          color: {{ box_colors[message_type][1] }};">
+    {{ message }}
+</p>
+{% endfor %}
