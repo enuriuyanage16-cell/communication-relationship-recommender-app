@@ -13,7 +13,8 @@ from connections import (get_share_code, send_request, labels, incoming_requests
                          decline_request, my_connections, remove_connection, missing_tests, connection_details, 
                          has_attachment, get_attachment_share, set_attachment_share)
 from compatibility import compatibility
-from teams import create_team, join_team, my_teams, get_team, team_members, remove_member, leave_team, delete_team
+from teams import (create_team, join_team, my_teams, get_team, team_members, remove_member, leave_team, delete_team, 
+                   add_task, delete_task, team_tasks, task_types)
 
 app = Flask(__name__)
 app.secret_key = "Ej3o(jdn2,Df$kv798a8^jm)@h4oqM"
@@ -284,9 +285,16 @@ def team_page(team_id):
         elif action == "remove":
             message, message_type = remove_member(user_id, team, request.form["member_id"])
             flash(message, message_type)
+        elif action == "add_task":
+            message, message_type = add_task(user_id, team, request.form["name"], request.form["type"])
+            flash(message, message_type)
+        elif action == "delete_task":
+            message, message_type = delete_task(user_id, team, request.form["task_id"])
+            flash(message, message_type)
         return redirect("/teams/" + team_id)
     return render_template("team.html", team=team, members=team_members(team),
-                           is_leader=team["leader_id"] == user_id)
+                           is_leader=team["leader_id"] == user_id,
+                           tasks=team_tasks(team), task_types=task_types)
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
