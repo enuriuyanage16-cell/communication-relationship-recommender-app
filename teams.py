@@ -1,8 +1,14 @@
+import json
 import secrets
 from datetime import datetime, timezone
 from bson import ObjectId
 from db import db
 from connections import code_letters, user_name, missing_tests
+from compatibility import latest, level
+from bigfive import to_percent
+
+with open("rules/task_types.json", encoding="utf-8") as f:
+    task_types = json.load(f)
 
 def new_team_code():
     while True:
@@ -80,4 +86,89 @@ def delete_team(user_id, team):
     db.tasks.delete_many({"team_id": str(team["_id"])})
     db.teams.delete_one({"_id": team["_id"]})
     return "The team " + team["name"] + " was deleted.", "info"
+
+def add_task(user_id, team, name, task_type):
+    name = name.strip()
+    if team["leader_id"] != user_id:
+        return "Only the team leader can add tasks.", "error"
+    if not name:
+        return "Please give the task a name.", "error"
+    if len(name) > 80:
+        return "Please use a shorter task name.", "error"
+    if task_type not in task_types:
+        return "Please choose a task type.", "error"
+    db.tasks.insert_one({
+        "team_id": str(team["_id"]),
+        "name": name,
+        "type": task_type,
+        "created_at": datetime.now(timezone.utc),
+    })
+    return "The task " + name + " was added.", "success"
+
+def delete_task(user_id, team, task_id):
+    if team["leader_id"] != user_id:
+        return "Only the team leader can delete tasks.", "error"
+    if not ObjectId.is_valid(task_id):
+        return "This task was not found.", "error"
+    db.tasks.delete_one({"_id": ObjectId(task_id), "team_id": str(team["_id"])})
+    return "The task was deleted.", "info"
+
+def colour_percentages(scores):
+    total = sum(scores[colour] for colour in ["Red", "Yellow", "Green", "Blue"])
+    if total == 0:
+        return {colour: 25 for colour in ["Red", "Yellow", "Green", "Blue"]}
+    return {colour: scores[colour] / total * 100 for colour in ["Red", "Yellow", "Green", "Blue"]}
+
+def member_profile(member_id):
+    disc = latest(db.disc_results, member_id)
+    bigfive = latest(db.bigfive_results, member_id)
+    if disc is None or bigfive is None:
+        return None
+    levels = {trait: level(to_percent(score)) for trait, score in bigfive["scores"].items()}
+    return {"colours": colour_percentages(disc["scores"]), "levels": levels}
+
+def fit_score(profile, task_type):
+    info = task_types[task_type]
+    best_points = profile["colours"][info["best"]]
+    also_points = profile["colours"][info["also"]] / 2
+    score = best_points + also_points
+    trait_level = profile["levels"][info["trait"]]
+    opposite = "Low" if info["helpful_level"] == "High" else "High"
+    if trait_level == info["helpful_level"]:
+        score = score + 10
+    elif trait_level == opposite:
+        score = score - 10
+    return score, best_points >= also_points, trait_level == info["helpful_level"]
+
+def team_tasks(team):
+    tasks = list(db.tasks.find({"team_id": str(team["_id"])}).sort("created_at", 1))
+    people = []
+    for member_id in team["members"]:
+        profile = member_profile(member_id)
+        if profile:
+            people.append({"id": member_id, "name": user_name(member_id), "profile": profile})
+    task_count = {person["id"]: 0 for person in people}
+    for task in tasks:
+        info = task_types[task["type"]]
+        task["type_name"] = info["name"]
+        task["suggested"] = None
+        task["also_good"] = None
+        ranked = []
+        for person in people:
+            score, best_gave_more, has_trait = fit_score(person["profile"], task["type"])
+            adjusted = score - 15 * task_count[person["id"]]
+            ranked.append((adjusted, person, best_gave_more, has_trait))
+        ranked.sort(key=lambda row: row[0], reverse=True)
+        if ranked:
+            adjusted, person, best_gave_more, has_trait = ranked[0]
+            main_text = info["best_text"] if best_gave_more else info["also_text"]
+            reasons = [main_text.replace("[name]", person["name"])]
+            if has_trait:
+                reasons.append(info["extra_text"])
+            task["suggested"] = person["name"]
+            task["reasons"] = " ".join(reasons)
+            task_count[person["id"]] += 1
+        if len(ranked) > 1:
+            task["also_good"] = ranked[1][1]["name"]
+    return tasks
 
