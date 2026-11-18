@@ -1,0 +1,68 @@
+{
+    "leading": {
+        "name": "Leading and deciding",
+        "examples": "leading a meeting, making final decisions",
+        "best": "Red",
+        "also": "Yellow",
+        "trait": "EST",
+        "helpful_level": "Low",
+        "best_text": "[name] makes decisions with confidence and keeps things moving.",
+        "also_text": "[name] brings energy and gets people excited to follow the plan.",
+        "extra_text": "They also tend to stay calm under pressure."
+    },
+    "presenting": {
+        "name": "Presenting and talking to people",
+        "examples": "presenting, talking to clients, promoting",
+        "best": "Yellow",
+        "also": "Red",
+        "trait": "EXT",
+        "helpful_level": "High",
+        "best_text": "[name] enjoys talking to people and can make any topic sound interesting.",
+        "also_text": "[name] speaks with confidence and gets straight to the point.",
+        "extra_text": "They also get energy from being around people."
+    },
+    "ideas": {
+        "name": "Coming up with ideas",
+        "examples": "brainstorming, designing, creative work",
+        "best": "Yellow",
+        "also": "Red",
+        "trait": "OPN",
+        "helpful_level": "High",
+        "best_text": "[name] is full of ideas and loves thinking of new possibilities.",
+        "also_text": "[name] likes new challenges and isn't afraid to try something different.",
+        "extra_text": "They also enjoy creative ways of doing things."
+    },
+    "helping": {
+        "name": "Helping and informing team members and customers",
+        "examples": "keeping everyone updated, helping new members, handling questions from customers or users",
+        "best": "Green",
+        "also": "Yellow",
+        "trait": "AGR",
+        "helpful_level": "High",
+        "best_text": "[name] is patient and a good listener, so people feel comfortable asking them for help.",
+        "also_text": "[name] is friendly and enjoys keeping everyone updated.",
+        "extra_text": "They also care a lot about how others feel."
+    },
+    "planning": {
+        "name": "Planning and organising",
+        "examples": "making schedules, keeping track of deadlines",
+        "best": "Blue",
+        "also": "Green",
+        "trait": "CSN",
+        "helpful_level": "High",
+        "best_text": "[name] thinks ahead and likes things to be clear and well organised.",
+        "also_text": "[name] is steady and reliable, so plans stay on track.",
+        "extra_text": "They also like to finish what they start."
+    },
+    "checking": {
+        "name": "Checking details",
+        "examples": "proofreading, testing, checking numbers or quality",
+        "best": "Blue",
+        "also": "Green",
+        "trait": "CSN",
+        "helpful_level": "High",
+        "best_text": "[name] notices small details that others might miss.",
+        "also_text": "[name] is patient and careful, and doesn't rush through things.",
+        "extra_text": "They also care about getting things right."
+    }
+}
