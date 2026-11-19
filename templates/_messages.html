@@ -1,12 +1,7 @@
-{% set box_colors = {
-    "success": ["#dff0d8", "#3c763d"],
-    "error": ["#f2dede", "#a94442"],
-    "info": ["#d9edf7", "#31708f"]
-} %}
+{% set alert_types = {"success": "success", "error": "danger", "info": "info"} %}
 {% for message_type, message in get_flashed_messages(with_categories=true) %}
-<p style="padding: 10px; border-radius: 6px; max-width: 600px;
-          background: {{ box_colors[message_type][0] }};
-          color: {{ box_colors[message_type][1] }};">
+<div class="alert alert-{{ alert_types.get(message_type, 'info') }} alert-dismissible fade show" role="alert">
     {{ message }}
-</p>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
 {% endfor %}
