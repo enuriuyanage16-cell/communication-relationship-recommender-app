@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Message Translator</title>
+</head>
+<body>
+    <h1>Message Translator</h1>
+    <p>Logged in as <strong>{{ session["user_name"] }}</strong></p>
+
+    <p>Write a message and choose who it is for. The app will rewrite it in a communication style that suits that person.</p>
+    <p style="padding: 10px; border-radius: 6px; max-width: 600px; background: #fcf8e3; color: #8a6d3b;">
+        Your message is sent to Google Gemini to rewrite it. Please don't include private details like phone numbers, addresses or passwords.
+    </p>
+
+    {% if error %}
+    <p style="padding: 10px; border-radius: 6px; max-width: 600px; background: #f2dede; color: #a94442;">{{ error }}</p>
+    {% endif %}
+
+    <form method="post" action="/translator" onsubmit="this.querySelector('button').textContent = 'Rewriting your message...'; this.querySelector('button').disabled = true;">
+        <p>
+            <label>Who is this message for?
+                <select name="recipient" required>
+                    <option value="">Choose a person or a style</option>
+                    {% if recipients %}
+                    <optgroup label="My connections">
+                        {% for r in recipients %}
+                        <option value="connection:{{ r.id }}" {% if form.recipient == "connection:" ~ r.id %}selected{% endif %}>{{ r.name }}</option>
+                        {% endfor %}
+                    </optgroup>
+                    {% endif %}
+                    <optgroup label="Someone who isn't on the app">
+                        {% for colour, style in styles.items() %}
+                        <option value="style:{{ colour }}" {% if form.recipient == "style:" ~ colour %}selected{% endif %}>{{ style.label }}</option>
+                        {% endfor %}
+                    </optgroup>
+                </select>
+            </label>
+        </p>
+        <p><label>Your message<br>
+            <textarea name="message" rows="6" cols="60" maxlength="1000" required>{{ form.message }}</textarea>
+        </label></p>
+        <button type="submit">Rewrite my message</button>
+    </form>
+
+    {% if result %}
+    <h2>Suggested message</h2>
+    <textarea id="result" rows="6" cols="60" readonly>{{ result.text }}</textarea>
+    <p><button type="button" onclick="navigator.clipboard.writeText(document.getElementById('result').value); this.textContent = 'Copied';">Copy message</button></p>
+    {% if not result.used_ai %}
+    <p>The AI helper isn't available right now, so this is a simpler version made with basic rules. These tips can help you adjust it.</p>
+    <ul>
+        {% for tip in result.tips %}
+        <li>{{ tip }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    <p>Read the message before you send it and change anything that doesn't sound like you.</p>
+    {% endif %}
+
+    <script>
+        window.addEventListener("pageshow", function () {
+            var button = document.querySelector("form button");
+            button.disabled = false;
+            button.textContent = "Rewrite my message";
+        });
+    </script>
+
+    <p><a href="/">Home</a></p>
+</body>
+</html>
