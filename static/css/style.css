@@ -1,0 +1,191 @@
+/* ---------------- Bridge styles -------------- */
+
+@font-face { font-family: "Bricolage Grotesque"; font-weight: 600; font-display: swap;
+    src: url("../fonts/bricolage-grotesque-latin-600-normal.woff2") format("woff2"); }
+@font-face { font-family: "Bricolage Grotesque"; font-weight: 700; font-display: swap;
+    src: url("../fonts/bricolage-grotesque-latin-700-normal.woff2") format("woff2"); }
+@font-face { font-family: "Atkinson Hyperlegible"; font-weight: 400; font-display: swap;
+    src: url("../fonts/atkinson-hyperlegible-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "Atkinson Hyperlegible"; font-weight: 700; font-display: swap;
+    src: url("../fonts/atkinson-hyperlegible-latin-700-normal.woff2") format("woff2"); }
+
+:root {
+    --ink: #1f2a3d;
+    --ink-soft: #5a6577;
+    --paper: #f5f6f9;
+    --surface: #ffffff;
+    --line: #dde1e8;
+    --red: #c8463d;
+    --yellow: #e3a92b;
+    --green: #3b8a6e;
+    --blue: #2e6da4;
+    --bs-body-font-family: "Atkinson Hyperlegible", system-ui, sans-serif;
+    --bs-body-color: var(--ink);
+    --bs-body-bg: var(--paper);
+    --bs-link-color-rgb: 46, 109, 164;
+    --bs-border-color: var(--line);
+}
+
+body { font-size: 1.0625rem; line-height: 1.6; }
+
+h1, h2, h3, h4, .brand {
+    font-family: "Bricolage Grotesque", system-ui, sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+}
+h1 { font-size: 2.25rem; line-height: 1.15; }
+h2 { font-size: 1.5rem; }
+h3 { font-size: 1.2rem; font-weight: 600; }
+
+/* ------- DISC colour stripe --------- */
+.disc-stripe { display: flex; height: 5px; }
+.disc-stripe span { flex: 1; }
+.c-red { background: var(--red); }
+.c-yellow { background: var(--yellow); }
+.c-green { background: var(--green); }
+.c-blue { background: var(--blue); }
+
+/* ---------------------- top bar -------------------------------- */
+.topbar { background: var(--surface); border-bottom: 1px solid var(--line); }
+.topbar .brand { font-size: 1.4rem; color: var(--ink); text-decoration: none; }
+.topbar .nav-link { color: var(--ink-soft); }
+.topbar .nav-link:hover { color: var(--ink); }
+
+/* ----------------- buttons ------------------------- */
+.btn { border-radius: 8px; font-weight: 700; }
+.btn-ink { background: var(--ink); border-color: var(--ink); color: #fff; }
+.btn-ink:hover, .btn-ink:focus { background: #2c3b55; border-color: #2c3b55; color: #fff; }
+.btn-line { border: 1px solid var(--line); background: var(--surface); color: var(--ink); }
+.btn-line:hover { border-color: var(--ink-soft); color: var(--ink); }
+:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+
+/* ------------------------ panels ----------------------- */
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 1.4rem 1.5rem; }
+.panel h2 { font-size: 1.15rem; margin-bottom: 1rem; }
+.panel-link { color: var(--ink-soft); font-size: .95rem; text-decoration: none; }
+.panel-link:hover { color: var(--ink); text-decoration: underline; }
+
+/* ------------------------ landing ----------------------- */
+.landing h1 { font-size: clamp(2.4rem, 5vw, 3.6rem); max-width: 14ch; }
+.landing .lead { color: var(--ink-soft); max-width: 46ch; }
+.bridge-art { width: 100%; max-width: 460px; height: auto; }
+
+.steps { counter-reset: step; list-style: none; padding: 0; }
+.steps li { position: relative; padding-left: 3rem; margin-bottom: 1.5rem; max-width: 40ch; }
+.steps li::before {
+    counter-increment: step; content: counter(step);
+    position: absolute; left: 0; top: 0; width: 2rem; height: 2rem; border-radius: 50%;
+    border: 2px solid var(--ink); display: grid; place-items: center;
+    font-family: "Bricolage Grotesque", sans-serif; font-weight: 700;
+}
+
+/* ---------- dashboard layout ---------- */
+.app { display: flex; min-height: 100vh; }
+.sidebar {
+    width: 250px; flex-shrink: 0; color: #fff;
+    background: linear-gradient(170deg, #1f2a3d 0%, #24375a 60%, #2b4a74 100%);
+    display: flex; flex-direction: column; padding: 1rem;
+    position: sticky; top: 0; height: 100vh; overflow-y: auto;
+    scrollbar-width: thin; scrollbar-color: rgba(255, 255, 255, .25) transparent;
+}
+.sidebar::-webkit-scrollbar { width: 6px; }
+.sidebar::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, .25); border-radius: 3px; }
+.sidebar::-webkit-scrollbar-track { background: transparent; }
+.sidebar .brand { color: #fff; font-size: 1.6rem; text-decoration: none; padding: 0 .5rem; }
+.sidebar .disc-stripe { height: 4px; border-radius: 2px; overflow: hidden; margin: .6rem .5rem 1rem; width: 64px; }
+.side-nav { list-style: none; padding: 0; margin: 0; }
+.side-nav .side-label { font-size: .8rem; color: rgba(255,255,255,.55); padding: .7rem .75rem .35rem; }
+.side-nav a {
+    display: flex; align-items: center; gap: .75rem; padding: .45rem .75rem; border-radius: 8px;
+    color: rgba(255,255,255,.82); text-decoration: none; transition: background-color .15s, color .15s;
+}
+.side-nav a .bi { font-size: 1.15rem; width: 1.25rem; }
+.side-nav a:hover { background: rgba(255,255,255,.1); color: #fff; }
+.side-nav a.active { background: rgba(255,255,255,.16); color: #fff; font-weight: 700; }
+.side-bottom { margin-top: auto; border-top: 1px solid rgba(255,255,255,.15); padding-top: .75rem; }
+.side-user { display: flex; align-items: center; gap: .6rem; padding: .25rem .75rem .5rem; color: #fff; }
+.theme-toggle {
+    background: rgba(255,255,255,.1); border: 0; color: #fff; border-radius: 8px; width: 100%;
+    padding: .55rem .75rem; text-align: left; display: flex; gap: .75rem; align-items: center;
+    transition: background-color .15s;
+}
+.theme-toggle:hover { background: rgba(255,255,255,.18); }
+
+.main { flex: 1; min-width: 0; padding: 2rem 2.5rem 3rem; }
+.mobile-bar { display: none; }
+
+/* ------- Sidebar colour on long pages -------- */
+@media (min-width: 992px) {
+    .sidebar-wrap { background: #2b4a74; }
+    [data-bs-theme="dark"] .sidebar-wrap { background: #1d3354; }
+}
+
+/* ------- Phones and small screens -------- */
+@media (max-width: 991.98px) {
+    .sidebar-wrap { position: fixed; inset: 0 auto 0 0; z-index: 1045; transform: translateX(-100%); transition: transform .2s; }
+    .sidebar-wrap.open { transform: none; }
+    .mobile-bar {
+        display: flex; align-items: center; justify-content: space-between; padding: .75rem 1rem;
+        background: #1f2a3d; color: #fff; position: sticky; top: 0; z-index: 1040;
+    }
+    .mobile-bar .brand { color: #fff; text-decoration: none; font-size: 1.3rem; }
+    .mobile-bar button { background: none; border: 0; color: #fff; font-size: 1.6rem; }
+    .main { padding: 1.25rem 1rem 2.5rem; }
+    .app { flex-direction: column; }
+}
+
+/* ---------- dashboard cards ---------- */
+.welcome {
+    border-radius: 14px; color: #fff; padding: 1.75rem 2rem;
+    background: linear-gradient(120deg, #24375a 0%, #2e6da4 100%);
+    position: relative; overflow: hidden;
+}
+.welcome h1 { color: #fff; margin-bottom: .25rem; }
+.welcome p { color: rgba(255,255,255,.85); margin: 0; }
+.welcome .disc-stripe { position: absolute; left: 0; right: 0; bottom: 0; height: 5px; }
+
+.stat {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 1.1rem 1.25rem;
+    display: flex; align-items: center; gap: 1rem; color: var(--ink); text-decoration: none;
+    transition: transform .15s, box-shadow .15s;
+}
+.stat:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(31, 42, 61, .1); color: var(--ink); }
+.stat .stat-icon {
+    width: 46px; height: 46px; border-radius: 10px; display: grid; place-items: center; font-size: 1.3rem; color: #fff;
+}
+.stat .stat-number { font-family: "Bricolage Grotesque", sans-serif; font-weight: 700; font-size: 1.7rem; line-height: 1; }
+.stat .stat-label { color: var(--ink-soft); font-size: .95rem; }
+.grad-red { background: linear-gradient(135deg, #c8463d, #e0705f); }
+.grad-yellow { background: linear-gradient(135deg, #d99a1e, #ecbd52); }
+.grad-green { background: linear-gradient(135deg, #2f7a60, #4fa585); }
+.grad-blue { background: linear-gradient(135deg, #24598a, #3f86c4); }
+
+.quick a {
+    display: flex; align-items: center; gap: .75rem; padding: .7rem .85rem; border-radius: 10px;
+    color: var(--ink); text-decoration: none; border: 1px solid var(--line); margin-bottom: .6rem;
+    transition: border-color .15s, background-color .15s;
+}
+.quick a:hover { border-color: var(--ink-soft); background: var(--paper); }
+.quick .bi { color: var(--blue); font-size: 1.15rem; }
+
+.empty-state { color: var(--ink-soft); }
+.empty-icon { font-size: 2.6rem; color: var(--line); margin-bottom: .5rem; }
+
+/* ---------- dark mode ---------- */
+[data-bs-theme="dark"] {
+    --ink: #e8ecf3;
+    --ink-soft: #a5afc0;
+    --paper: #111827;
+    --surface: #1a2232;
+    --line: #2b3548;
+    --bs-body-color: var(--ink);
+    --bs-body-bg: var(--paper);
+    --bs-border-color: var(--line);
+}
+[data-bs-theme="dark"] .btn-ink { background: #e8ecf3; border-color: #e8ecf3; color: #111827; }
+[data-bs-theme="dark"] .stat:hover { box-shadow: 0 6px 18px rgba(0, 0, 0, .35); }
+[data-bs-theme="dark"] .sidebar { background: linear-gradient(170deg, #0d1422 0%, #172540 60%, #1d3354 100%); }
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
