@@ -90,6 +90,43 @@
     {% endif %}
 
     {% if is_leader %}
+    <h2 id="group">Suggest a project group</h2>
+    {% if group_error %}
+    <p style="padding: 10px; border-radius: 6px; max-width: 600px; background: #f2dede; color: #a94442;">{{ group_error }}</p>
+    {% endif %}
+    <p>Need a smaller group for a new project? Choose the task types and the group size, and the app will suggest the best members from this team.</p>
+    <form method="post" action="/teams/{{ team._id }}#group">
+        <input type="hidden" name="action" value="suggest_group">
+        <p>Task types the project needs</p>
+        {% for key, info in task_types.items() %}
+        <p><label><input type="checkbox" name="types" value="{{ key }}"> {{ info.name }}</label></p>
+        {% endfor %}
+        <p><label>Group size <input type="number" name="size" min="2" max="{{ members|length }}" value="2" required></label></p>
+        <p>Who is available</p>
+        {% for m in members %}
+        <p><label><input type="checkbox" name="available" value="{{ m.id }}" checked> {{ m.name }}</label></p>
+        {% endfor %}
+        <button type="submit">Suggest a group</button>
+    </form>
+
+    {% if group %}
+    <h3>Suggested group</h3>
+    <ul>
+        {% for g in group.members %}
+        <li>
+            <strong>{{ g.person.name }}</strong>{% if g.type_name %} ({{ g.type_name }}){% endif %}.
+            {{ g.reason }}
+        </li>
+        {% endfor %}
+    </ul>
+    {% for c in group.cautions %}
+    <p>{{ c }}</p>
+    {% endfor %}
+    <p>This is only a suggestion. The team can still decide together.</p>
+    {% endif %}
+    {% endif %}
+
+    {% if is_leader %}
     <form method="post" action="/teams/{{ team._id }}"
           data-question="Delete {{ team.name }}? This can't be undone."
           onsubmit="return confirm(this.dataset.question);">
