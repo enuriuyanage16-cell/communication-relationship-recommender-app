@@ -1,21 +1,180 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Communication and Relationship Recommender</title>
-</head>
-<body>
-    <h1>Communication and Relationship Recommender</h1>
-    <p>Discover your communication style and see how you work with others</p>
-    {% if session.get("user_name") %}
-    <p>Logged in as {{ session["user_name"] }} | <a href="/logout">Log out</a></p>
-    {% else %}
-    <p><a href="/login">Log in</a> | <a href="/register">Register</a></p>
-    {% endif %}
-    <a href="/profile">My Profile</a> | <a href="/history">My Results History</a> | <a href="/relationships">My Relationships</a> |
-    <a href="/teams">My Teams</a> | <a href="/translator">Message Translator</a> |
-    <a href="/disc">DISC test</a> | <a href="/bigfive">Big Five test</a> | <a href="/attachment">Attachment test</a> | 
-    <a href="/about">About</a> 
-    
-</body>
-</html>
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+{% if not session.get("user_id") %}
+<section class="landing row align-items-center gy-5 py-lg-5">
+    <div class="col-lg-6">
+        <h1 class="mb-3">Different people need different words.</h1>
+        <p class="lead mb-4">Bridge helps you find the right ones.</p>
+        <a href="/register" class="btn btn-ink btn-lg me-2">Create a free account</a>
+        <a href="/login" class="btn btn-line btn-lg">Log in</a>
+    </div>
+    <div class="col-lg-6 text-center">
+        <svg class="bridge-art" viewBox="0 0 460 215" role="img" aria-label="A bridge made of the four DISC colours">
+            <line x1="82" y1="119.9" x2="82" y2="200" stroke="#1f2a3d" stroke-width="2" opacity="0.35"/>
+            <line x1="120" y1="84.1" x2="120" y2="200" stroke="#1f2a3d" stroke-width="2" opacity="0.35"/>
+            <line x1="158" y1="63.2" x2="158" y2="200" stroke="#1f2a3d" stroke-width="2" opacity="0.35"/>
+            <line x1="196" y1="52.1" x2="196" y2="200" stroke="#1f2a3d" stroke-width="2" opacity="0.35"/>
+            <line x1="234" y1="49.0" x2="234" y2="200" stroke="#1f2a3d" stroke-width="2" opacity="0.35"/>
+            <line x1="272" y1="53.7" x2="272" y2="200" stroke="#1f2a3d" stroke-width="2" opacity="0.35"/>
+            <line x1="310" y1="66.7" x2="310" y2="200" stroke="#1f2a3d" stroke-width="2" opacity="0.35"/>
+            <line x1="348" y1="90.1" x2="348" y2="200" stroke="#1f2a3d" stroke-width="2" opacity="0.35"/>
+            <line x1="386" y1="130.5" x2="386" y2="200" stroke="#1f2a3d" stroke-width="2" opacity="0.35"/>
+            <path d="M42.4 200.0 A190 190 0 0 1 103.1 88.6" stroke="#c8463d" stroke-width="18" fill="none" stroke-linecap="butt"/>
+            <path d="M110.4 82.4 A190 190 0 0 1 225.3 40.1" stroke="#e3a92b" stroke-width="18" fill="none" stroke-linecap="butt"/>
+            <path d="M234.7 40.1 A190 190 0 0 1 349.6 82.4" stroke="#3b8a6e" stroke-width="18" fill="none" stroke-linecap="butt"/>
+            <path d="M356.9 88.6 A190 190 0 0 1 417.6 200.0" stroke="#2e6da4" stroke-width="18" fill="none" stroke-linecap="butt"/>
+            <line x1="10" y1="200" x2="450" y2="200" stroke="#1f2a3d" stroke-width="4" stroke-linecap="round"/>
+        </svg>
+    </div>
+</section>
 
+<section class="row gy-4 pt-4">
+    <div class="col-lg-4">
+        <h2>How Bridge works</h2>
+    </div>
+    <div class="col-lg-8">
+        <ol class="steps">
+            <li><h3 class="mb-1">Take the tests</h3>Find out your communication style, your personality traits and how you act in close relationships.</li>
+            <li><h3 class="mb-1">Connect with people</h3>Share your personal code with a partner, friend, family member or coworker to connect with them.</li>
+            <li><h3 class="mb-1">Get advice that fits</h3>See how to get along, work together and say things the right way.</li>
+        </ol>
+    </div>
+</section>
+{% else %}
+<div class="welcome mb-4">
+    <h1>Hello, {{ session["user_name"] }}</h1>
+    <p>Here is a quick look at your results, people and teams.</p>
+    <div class="disc-stripe" aria-hidden="true"><span class="c-red"></span><span class="c-yellow"></span><span class="c-green"></span><span class="c-blue"></span></div>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-6 col-xl-3">
+        <a class="stat" href="/relationships">
+            <span class="stat-icon grad-red"><i class="bi bi-people" aria-hidden="true"></i></span>
+            <span><span class="stat-number d-block">{{ stats.connections }}</span><span class="stat-label">Connections</span></span>
+        </a>
+    </div>
+    <div class="col-6 col-xl-3">
+        <a class="stat" href="/relationships">
+            <span class="stat-icon grad-yellow"><i class="bi bi-envelope" aria-hidden="true"></i></span>
+            <span><span class="stat-number d-block">{{ stats.requests }}</span><span class="stat-label">Requests waiting</span></span>
+        </a>
+    </div>
+    <div class="col-6 col-xl-3">
+        <a class="stat" href="/teams">
+            <span class="stat-icon grad-green"><i class="bi bi-diagram-3" aria-hidden="true"></i></span>
+            <span><span class="stat-number d-block">{{ stats.teams }}</span><span class="stat-label">Teams</span></span>
+        </a>
+    </div>
+    <div class="col-6 col-xl-3">
+        <a class="stat" href="/profile">
+            <span class="stat-icon grad-blue"><i class="bi bi-check2-circle" aria-hidden="true"></i></span>
+            <span><span class="stat-number d-block">{{ stats.tests_done }} of 3</span><span class="stat-label">Tests done</span></span>
+        </a>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-xl-8 d-flex flex-column gap-4">
+        <div class="panel">
+            <div class="d-flex justify-content-between align-items-baseline">
+                <h2>Your DISC style</h2>
+                {% if disc %}<a class="panel-link" href="/profile">See details</a>{% endif %}
+            </div>
+            {% if disc %}
+            <p class="fw-bold mb-3">{{ disc_info.title }}</p>
+            {% with bar = disc_bar %}{% include "_disc_bar.html" %}{% endwith %}
+            {% else %}
+            <p class="empty-state mb-3">Take the DISC test to see your communication style here.</p>
+            <a href="/disc" class="btn btn-ink">Take the DISC test</a>
+            {% endif %}
+        </div>
+        <div class="panel flex-grow-1 d-flex flex-column">
+            <div class="d-flex justify-content-between align-items-baseline">
+                <h2>Your Big Five traits</h2>
+                {% if bigfive_values %}<a class="panel-link" href="/profile">See details</a>{% endif %}
+            </div>
+            {% if bigfive_values %}
+            <div class="flex-grow-1 position-relative" style="min-height: 240px;"><canvas id="bigfiveChart" aria-label="Big Five traits chart" role="img"></canvas></div>
+            {% else %}
+            <div class="flex-grow-1 d-flex flex-column align-items-center justify-content-center text-center py-4">
+                <i class="bi bi-bar-chart empty-icon" aria-hidden="true"></i>
+                <p class="empty-state mb-3">Take the Big Five test to see your traits here.</p>
+                <a href="/bigfive" class="btn btn-ink">Take the Big Five test</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="col-xl-4 d-flex flex-column gap-4">
+        <div class="panel">
+            <div class="d-flex justify-content-between align-items-baseline">
+                <h2>Attachment</h2>
+                {% if attachment %}<a class="panel-link" href="/profile">See details</a>{% endif %}
+            </div>
+            {% if attachment %}
+            <p class="fw-bold mb-3">{{ attachment_title }}</p>
+            <div class="d-flex justify-content-between small"><span>Anxiety</span><span>{{ attachment_values[0] }}%</span></div>
+            <div class="progress mb-3" role="progressbar" aria-label="Anxiety" aria-valuenow="{{ attachment_values[0] }}" aria-valuemin="0" aria-valuemax="100" style="height: 10px;">
+                <div class="progress-bar" style="width: {{ attachment_values[0] }}%; background: #8a5cb0;"></div>
+            </div>
+            <div class="d-flex justify-content-between small"><span>Avoidance</span><span>{{ attachment_values[1] }}%</span></div>
+            <div class="progress mb-3" role="progressbar" aria-label="Avoidance" aria-valuenow="{{ attachment_values[1] }}" aria-valuemin="0" aria-valuemax="100" style="height: 10px;">
+                <div class="progress-bar" style="width: {{ attachment_values[1] }}%; background: #1f8f87;"></div>
+            </div>
+            <a class="panel-link" href="/relationships">Choose who can see your Attachment guide</a>
+            {% else %}
+            <p class="empty-state mb-3">This test is for close relationships. It is optional.</p>
+            <a href="/attachment" class="btn btn-line">Take the Attachment test</a>
+            {% endif %}
+        </div>
+        <div class="panel quick flex-grow-1">
+            <h2>Quick actions</h2>
+            <a href="/relationships"><i class="bi bi-people" aria-hidden="true"></i><span><strong class="d-block">My Relationships</strong><small class="text-body-secondary">Connect with someone new</small></span></a>
+            <a href="/translator"><i class="bi bi-chat-left-text" aria-hidden="true"></i><span><strong class="d-block">Message Translator</strong><small class="text-body-secondary">Rewrite a message for someone</small></span></a>
+            <a href="/teams"><i class="bi bi-diagram-3" aria-hidden="true"></i><span><strong class="d-block">My Teams</strong><small class="text-body-secondary">Create or join a team</small></span></a>
+            <a href="/history"><i class="bi bi-clock-history" aria-hidden="true"></i><span><strong class="d-block">My Results History</strong><small class="text-body-secondary">See all your earlier results</small></span></a>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+{% if session.get("user_id") and bigfive_values %}
+<script src="{{ url_for('static', filename='js/chart.umd.min.js') }}"></script>
+<script>
+    (function () {
+        var chart;
+        function draw() {
+            var css = getComputedStyle(document.documentElement);
+            var text = css.getPropertyValue("--ink-soft").trim();
+            var grid = css.getPropertyValue("--line").trim();
+            if (chart) chart.destroy();
+            chart = new Chart(document.getElementById("bigfiveChart"), {
+                type: "bar",
+                data: {
+                    labels: {{ bigfive_labels | tojson }},
+                    datasets: [{
+                        data: {{ bigfive_values | tojson }},
+                        backgroundColor: "#4a78b0",
+                        borderRadius: 6,
+                        maxBarThickness: 26
+                    }]
+                },
+                options: {
+                    indexAxis: "y", maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { min: 0, max: 100, ticks: { color: text, callback: function (v) { return v + "%"; } }, grid: { color: grid } },
+                        y: { ticks: { color: text }, grid: { display: false } }
+                    }
+                }
+            });
+        }
+        draw();
+        window.addEventListener("themechange", draw);
+    })();
+</script>
+{% endif %}
+{% endblock %}
