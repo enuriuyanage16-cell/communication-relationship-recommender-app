@@ -172,3 +172,55 @@ def team_tasks(team):
             task["also_good"] = ranked[1][1]["name"]
     return tasks
 
+def team_people(member_ids):
+    people = []
+    for member_id in member_ids:
+        profile = member_profile(member_id)
+        if profile:
+            people.append({"id": member_id, "name": user_name(member_id), "profile": profile})
+    return people
+
+def reason_text(person, task_type):
+    info = task_types[task_type]
+    score, best_gave_more, has_trait = fit_score(person["profile"], task_type)
+    main_text = info["best_text"] if best_gave_more else info["also_text"]
+    reasons = [main_text.replace("[name]", person["name"])]
+    if has_trait:
+        reasons.append(info["extra_text"])
+    return " ".join(reasons)
+
+def best_person(people, task_type):
+    return max(people, key=lambda person: fit_score(person["profile"], task_type)[0])
+
+def suggest_group(user_id, team, chosen_types, size, available_ids):
+    if team["leader_id"] != user_id:
+        return None, "Only the team leader can suggest a project group."
+    chosen_types = [t for t in task_types if t in chosen_types]
+    if not chosen_types:
+        return None, "Please choose at least one task type."
+    if not size.isdigit() or int(size) < 2:
+        return None, "Please choose a group size of 2 or more."
+    size = int(size)
+    available = team_people([m for m in team["members"] if m in available_ids])
+    if len(available) < size:
+        return None, "Please choose at least as many available people as the group size."
+    group = []
+    for task_type in chosen_types:
+        if len(group) == size:
+            break
+        left = [p for p in available if p not in [g["person"] for g in group]]
+        person = best_person(left, task_type)
+        group.append({"person": person, "type_name": task_types[task_type]["name"],
+                      "reason": reason_text(person, task_type)})
+    cautions = []
+    for task_type in chosen_types[len(group):]:
+        person = best_person([g["person"] for g in group], task_type)
+        cautions.append("The group is smaller than the number of task types, so " + person["name"] +
+                        " will also need to cover " + task_types[task_type]["name"] + ".")
+    while len(group) < size:
+        left = [p for p in available if p not in [g["person"] for g in group]]
+        person = max(left, key=lambda p: sum(fit_score(p["profile"], t)[0] for t in chosen_types))
+        group.append({"person": person, "type_name": None,
+                      "reason": "A good all-round fit for this project."})
+    return {"members": group, "cautions": cautions}, None
+
