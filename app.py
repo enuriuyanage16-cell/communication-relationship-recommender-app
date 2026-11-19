@@ -46,7 +46,41 @@ trait_names = {
 
 @app.route("/")
 def home():
-    return render_template("home.html")
+    if "user_id" not in session:
+        return render_template("home.html")
+    user_id = session["user_id"]
+    newest = [("created_at", -1)]
+    disc = db.disc_results.find_one({"user_id": user_id}, sort=newest)
+    bigfive = db.bigfive_results.find_one({"user_id": user_id}, sort=newest)
+    attachment = db.attachment_results.find_one({"user_id": user_id}, sort=newest)
+    stats = {
+        "connections": db.connections.count_documents({"status": "accepted",
+                                                       "$or": [{"from_user": user_id}, {"to_user": user_id}]}),
+        "requests": db.connections.count_documents({"status": "pending", "to_user": user_id}),
+        "teams": db.teams.count_documents({"members": user_id}),
+        "tests_done": len([r for r in [disc, bigfive, attachment] if r]),
+    }
+    disc_bar = []
+    disc_info = None
+    if disc:
+        disc_bar = color_bar(color_percentages(disc["scores"]))
+        disc_info = disc_description(disc["scores"], disc["result_type"])
+    bigfive_labels = []
+    bigfive_values = []
+    if bigfive:
+        for trait, score in bigfive["scores"].items():
+            bigfive_labels.append(trait_names[trait])
+            bigfive_values.append(to_percent(score))
+    attachment_values = []
+    attachment_title = None
+    if attachment:
+        attachment_values = [attachment_percent(attachment["scores"]["Anxiety"]),
+                             attachment_percent(attachment["scores"]["Avoidance"])]
+        attachment_title = attachment_description(attachment["style"])["title"]
+    return render_template("home.html", stats=stats, disc=disc, disc_bar=disc_bar, disc_info=disc_info,
+                           bigfive_labels=bigfive_labels, bigfive_values=bigfive_values,
+                           attachment=attachment, attachment_values=attachment_values,
+                           attachment_title=attachment_title)
 
 @app.route("/about")
 def about():
