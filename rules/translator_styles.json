@@ -1,0 +1,50 @@
+{
+    "Red": {
+        "label": "Red style (direct and quick)",
+        "guidance": "Be brief and direct. Lead with the outcome or result. Avoid unnecessary detail or small talk.",
+        "opening": "",
+        "closing": "",
+        "max_sentences": 2,
+        "tips": [
+            "Put the main point or result in the first sentence.",
+            "Keep it short and leave out extra details.",
+            "If you need something, say clearly what and by when."
+        ]
+    },
+    "Yellow": {
+        "label": "Yellow style (friendly and lively)",
+        "guidance": "Use a warm, enthusiastic tone. Keep the message engaging and personable rather than overly formal.",
+        "opening": "Hi!\n\n",
+        "closing": "",
+        "max_sentences": 0,
+        "tips": [
+            "Start in a friendly way and keep the tone warm.",
+            "Share the good side first, if there is one.",
+            "Avoid sounding too formal or cold."
+        ]
+    },
+    "Green": {
+        "label": "Green style (calm and caring)",
+        "guidance": "Use a gentle, reassuring tone. Avoid sounding demanding. Leave room for the recipient to respond in their own time.",
+        "opening": "Hi,\n\n",
+        "closing": "",
+        "max_sentences": 0,
+        "tips": [
+            "Use a calm and kind tone.",
+            "Explain the reason behind your news or request.",
+            "Avoid sounding pushy. If it is urgent, say so gently and explain why."
+        ]
+    },
+    "Blue": {
+        "label": "Blue style (careful and detailed)",
+        "guidance": "Be precise and detailed. Support any claims with specifics. Present information in a logical order.",
+        "opening": "",
+        "closing": "\n\nPlease let me know if you need any more information.",
+        "max_sentences": 0,
+        "tips": [
+            "Give clear facts and details in a logical order.",
+            "Be exact about numbers, dates and what you need.",
+            "Avoid exaggerating or using vague words."
+        ]
+    }
+}
