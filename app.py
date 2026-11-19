@@ -17,6 +17,7 @@ from connections import (get_share_code, send_request, labels, incoming_requests
 from compatibility import compatibility
 from teams import (create_team, join_team, my_teams, get_team, team_members, remove_member, leave_team, delete_team, 
                    add_task, delete_task, team_tasks, task_types, suggest_group)
+from translator import translate_message, message_recipients, styles
 
 load_dotenv()
 
@@ -299,12 +300,25 @@ def team_page(team_id):
             group, error = suggest_group(user_id, team, request.form.getlist("types"),
                                          request.form.get("size", ""), request.form.getlist("available"))
             return render_template("team.html", team=team, members=team_members(team),
-                                       is_leader=True, tasks=team_tasks(team),
-                                       task_types=task_types, group=group, group_error=error)
+                                    is_leader=True, tasks=team_tasks(team),
+                                    task_types=task_types, group=group, group_error=error)
         return redirect("/teams/" + team_id)
     return render_template("team.html", team=team, members=team_members(team),
                            is_leader=team["leader_id"] == user_id,
                            tasks=team_tasks(team), task_types=task_types)
+
+@app.route("/translator", methods=["GET", "POST"])
+def translator():
+    if "user_id" not in session:
+        return redirect("/login")
+    user_id = session["user_id"]
+    result = None
+    error = None
+    if request.method == "POST":
+        result, error = translate_message(user_id, request.form.get("recipient", ""),
+                                          request.form.get("message", ""))
+    return render_template("translator.html", recipients=message_recipients(user_id),
+                           styles=styles, result=result, error=error, form=request.form)
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
