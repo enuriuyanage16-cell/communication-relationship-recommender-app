@@ -1,6 +1,8 @@
 import json
+import os
 import random
 from datetime import datetime, timezone
+from dotenv import load_dotenv
 from flask import Flask, render_template, request, redirect, session, flash
 from werkzeug.security import generate_password_hash, check_password_hash
 from disc import classify, group_numbers, partial_scores, check_stop, scale_scores, color_percentages, color_bar
@@ -16,8 +18,10 @@ from compatibility import compatibility
 from teams import (create_team, join_team, my_teams, get_team, team_members, remove_member, leave_team, delete_team, 
                    add_task, delete_task, team_tasks, task_types, suggest_group)
 
+load_dotenv()
+
 app = Flask(__name__)
-app.secret_key = "Ej3o(jdn2,Df$kv798a8^jm)@h4oqM"
+app.secret_key = os.environ["SECRET_KEY"]
 
 with open("rules/disc_questions.json", encoding="utf-8") as f:
     disc_questions = json.load(f)
