@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Bridge{% endblock %} | Bridge</title>
+    <script>
+        try { document.documentElement.setAttribute("data-bs-theme", localStorage.getItem("theme") || "light"); } catch (e) {}
+    </script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='icons/bootstrap-icons.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% block head %}{% endblock %}
+</head>
+<body>
+{% if session.get("user_id") %}
+    {% set links = [
+        ("/", "bi-grid-1x2", "Dashboard"),
+        ("/profile", "bi-person-badge", "My Profile"),
+        ("/history", "bi-clock-history", "My Results"),
+        ("/relationships", "bi-people", "Relationships"),
+        ("/teams", "bi-diagram-3", "Teams"),
+        ("/translator", "bi-chat-left-text", "Message Translator"),
+    ] %}
+    {% set tests = [
+        ("/disc", "bi-palette", "DISC test"),
+        ("/bigfive", "bi-bar-chart", "Big Five test"),
+        ("/attachment", "bi-heart", "Attachment test"),
+    ] %}
+    <div class="mobile-bar">
+        <a class="brand" href="/">Bridge</a>
+        <button type="button" aria-label="Open menu" onclick="document.querySelector('.sidebar-wrap').classList.toggle('open')"><i class="bi bi-list"></i></button>
+    </div>
+    <div class="app">
+        <div class="sidebar-wrap">
+            <aside class="sidebar">
+                <a class="brand" href="/">Bridge</a>
+                <div class="disc-stripe" aria-hidden="true"><span class="c-red"></span><span class="c-yellow"></span><span class="c-green"></span><span class="c-blue"></span></div>
+                <ul class="side-nav">
+                    {% for href, icon, label in links %}
+                    <li><a href="{{ href }}" class="{% if request.path == href or (href != '/' and request.path.startswith(href)) %}active{% endif %}">
+                        <i class="bi {{ icon }}" aria-hidden="true"></i>{{ label }}</a></li>
+                    {% endfor %}
+                    <li class="side-label">Tests</li>
+                    {% for href, icon, label in tests %}
+                    <li><a href="{{ href }}" class="{% if request.path == href %}active{% endif %}">
+                        <i class="bi {{ icon }}" aria-hidden="true"></i>{{ label }}</a></li>
+                    {% endfor %}
+                    <li class="side-label">Help</li>
+                    <li><a href="/about" class="{% if request.path == '/about' %}active{% endif %}"><i class="bi bi-info-circle" aria-hidden="true"></i>About Bridge</a></li>
+                </ul>
+                <div class="side-bottom">
+                    <div class="side-user"><i class="bi bi-person-circle fs-5" aria-hidden="true"></i>{{ session["user_name"] }}</div>
+                    <button type="button" class="theme-toggle mb-2" id="themeToggle"><i class="bi bi-moon-stars" aria-hidden="true"></i><span>Dark mode</span></button>
+                    <ul class="side-nav"><li><a href="/logout"><i class="bi bi-box-arrow-left" aria-hidden="true"></i>Log out</a></li></ul>
+                </div>
+            </aside>
+        </div>
+        <main class="main">
+            {% include "_messages.html" %}
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+{% else %}
+    <div class="disc-stripe" aria-hidden="true"><span class="c-red"></span><span class="c-yellow"></span><span class="c-green"></span><span class="c-blue"></span></div>
+    <nav class="navbar topbar mb-4">
+        <div class="container">
+            <a class="brand" href="/">Bridge</a>
+            <div class="d-flex align-items-center gap-3">
+                <a class="nav-link" href="/about">About</a>
+                <a class="nav-link" href="/login">Log in</a>
+                <a class="btn btn-ink btn-sm px-3" href="/register">Create account</a>
+            </div>
+        </div>
+    </nav>
+    <main class="container pb-5">
+        {% include "_messages.html" %}
+        {{ self.content() }}
+    </main>
+{% endif %}
+
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+    <script>
+        (function () {
+            var button = document.getElementById("themeToggle");
+            if (!button) return;
+            function show() {
+                var dark = document.documentElement.getAttribute("data-bs-theme") === "dark";
+                button.querySelector("span").textContent = dark ? "Light mode" : "Dark mode";
+                button.querySelector("i").className = dark ? "bi bi-sun" : "bi bi-moon-stars";
+            }
+            button.addEventListener("click", function () {
+                var next = document.documentElement.getAttribute("data-bs-theme") === "dark" ? "light" : "dark";
+                document.documentElement.setAttribute("data-bs-theme", next);
+                try { localStorage.setItem("theme", next); } catch (e) {}
+                show();
+                window.dispatchEvent(new Event("themechange"));
+            });
+            show();
+        })();
+    </script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>
