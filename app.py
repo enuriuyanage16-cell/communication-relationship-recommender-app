@@ -14,7 +14,7 @@ from connections import (get_share_code, send_request, labels, incoming_requests
                          has_attachment, get_attachment_share, set_attachment_share)
 from compatibility import compatibility
 from teams import (create_team, join_team, my_teams, get_team, team_members, remove_member, leave_team, delete_team, 
-                   add_task, delete_task, team_tasks, task_types)
+                   add_task, delete_task, team_tasks, task_types, suggest_group)
 
 app = Flask(__name__)
 app.secret_key = "Ej3o(jdn2,Df$kv798a8^jm)@h4oqM"
@@ -291,6 +291,12 @@ def team_page(team_id):
         elif action == "delete_task":
             message, message_type = delete_task(user_id, team, request.form["task_id"])
             flash(message, message_type)
+        elif action == "suggest_group":
+            group, error = suggest_group(user_id, team, request.form.getlist("types"),
+                                         request.form.get("size", ""), request.form.getlist("available"))
+            return render_template("team.html", team=team, members=team_members(team),
+                                       is_leader=True, tasks=team_tasks(team),
+                                       task_types=task_types, group=group, group_error=error)
         return redirect("/teams/" + team_id)
     return render_template("team.html", team=team, members=team_members(team),
                            is_leader=team["leader_id"] == user_id,
