@@ -1,16 +1,28 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Your Attachment Result</title>
-</head>
-<body>
-    <h1>Your Attachment Result</h1>
-    <ul>
-        <li>Anxiety: {{ anxiety_percent }}% (average {{ scores.Anxiety }} out of 7)</li>
-        <li>Avoidance: {{ avoidance_percent }}% (average {{ scores.Avoidance }} out of 7)</li>
-    </ul>
-    <p>Style: <b>{{ style }}</b></p>
-    <p>The two percentages are the main result. The style label is a simple summary.</p>
-    <a href="/attachment">Take it again</a> | <a href="/">Home</a>
-</body>
-</html>
+{% extends "base.html" %}
+{% block title %}Your Attachment result{% endblock %}
+{% block content %}
+<div class="test-page">
+    <p class="result-kicker mb-1">Your Attachment result</p>
+    <h1 class="mb-2">{{ style }}</h1>
+    <p class="text-body-secondary mb-4">The two percentages are the main result. The style name is a simple summary.</p>
+    <div class="panel mb-4">
+        <div class="trait-row">
+            <div class="d-flex justify-content-between"><strong>Anxiety</strong><span>{{ anxiety_percent }}%</span></div>
+            <div class="progress" role="progressbar" aria-label="Anxiety" aria-valuenow="{{ anxiety_percent }}" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-bar" style="width: {{ anxiety_percent }}%; background: #8a5cb0;"></div>
+            </div>
+        </div>
+        <div class="trait-row">
+            <div class="d-flex justify-content-between"><strong>Avoidance</strong><span>{{ avoidance_percent }}%</span></div>
+            <div class="progress" role="progressbar" aria-label="Avoidance" aria-valuenow="{{ avoidance_percent }}" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-bar" style="width: {{ avoidance_percent }}%; background: #1f8f87;"></div>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex flex-wrap gap-2">
+        <a href="/profile" class="btn btn-ink">See my full profile</a>
+        <a href="/relationships" class="btn btn-line">Choose who can see your Attachment guide</a>
+        <a href="/attachment" class="btn btn-line">Take the test again</a>
+    </div>
+</div>
+{% endblock %}
