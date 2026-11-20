@@ -259,3 +259,38 @@ h3 { font-size: 1.2rem; font-weight: 600; }
 }
 .about-cta h2 { color: #fff; }
 .about-cta p { color: rgba(255, 255, 255, .85); }
+
+/* ---------- tests ---------- */
+.test-page { max-width: 1150px; }
+.test-progress { height: 8px; border-radius: 4px; background: var(--line); overflow: hidden; }
+.test-progress > div { height: 100%; background: linear-gradient(90deg, var(--red), var(--yellow), var(--green), var(--blue)); transition: width .3s; }
+.question { margin-bottom: 1rem; border: 1px solid var(--line); min-width: 0; }
+.question-text { float: left; width: 100%; font-size: 1.05rem; margin-bottom: 1rem; display: flex; gap: .75rem; }
+.question-number {
+    flex-shrink: 0; width: 1.9rem; height: 1.9rem; border-radius: 50%; display: grid; place-items: center;
+    background: var(--paper); border: 1px solid var(--line); font-size: .85rem; font-weight: 700;
+}
+.scale { display: grid; gap: .5rem; }
+.scale-5 { grid-template-columns: repeat(5, 1fr); }
+.scale-7 { grid-template-columns: repeat(7, 1fr); }
+.scale-option {
+    border: 1px solid var(--line); border-radius: 8px; padding: .55rem 0; text-align: center; cursor: pointer;
+    font-weight: 700; background: var(--surface); transition: border-color .15s, background-color .15s, color .15s;
+}
+.scale-option:hover { border-color: var(--ink-soft); }
+.btn-check:checked + .scale-option { background: var(--ink); border-color: var(--ink); color: var(--surface); }
+.btn-check:focus-visible + .scale-option { outline: 3px solid var(--blue); outline-offset: 2px; }
+.scale-ends { display: flex; justify-content: space-between; font-size: .85rem; color: var(--ink-soft); margin-top: .4rem; }
+.question-missing { display: none; color: var(--red); font-size: .9rem; margin: .5rem 0 0; }
+.question.is-missing { border-color: var(--red); }
+.question.is-missing .question-missing { display: block; }
+.test-buttons { display: flex; justify-content: space-between; align-items: center; gap: .75rem; margin-top: 1.5rem; }
+
+.result-kicker { color: var(--ink-soft); font-weight: 700; }
+.disc-bar { display: flex; height: 36px; border-radius: 8px; overflow: hidden; }
+.disc-legend { display: flex; flex-wrap: wrap; gap: .5rem 1.25rem; margin-top: .75rem; font-size: .95rem; }
+.disc-legend i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: .4rem; }
+.trait-row { margin-bottom: 1.1rem; }
+.trait-row:last-child { margin-bottom: 0; }
+.trait-row .progress { height: 10px; margin-top: .35rem; background: var(--paper); }
+.trait-row .progress-bar { background: #4a78b0; }
