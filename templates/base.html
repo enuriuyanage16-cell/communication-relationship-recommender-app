@@ -64,12 +64,13 @@
 {% else %}
     <div class="disc-stripe" aria-hidden="true"><span class="c-red"></span><span class="c-yellow"></span><span class="c-green"></span><span class="c-blue"></span></div>
     <nav class="navbar topbar mb-4">
-        <div class="container">
+        <div class="container-fluid px-4 px-lg-5">
             <a class="brand" href="/">Bridge</a>
             <div class="d-flex align-items-center gap-3">
                 <a class="nav-link" href="/about">About</a>
                 <a class="nav-link" href="/login">Log in</a>
                 <a class="btn btn-ink btn-sm px-3" href="/register">Create account</a>
+                <button type="button" class="topbar-theme" id="themeToggle" aria-label="Switch dark or light mode"><i class="bi bi-moon-stars" aria-hidden="true"></i><span class="visually-hidden">Dark mode</span></button>
             </div>
         </div>
     </nav>
