@@ -1,18 +1,35 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Log in</title>
-</head>
-<body>
-    <h1>Log in</h1>
-    {% if error %}
-    <p style="color: red;">{{ error }}</p>
-    {% endif %}
-    <form method="POST" action="/login">
-        <p>Email<br><input type="email" name="email" required></p>
-        <p>Password<br><input type="password" name="password" required></p>
-        <button type="submit">Log in</button>
-    </form>
-    <p>No account yet? <a href="/register">Register</a></p>
-</body>
-</html>
+{% extends "base.html" %}
+{% block title %}Log in{% endblock %}
+{% block content %}
+<div class="auth-card">
+    {% include "_auth_side.html" %}
+    <div class="auth-form">
+        <h1 class="h2 mb-1">Welcome back</h1>
+        <p class="text-body-secondary mb-4">Log in to see your results, people and teams.</p>
+
+        {% if error %}
+        <div class="alert alert-danger d-flex gap-2 align-items-start" role="alert">
+            <i class="bi bi-exclamation-circle" aria-hidden="true"></i><span>{{ error }}</span>
+        </div>
+        {% endif %}
+
+        <form method="post" action="/login">
+            <label for="email" class="form-label">Email</label>
+            <div class="input-icon mb-3">
+                <i class="bi bi-envelope" aria-hidden="true"></i>
+                <input type="email" class="form-control" id="email" name="email" placeholder="you@example.com" autocomplete="email" required>
+            </div>
+            <label for="password" class="form-label">Password</label>
+            <div class="input-icon mb-4">
+                <i class="bi bi-lock" aria-hidden="true"></i>
+                <input type="password" class="form-control" id="password" name="password" placeholder="Your password" autocomplete="current-password" required>
+                <button type="button" class="show-password" aria-label="Show password"><i class="bi bi-eye" aria-hidden="true"></i></button>
+            </div>
+            <button type="submit" class="btn btn-ink w-100 py-2">Log in</button>
+        </form>
+
+        <p class="text-center mt-4 mb-0">New to Bridge? <a href="/register">Create an account</a></p>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}{% include "_show_password.html" %}{% endblock %}
