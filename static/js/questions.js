@@ -2,6 +2,7 @@
 (function () {
     var form = document.querySelector("[data-test-form]");
     if (!form) return;
+    form.noValidate = true;
     var steps = form.querySelectorAll("[data-step]");
     var current = 1;
 
