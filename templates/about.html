@@ -1,11 +1,74 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>About</title>
-</head>
-<body>
-    <h1>About this app</h1>
-    <p>This app helps people communicate better by understanding personality differences</p>
-    <a href="/">Back to home</a>
-</body>
-</html>
+{% extends "base.html" %}
+{% block title %}About{% endblock %}
+{% block content %}
+<div class="about">
+    <div class="about-intro mb-5">
+        <h1 class="mb-3">About Bridge</h1>
+        <p class="lead">Bridge helps you understand how you and the people around you communicate. It turns personality results into simple advice for your relationships, your teams and your messages.</p>
+    </div>
+
+    <h2 class="mb-3">Three theories, three views of you</h2>
+    <div class="row g-4 mb-5">
+        <div class="col-lg-4">
+            <div class="panel h-100">
+                <div class="theory-icon grad-red mb-3"><i class="bi bi-palette" aria-hidden="true"></i></div>
+                <h3>DISC</h3>
+                <p class="mb-0">DISC is a model of behaviour first described by psychologist William Marston in 1928. It looks at two things, whether a person is fast-paced or steady, and whether they focus more on tasks or on people. Together these make four communication styles, which Bridge shows as Red, Yellow, Green and Blue. Most people are a mix of colours, so Bridge shows your result as percentages and uses it to give advice on how to talk to each person.</p>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="panel h-100">
+                <div class="theory-icon grad-blue mb-3"><i class="bi bi-bar-chart" aria-hidden="true"></i></div>
+                <h3>Big Five</h3>
+                <p class="mb-0">The Big Five is one of the most widely researched personality models in psychology. It describes personality through five broad traits. These are Extraversion (how outgoing you are), Agreeableness (how kind and cooperative you are), Conscientiousness (how organised you are), Neuroticism (how easily you feel stress) and Openness (how curious you are about new ideas). Everyone has some of each trait, at a higher or lower level. Bridge uses these traits to add depth to your relationship guides and to suggest tasks that suit you in a team.</p>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="panel h-100">
+                <div class="theory-icon grad-green mb-3"><i class="bi bi-heart" aria-hidden="true"></i></div>
+                <h3>Attachment</h3>
+                <p class="mb-0">Attachment Theory looks at how people feel and act in close relationships. It looks at two things, how much a person worries about being let down, and how comfortable they are with getting close to someone. Because these results are very personal, Bridge only uses them between partners, and only when both people choose to share them.</p>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="mb-3">What you can do</h2>
+    <div class="panel mb-5">
+        <ul class="feature-list mb-0">
+            <li><i class="bi bi-person-badge" aria-hidden="true"></i><span><strong>Understand yourself.</strong> See your results with simple explanations.</span></li>
+            <li><i class="bi bi-people" aria-hidden="true"></i><span><strong>Get along better.</strong> Connect with people you know and read a guide for each relationship.</span></li>
+            <li><i class="bi bi-diagram-3" aria-hidden="true"></i><span><strong>Work well together.</strong> See who fits each task in your team and find the best group for a project.</span></li>
+            <li><i class="bi bi-chat-left-text" aria-hidden="true"></i><span><strong>Say it the right way.</strong> Rewrite a message so it suits the person reading it.</span></li>
+        </ul>
+    </div>
+
+    <div class="row g-4 mb-5">
+        <div class="col-lg-6">
+            <h2 class="mb-3">Your privacy</h2>
+            <ul class="check-list">
+                <li>Only people you connect with or share a team with get advice based on your results. They do not see your scores.</li>
+                <li>You choose who can see your Attachment guide. Nobody can see it unless you allow it.</li>
+                <li>You can remove a connection or leave a team at any time.</li>
+                <li>Messages you rewrite are not saved.</li>
+            </ul>
+        </div>
+        <div class="col-lg-6">
+            <h2 class="mb-3">Good to know</h2>
+            <ul class="check-list">
+                <li>Results are a guide to help you understand people, not a label.</li>
+                <li>Bridge does not replace advice from a counsellor or a mental health professional.</li>
+                <li>The Message Translator uses Google Gemini to rewrite your message.</li>
+                <li>Bridge was built as a final year project at ESOFT Metro Campus.</li>
+            </ul>
+        </div>
+    </div>
+
+    {% if not session.get("user_id") %}
+    <div class="about-cta">
+        <h2 class="mb-2">Ready to start?</h2>
+        <p class="mb-3">Create a free account and take your first test.</p>
+        <a href="/register" class="btn btn-light btn-lg">Create a free account</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
