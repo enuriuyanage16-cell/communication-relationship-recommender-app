@@ -1,57 +1,80 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>My Teams</title>
-</head>
-<body>
-    <h1>My Teams</h1>
-    <p>Logged in as <strong>{{ session["user_name"] }}</strong></p>
-
-    {% include "_messages.html" %}
+{% extends "base.html" %}
+{% block title %}My Teams{% endblock %}
+{% block content %}
+<div class="wide-page">
+    <h1 class="mb-1">My Teams</h1>
+    <p class="text-body-secondary mb-4">Work better together. Bridge suggests who fits each task and who could form a good project group.</p>
 
     {% if missing %}
     {% set test_links = {"DISC": "/disc", "Big Five": "/bigfive"} %}
-    <div style="padding: 10px; border-radius: 6px; max-width: 600px; background: #fcf8e3; color: #8a6d3b;">
-        <p>To create or join a team, please finish the DISC and Big Five tests first. You still need:</p>
-        <ul>
-            {% for test in missing %}
-            <li><a href="{{ test_links[test] }}">{{ test }} test</a></li>
-            {% endfor %}
-        </ul>
+    <div class="panel">
+        <div class="empty-state text-center py-3">
+            <i class="bi bi-diagram-3 empty-icon" aria-hidden="true"></i>
+            <p class="mb-3">To create or join a team, please finish the DISC and Big Five tests first.</p>
+            <div class="d-flex flex-wrap justify-content-center gap-2">
+                {% for test in missing %}
+                <a href="{{ test_links[test] }}" class="btn btn-ink">Take the {{ test }} test</a>
+                {% endfor %}
+            </div>
+        </div>
     </div>
     {% else %}
 
-    <h2>Your teams</h2>
-    {% if teams %}
-    <ul>
-        {% for t in teams %}
-        <li>
-            <a href="/teams/{{ t._id }}">{{ t.name }}</a>
-            ({{ t.members|length }} {{ "member" if t.members|length == 1 else "members" }})
-            {% if t.is_leader %}<strong>Team leader</strong>{% endif %}
-        </li>
-        {% endfor %}
-    </ul>
-    {% else %}
-    <p>You're not in any teams yet.</p>
+    <div class="panel mb-4">
+        <h2><i class="bi bi-diagram-3 me-2" aria-hidden="true"></i>Your teams</h2>
+        {% if teams %}
+        <div class="row g-3">
+            {% for t in teams %}
+            <div class="col-md-6 col-xl-4">
+                <a href="/teams/{{ t._id }}" class="team-card">
+                    <span class="team-icon" aria-hidden="true">{{ t.name[0] | upper }}</span>
+                    <span class="flex-grow-1">
+                        <strong class="d-block">{{ t.name }}</strong>
+                        <small class="text-body-secondary">{{ t.members | length }} {{ "member" if t.members | length == 1 else "members" }}</small>
+                    </span>
+                    {% if t.is_leader %}<span class="count-badge">Team leader</span>{% endif %}
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state text-center py-2">
+            <i class="bi bi-people empty-icon" aria-hidden="true"></i>
+            <p class="mb-0">You're not in any teams yet. Create one or join with a code.</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="row gx-4">
+        <div class="col-lg-6">
+            <div class="panel mb-4">
+                <h2><i class="bi bi-plus-circle me-2" aria-hidden="true"></i>Create a team</h2>
+                <p class="text-body-secondary">You will be the team leader. You get a code to share with the people you want in your team.</p>
+                <form method="post" action="/teams">
+                    <input type="hidden" name="action" value="create">
+                    <label class="form-label" for="teamName">Team name</label>
+                    <div class="d-flex gap-2">
+                        <input class="form-control" id="teamName" name="name" maxlength="50" required>
+                        <button type="submit" class="btn btn-ink text-nowrap">Create team</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="panel mb-4">
+                <h2><i class="bi bi-box-arrow-in-right me-2" aria-hidden="true"></i>Join a team</h2>
+                <p class="text-body-secondary">If you join, your DISC and Big Five results will be used to suggest tasks and project groups for the team.</p>
+                <form method="post" action="/teams">
+                    <input type="hidden" name="action" value="join">
+                    <label class="form-label" for="teamCode">Team code</label>
+                    <div class="d-flex gap-2">
+                        <input class="form-control code-input" id="teamCode" name="code" maxlength="6" autocomplete="off" required>
+                        <button type="submit" class="btn btn-ink text-nowrap">Join team</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     {% endif %}
-
-    <h2>Create a team</h2>
-    <form method="post" action="/teams">
-        <input type="hidden" name="action" value="create">
-        <label>Team name: <input name="name" maxlength="50" required></label>
-        <button type="submit">Create team</button>
-    </form>
-
-    <h2>Join a team</h2>
-    <p>If you join, your DISC and Big Five results will be used to suggest tasks and project groups for the team.</p>
-    <form method="post" action="/teams">
-        <input type="hidden" name="action" value="join">
-        <label>Team code: <input name="code" maxlength="6" required></label>
-        <button type="submit">Join team</button>
-    </form>
-    {% endif %}
-
-    <p><a href="/">Home</a></p>
-</body>
-</html>
+</div>
+{% endblock %}
