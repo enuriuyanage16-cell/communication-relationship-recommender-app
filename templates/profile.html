@@ -1,85 +1,135 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>My Profile</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1"></script>
-    <style>
-        .explain { font-size: 0.85em; color: #777; margin-top: -10px; }
-        .note { font-size: 0.9em; color: #555; font-style: italic; }
-    </style>
-</head>
-<body>
-    <h1>My Profile</h1>
-    <p>Hello, {{ session["user_name"] }}. These are your latest results.</p>
+{% extends "base.html" %}
+{% block title %}My Profile{% endblock %}
+{% block content %}
+<div class="wide-page">
+    <h1 class="mb-1">My Profile</h1>
+    <p class="text-body-secondary mb-4">These are your latest results. Taking a test again updates this page.</p>
 
-    <h2>DISC</h2>
-    {% if disc %}
-    <h3>{{ disc_info.title }}</h3>
-    {% if disc_info.note %}<p class="note">{{ disc_info.note }}</p>{% endif %}
-    <p>{{ disc_info.text }}</p>
-    {% with bar = disc_bar %}{% include "_disc_bar.html" %}{% endwith %}
-    {% else %}
-    <p>You haven't taken this test yet. <a href="/disc">Take the DISC test</a></p>
-    {% endif %}
+    <div class="panel mb-4">
+        <div class="d-flex justify-content-between align-items-baseline gap-3">
+            <h2><i class="bi bi-palette me-2" aria-hidden="true"></i>DISC</h2>
+            {% if disc %}<a class="panel-link" href="/disc">Take it again</a>{% endif %}
+        </div>
+        {% if disc %}
+        <h3 class="profile-title">{{ disc_info.title }}</h3>
+        {% if disc_info.note %}<p class="text-body-secondary">{{ disc_info.note }}</p>{% endif %}
+        <p class="profile-text">{{ disc_info.text }}</p>
+        {% with bar = disc_bar %}{% include "_disc_bar.html" %}{% endwith %}
+        {% else %}
+        <div class="empty-state text-center py-3">
+            <i class="bi bi-palette empty-icon" aria-hidden="true"></i>
+            <p class="mb-3">You haven't taken the DISC test yet.</p>
+            <a href="/disc" class="btn btn-ink">Take the DISC test</a>
+        </div>
+        {% endif %}
+    </div>
 
-    <h2>Big Five</h2>
-    {% if bigfive %}
-    <div style="max-width: 500px;"><canvas id="bigfiveChart"></canvas></div>
-    {% for t in bigfive_info %}
-    <h3>{{ t.name }}: {{ t.percent }}% ({{ t.level }})</h3>
-    <p class="explain">{{ t.explain }}</p>
-    <p>{{ t.text }}</p>
-    {% endfor %}
-    {% else %}
-    <p>You haven't taken this test yet. <a href="/bigfive">Take the Big Five test</a></p>
-    {% endif %}
-
-    <h2>Attachment</h2>
-    {% if attachment %}
-    <div style="max-width: 500px;"><canvas id="attachmentChart"></canvas></div>
-    <h3>Anxiety: {{ attachment_values[0] }}%</h3>
-    <p class="explain">{{ attachment_info.anxiety_explain }}</p>
-    <h3>Avoidance: {{ attachment_values[1] }}%</h3>
-    <p class="explain">{{ attachment_info.avoidance_explain }}</p>
-    <h3>{{ attachment_info.title }}</h3>
-    <p>{{ attachment_info.text }}</p>
-    <p class="note">{{ attachment_info.note }}</p>
-    {% else %}
-    <p>You haven't taken this test yet. <a href="/attachment">Take the Attachment test</a></p>
-    {% endif %}
-
-    <p><a href="/">Home</a></p>
-
-    <script>
+    <div class="panel mb-4">
+        <div class="d-flex justify-content-between align-items-baseline gap-3">
+            <h2><i class="bi bi-bar-chart me-2" aria-hidden="true"></i>Big Five</h2>
+            {% if bigfive %}<a class="panel-link" href="/bigfive">Take it again</a>{% endif %}
+        </div>
         {% if bigfive %}
-        new Chart(document.getElementById("bigfiveChart"), {
-            type: "bar",
-            data: {
-                labels: {{ bigfive_labels | tojson }},
-                datasets: [{
-                    label: "Percent",
-                    data: {{ bigfive_values | tojson }},
-                    backgroundColor: "#6c757d"
-                }]
-            },
-            options: { indexAxis: "y", scales: { x: { min: 0, max: 100 } } }
-        });
+        <div class="profile-chart mb-4"><canvas id="bigfiveChart" aria-label="Big Five chart" role="img"></canvas></div>
+        <div class="row g-3">
+            {% for t in bigfive_info %}
+            <div class="col-lg-6">
+                <div class="trait-card">
+                    <div class="d-flex justify-content-between align-items-baseline gap-2">
+                        <h3 class="mb-0">{{ t.name }}</h3>
+                        <span class="text-nowrap"><strong>{{ t.percent }}%</strong> <span class="level-badge">{{ t.level }}</span></span>
+                    </div>
+                    <p class="trait-explain">{{ t.explain }}</p>
+                    <p class="mb-0">{{ t.text }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state text-center py-3">
+            <i class="bi bi-bar-chart empty-icon" aria-hidden="true"></i>
+            <p class="mb-3">You haven't taken the Big Five test yet.</p>
+            <a href="/bigfive" class="btn btn-ink">Take the Big Five test</a>
+        </div>
         {% endif %}
+    </div>
 
+    <div class="panel mb-4">
+        <div class="d-flex justify-content-between align-items-baseline gap-3">
+            <h2><i class="bi bi-heart me-2" aria-hidden="true"></i>Attachment</h2>
+            {% if attachment %}<a class="panel-link" href="/attachment">Take it again</a>{% endif %}
+        </div>
         {% if attachment %}
-        new Chart(document.getElementById("attachmentChart"), {
-            type: "bar",
-            data: {
-                labels: ["Anxiety", "Avoidance"],
-                datasets: [{
-                    label: "Percent",
-                    data: {{ attachment_values | tojson }},
-                    backgroundColor: ["#9b59b6", "#16a085"]
-                }]
-            },
-            options: { scales: { y: { min: 0, max: 100 } } }
-        });
+        <h3 class="profile-title">{{ attachment_info.title }}</h3>
+        <p class="profile-text">{{ attachment_info.text }}</p>
+        <div class="row g-4 mb-3">
+            <div class="col-md-6">
+                <div class="trait-row">
+                    <div class="d-flex justify-content-between"><strong>Anxiety</strong><span>{{ attachment_values[0] }}%</span></div>
+                    <div class="progress" role="progressbar" aria-label="Anxiety" aria-valuenow="{{ attachment_values[0] }}" aria-valuemin="0" aria-valuemax="100">
+                        <div class="progress-bar" style="width: {{ attachment_values[0] }}%; background: #8a5cb0;"></div>
+                    </div>
+                </div>
+                <p class="trait-explain mb-0">{{ attachment_info.anxiety_explain }}</p>
+            </div>
+            <div class="col-md-6">
+                <div class="trait-row">
+                    <div class="d-flex justify-content-between"><strong>Avoidance</strong><span>{{ attachment_values[1] }}%</span></div>
+                    <div class="progress" role="progressbar" aria-label="Avoidance" aria-valuenow="{{ attachment_values[1] }}" aria-valuemin="0" aria-valuemax="100">
+                        <div class="progress-bar" style="width: {{ attachment_values[1] }}%; background: #1f8f87;"></div>
+                    </div>
+                </div>
+                <p class="trait-explain mb-0">{{ attachment_info.avoidance_explain }}</p>
+            </div>
+        </div>
+        <p class="text-body-secondary mb-0">{{ attachment_info.note }}</p>
+        {% else %}
+        <div class="empty-state text-center py-3">
+            <i class="bi bi-heart empty-icon" aria-hidden="true"></i>
+            <p class="mb-3">You haven't taken the Attachment test yet.</p>
+            <a href="/attachment" class="btn btn-ink">Take the Attachment test</a>
+        </div>
         {% endif %}
-    </script>
-</body>
-</html>
+    </div>
+
+    <a href="/history" class="btn btn-line">See my results history</a>
+</div>
+{% endblock %}
+{% block scripts %}
+{% if bigfive %}
+<script src="{{ url_for('static', filename='js/chart.umd.min.js') }}"></script>
+<script>
+    (function () {
+        var chart;
+        function draw() {
+            var css = getComputedStyle(document.documentElement);
+            var text = css.getPropertyValue("--ink-soft").trim();
+            var grid = css.getPropertyValue("--line").trim();
+            if (chart) chart.destroy();
+            chart = new Chart(document.getElementById("bigfiveChart"), {
+                type: "bar",
+                data: {
+                    labels: {{ bigfive_labels | tojson }},
+                    datasets: [{
+                        data: {{ bigfive_values | tojson }},
+                        backgroundColor: "#4a78b0",
+                        borderRadius: 6,
+                        maxBarThickness: 26
+                    }]
+                },
+                options: {
+                    indexAxis: "y", maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { min: 0, max: 100, ticks: { color: text, callback: function (v) { return v + "%"; } }, grid: { color: grid } },
+                        y: { ticks: { color: text }, grid: { display: false } }
+                    }
+                }
+            });
+        }
+        draw();
+        window.addEventListener("themechange", draw);
+    })();
+</script>
+{% endif %}
+{% endblock %}
