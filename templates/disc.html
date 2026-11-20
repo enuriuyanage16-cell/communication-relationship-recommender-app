@@ -1,28 +1,22 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>DISC Questionnaire</title>
-</head>
-<body>
-    <h1>DISC Questionnaire</h1>
-    <p>Questions {{ first }} to {{ last }} of up to 32</p>
-    <p>Answer from 1 (strongly disagree) to 5 (strongly agree). The test may finish early if your result is already clear.</p>
-    <form method="POST" action="/disc">
+{% extends "base.html" %}
+{% from "_question.html" import question_card %}
+{% block title %}DISC test{% endblock %}
+{% block content %}
+<div class="test-page">
+    <h1 class="mb-1">DISC test</h1>
+    <p class="text-body-secondary mb-3">Questions {{ first }} to {{ last }} of up to 32. The test may finish early if your result is already clear.</p>
+    <div class="test-progress mb-4" aria-hidden="true"><div style="width: {{ ((group - 1) / 8 * 100) | round | int }}%;"></div></div>
+
+    <form method="post" action="/disc" data-test-form>
         <input type="hidden" name="group" value="{{ group }}">
         {% for question in questions %}
-        <p><b>{{ question.number }}.</b> {{ question.text }}</p>
-        <p>
-            {% for value in [1, 2, 3, 4, 5] %}
-            <label>
-                <input type="radio" name="q{{ question.number }}" value="{{ value }}" required
-                    oninvalid="this.setCustomValidity('Please answer this question')"
-                    oninput="document.getElementsByName('q{{ question.number }}').forEach(r => r.setCustomValidity(''))">
-                {{ value }}
-            </label>
-            {% endfor %}
-        </p>
+        {{ question_card(question.number, question.text, "q" ~ question.number, 5, "Strongly disagree", "Strongly agree") }}
         {% endfor %}
-        <button type="submit">{% if group == 8 %}See my result{% else %}Next{% endif %}</button>
+        <div class="test-buttons">
+            <span></span>
+            <button type="submit" class="btn btn-ink btn-lg">{% if group == 8 %}See my result{% else %}Next{% endif %}</button>
+        </div>
     </form>
-</body>
-</html>
+</div>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/questions.js') }}"></script>{% endblock %}
