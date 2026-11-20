@@ -237,3 +237,25 @@ h3 { font-size: 1.2rem; font-weight: 600; }
 .topbar-theme:hover { border-color: var(--ink-soft); }
 [data-bs-theme="dark"] .auth-card { box-shadow: 0 10px 30px rgba(0, 0, 0, .4); }
 [data-bs-theme="dark"] { --bs-link-color-rgb: 122, 170, 222; --bs-link-hover-color-rgb: 160, 196, 235; }
+
+/* ---------- about page ---------- */
+.about { max-width: 1200px; }
+.about-intro .lead { color: var(--ink-soft); max-width: 75ch; }
+.theory-icon { width: 46px; height: 46px; border-radius: 10px; display: grid; place-items: center; color: #fff; font-size: 1.3rem; }
+.feature-list { list-style: none; padding: 0; }
+.feature-list li { display: flex; gap: 1rem; align-items: flex-start; padding: .85rem 0; border-top: 1px solid var(--line); }
+.feature-list li:first-child { border-top: 0; padding-top: 0; }
+.feature-list li:last-child { padding-bottom: 0; }
+.feature-list .bi { color: var(--blue); font-size: 1.3rem; line-height: 1.4; }
+.check-list { list-style: none; padding: 0; margin: 0; }
+.check-list li { position: relative; padding-left: 1.9rem; margin-bottom: .75rem; }
+.check-list li::before {
+    content: "\F26E"; font-family: "bootstrap-icons"; position: absolute; left: 0; top: .05rem;
+    color: var(--green); font-size: 1.15rem;
+}
+.about-cta {
+    position: relative; overflow: hidden; color: #fff; border-radius: 14px; padding: 2rem;
+    background: linear-gradient(120deg, #24375a 0%, #2e6da4 100%);
+}
+.about-cta h2 { color: #fff; }
+.about-cta p { color: rgba(255, 255, 255, .85); }
