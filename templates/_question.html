@@ -1,0 +1,13 @@
+{% macro question_card(number, text, name, scale_max, low_label, high_label) %}
+<fieldset class="panel question" data-question>
+    <legend class="question-text"><span class="question-number">{{ number }}</span>{{ text }}</legend>
+    <div class="scale scale-{{ scale_max }}">
+        {% for value in range(1, scale_max + 1) %}
+        <input type="radio" class="btn-check" name="{{ name }}" id="{{ name }}_{{ value }}" value="{{ value }}" required>
+        <label class="scale-option" for="{{ name }}_{{ value }}">{{ value }}</label>
+        {% endfor %}
+    </div>
+    <div class="scale-ends"><span>{{ low_label }}</span><span>{{ high_label }}</span></div>
+    <p class="question-missing">Please answer this question.</p>
+</fieldset>
+{% endmacro %}
