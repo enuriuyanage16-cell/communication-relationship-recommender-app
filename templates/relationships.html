@@ -70,8 +70,7 @@
                         <span class="flex-grow-1">{{ person.name }}</span>
                         <a href="/relationships/{{ person.id }}" class="btn btn-ink btn-sm">See guide</a>
                         <form method="post" action="/relationships"
-                            data-question="Remove {{ person.name }} from your connections?"
-                            onsubmit="return confirm(this.dataset.question);">
+                            data-question="Remove {{ person.name }} from your connections?" data-confirm="Remove">
                             <input type="hidden" name="action" value="remove">
                             <input type="hidden" name="connection_id" value="{{ person.id }}">
                             <button type="submit" class="btn btn-line btn-sm">Remove</button>
