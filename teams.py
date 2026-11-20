@@ -43,7 +43,11 @@ def join_team(user_id, code):
         return "No team has this code. Please check it and try again.", "error"
     if user_id in team["members"]:
         return "You are already in this team.", "info"
-    db.teams.update_one({"_id": team["_id"]}, {"$push": {"members": user_id}})
+    db.teams.update_one({"_id": team["_id"]}, {"$push": {
+        "members": user_id,
+        "events": {"text": user_name(user_id) + " joined the team.",
+                   "created_at": datetime.now(timezone.utc)},
+    }})
     return "You joined " + team["name"] + ".", "success"
 
 def my_teams(user_id):
