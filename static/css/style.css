@@ -313,3 +313,34 @@ h3 { font-size: 1.2rem; font-weight: 600; }
 .history-table tbody tr:hover td { background: var(--paper); }
 .history-note { color: var(--ink-soft); font-size: .9rem; margin: 0; }
 .dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: .4rem; }
+
+/* ---------- relationships ---------- */
+.request-card { border: 1px solid var(--line); border-radius: 10px; padding: 1rem 1.1rem; background: var(--paper); }
+.request-card + .request-card { margin-top: .75rem; }
+.group-title { font-size: .9rem; color: var(--ink-soft); font-weight: 700; margin: 1rem 0 .4rem; }
+.group-title:first-of-type { margin-top: 0; }
+.person-list { list-style: none; padding: 0; margin: 0; }
+.person-list li { display: flex; align-items: center; gap: .75rem; padding: .6rem 0; border-bottom: 1px solid var(--line); }
+.person-list li:last-child { border-bottom: 0; }
+.person-initial {
+    flex-shrink: 0; width: 2.2rem; height: 2.2rem; border-radius: 50%; display: grid; place-items: center;
+    font-weight: 700; color: #fff; background: linear-gradient(135deg, var(--blue), var(--green));
+}
+.person-initial.big { width: 3.4rem; height: 3.4rem; font-size: 1.4rem; }
+.code-box {
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+    border: 1px dashed var(--ink-soft); border-radius: 10px; padding: .8rem 1rem; background: var(--paper);
+}
+.code-text { font-family: "Bricolage Grotesque", sans-serif; font-size: 1.7rem; font-weight: 700; letter-spacing: .2em; }
+.code-steps { margin: 1rem 0 0; padding-left: 1.2rem; color: var(--ink-soft); }
+.code-steps li { margin-bottom: .3rem; }
+.code-input { letter-spacing: .15em; }
+
+/* ---------- compatibility guide ---------- */
+.guide-header { display: flex; align-items: center; gap: 1rem; }
+.guide-section { margin-bottom: 2rem; }
+.guide-section h2 { font-size: 1.25rem; margin-bottom: .9rem; }
+.guide-section h2 i { color: var(--ink-soft); }
+.guide-card { height: 100%; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 1.2rem 1.3rem; }
+.guide-card h3 { font-size: 1.08rem; margin-bottom: .6rem; }
+.guide-card p:last-child { margin-bottom: 0; }
