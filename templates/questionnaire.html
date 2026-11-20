@@ -1,29 +1,31 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>{{ title }}</title>
-</head>
-<body>
-    <h1>{{ title }}</h1>
-    {% if intro %}
-    <p>{{ intro }}</p>
-    {% endif %}
-    <p>Answer from 1 ({{ low_label }}) to {{ scale_max }} ({{ high_label }}).</p>
-    <form method="POST" action="{{ action }}">
-        {% for question in questions %}
-        <p><b>{{ loop.index }}.</b> {{ question.text }}</p>
-        <p>
-            {% for value in range(1, scale_max + 1) %}
-            <label>
-                <input type="radio" name="{{ question.id }}" value="{{ value }}" required
-                    oninvalid="this.setCustomValidity('Please answer this question')"
-                    oninput="document.getElementsByName('{{ question.id }}').forEach(r => r.setCustomValidity(''))">
-                {{ value }}
-            </label>
+{% extends "base.html" %}
+{% from "_question.html" import question_card %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+{% set per_page = 10 if questions | length <= 20 else 9 %}
+{% set pages = questions | batch(per_page) | list %}
+<div class="test-page">
+    <h1 class="mb-1">{{ title }}</h1>
+    {% if intro %}<p class="text-body-secondary mb-2">{{ intro }}</p>{% endif %}
+    <p class="text-body-secondary mb-3" data-step-label>Page 1 of {{ pages | length }}</p>
+    <div class="test-progress mb-4" aria-hidden="true"><div data-step-bar style="width: 0%;"></div></div>
+
+    <form method="post" action="{{ action }}" data-test-form data-steps="{{ pages | length }}">
+        {% for page in pages %}
+        <div class="test-step" data-step="{{ loop.index }}" {% if not loop.first %}hidden{% endif %}>
+            {% set outer = loop.index0 %}
+            {% for question in page %}
+            {{ question_card(outer * per_page + loop.index, question.text, question.id, scale_max, low_label, high_label) }}
             {% endfor %}
-        </p>
+        </div>
         {% endfor %}
-        <button type="submit">See my result</button>
+        <div class="test-buttons">
+            <button type="button" class="btn btn-line btn-lg" data-back hidden>Back</button>
+            <span data-spacer></span>
+            <button type="button" class="btn btn-ink btn-lg" data-next>Next</button>
+            <button type="submit" class="btn btn-ink btn-lg" data-submit hidden>See my result</button>
+        </div>
     </form>
-</body>
-</html>
+</div>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/questions.js') }}"></script>{% endblock %}
