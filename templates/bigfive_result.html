@@ -1,16 +1,23 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Your Big Five Result</title>
-</head>
-<body>
-    <h1>Your Big Five Result</h1>
-    <p>These scores are estimated from 20 questions. Each is between 10 and 50.</p>
-    <ul>
+{% extends "base.html" %}
+{% block title %}Your Big Five result{% endblock %}
+{% block content %}
+<div class="test-page">
+    <p class="result-kicker mb-1">Your Big Five result</p>
+    <h1 class="mb-2">Your five traits</h1>
+    <p class="text-body-secondary mb-4">These scores are estimated from 20 questions.</p>
+    <div class="panel mb-4">
         {% for r in results %}
-        <li>{{ r.name }}: {{ r.score }} out of 50 ({{ r.percent }}%)</li>
+        <div class="trait-row">
+            <div class="d-flex justify-content-between"><strong>{{ r.name }}</strong><span>{{ r.percent }}%</span></div>
+            <div class="progress" role="progressbar" aria-label="{{ r.name }}" aria-valuenow="{{ r.percent }}" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-bar" style="width: {{ r.percent }}%;"></div>
+            </div>
+        </div>
         {% endfor %}
-    </ul>
-    <a href="/bigfive">Take it again</a> | <a href="/">Home</a>
-</body>
-</html>
+    </div>
+    <div class="d-flex flex-wrap gap-2">
+        <a href="/profile" class="btn btn-ink">See my full profile</a>
+        <a href="/bigfive" class="btn btn-line">Take the test again</a>
+    </div>
+</div>
+{% endblock %}
