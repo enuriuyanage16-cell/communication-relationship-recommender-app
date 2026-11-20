@@ -1,0 +1,37 @@
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmText" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body p-4">
+                <p class="fs-5 mb-0" id="confirmText"></p>
+            </div>
+            <div class="modal-footer border-0 pt-0 px-4 pb-4">
+                <button type="button" class="btn btn-line" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger-solid" id="confirmButton">Yes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+    (function () {
+        var waiting = null;
+        var modal = null;
+        document.addEventListener("submit", function (event) {
+            var form = event.target;
+            if (!form.dataset.question) return;
+            event.preventDefault();
+            try {
+                if (!modal) modal = new bootstrap.Modal(document.getElementById("confirmModal"));
+                waiting = form;
+                document.getElementById("confirmText").textContent = form.dataset.question;
+                document.getElementById("confirmButton").textContent = form.dataset.confirm || "Yes";
+                modal.show();
+            } catch (e) {
+                if (confirm(form.dataset.question)) form.submit();
+            }
+        });
+        document.getElementById("confirmButton").addEventListener("click", function () {
+            if (waiting) waiting.submit();
+        });
+    })();
+</script>
