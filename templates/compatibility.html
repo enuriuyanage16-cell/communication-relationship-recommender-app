@@ -1,70 +1,69 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>You and {{ name }}</title>
-    <style>
-        .card { border: 1px solid #ccc; border-radius: 6px; padding: 5px 15px; margin-bottom: 15px; max-width: 700px; }
-        .note { font-size: 0.9em; color: #555; font-style: italic; }
-    </style>
-</head>
-<body>
-    {% set label_words = {"Partner": "partner", "Friend": "friend", "Family": "family member", "Coworker": "coworker"} %}
-    <h1>You and {{ name }}</h1>
-    <p>You see {{ name }} as your {{ label_words[label] }}. This guide is based on both of your test results.</p>
-
-    <h2>Communication</h2>
-    <div class="card">
-        <h3>{{ tips.disc.about.heading }}</h3>
-        {% if tips.disc.note %}<p class="note">{{ tips.disc.note }}</p>{% endif %}
-        {% for p in tips.disc.about.paragraphs %}
-        <p>{{ p }}</p>
-        {% endfor %}
-    </div>
-    <div class="card">
-        <h3>{{ tips.disc.together.heading }}</h3>
-        {% for p in tips.disc.together.paragraphs %}
-        <p>{{ p }}</p>
-        {% endfor %}
-    </div>
-
-    <h2>Everyday life</h2>
-    {% for block in tips.bigfive.about %}
-    <div class="card">
-        <h3>{{ block.heading }}</h3>
-        {% for p in block.paragraphs %}
-        <p>{{ p }}</p>
-        {% endfor %}
-    </div>
+{% extends "base.html" %}
+{% block title %}You and {{ name }}{% endblock %}
+{% macro card(block) %}
+<div class="guide-card">
+    <h3>{{ block.heading }}</h3>
+    {% for p in block.paragraphs %}
+    <p>{{ p }}</p>
     {% endfor %}
+</div>
+{% endmacro %}
+{% block content %}
+{% set label_words = {"Partner": "partner", "Friend": "friend", "Family": "family member", "Coworker": "coworker"} %}
+<div class="wide-page">
+    <a href="/relationships" class="panel-link d-inline-block mb-3"><i class="bi bi-arrow-left me-1" aria-hidden="true"></i>Back to My Relationships</a>
+    <div class="guide-header mb-4">
+        <span class="person-initial big" aria-hidden="true">{{ name[0] | upper }}</span>
+        <div>
+            <h1 class="mb-1">You and {{ name }}</h1>
+            <p class="text-body-secondary mb-0">You see {{ name }} as your {{ label_words[label] }}. This guide is based on both of your test results.</p>
+        </div>
+    </div>
+
+    <section class="guide-section">
+        <h2><i class="bi bi-chat-dots me-2" aria-hidden="true"></i>Communication</h2>
+        <div class="row g-3">
+            <div class="col-lg-6">
+                <div class="guide-card">
+                    <h3>{{ tips.disc.about.heading }}</h3>
+                    {% if tips.disc.note %}<p class="text-body-secondary">{{ tips.disc.note }}</p>{% endif %}
+                    {% for p in tips.disc.about.paragraphs %}
+                    <p>{{ p }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-lg-6">{{ card(tips.disc.together) }}</div>
+        </div>
+    </section>
+
+    <section class="guide-section">
+        <h2><i class="bi bi-sun me-2" aria-hidden="true"></i>Everyday life</h2>
+        <div class="row g-3">
+            {% for block in tips.bigfive.about %}
+            <div class="col-lg-6">{{ card(block) }}</div>
+            {% endfor %}
+        </div>
+    </section>
 
     {% if tips.attachment %}
-    <h2>Closeness and trust</h2>
-    <div class="card">
-        <h3>{{ tips.attachment.about.heading }}</h3>
-        {% for p in tips.attachment.about.paragraphs %}
-        <p>{{ p }}</p>
-        {% endfor %}
-    </div>
-    <div class="card">
-        <h3>{{ tips.attachment.together.heading }}</h3>
-        {% for p in tips.attachment.together.paragraphs %}
-        <p>{{ p }}</p>
-        {% endfor %}
-    </div>
+    <section class="guide-section">
+        <h2><i class="bi bi-heart me-2" aria-hidden="true"></i>Closeness and trust</h2>
+        <div class="row g-3">
+            <div class="col-lg-6">{{ card(tips.attachment.about) }}</div>
+            <div class="col-lg-6">{{ card(tips.attachment.together) }}</div>
+        </div>
+    </section>
     {% endif %}
 
     {% if tips.bigfive.together %}
-    <h2>You two together</h2>
-    {% for block in tips.bigfive.together %}
-    <div class="card">
-        <h3>{{ block.heading }}</h3>
-        {% for p in block.paragraphs %}
-        <p>{{ p }}</p>
-        {% endfor %}
-    </div>
-    {% endfor %}
+    <section class="guide-section">
+        <h2><i class="bi bi-people me-2" aria-hidden="true"></i>You two together</h2>
+        <div class="row g-3">
+            {% for block in tips.bigfive.together %}
+            <div class="col-lg-6">{{ card(block) }}</div>
+            {% endfor %}
+        </div>
+    </section>
     {% endif %}
-
-    <p><a href="/relationships">Back to My Relationships</a> | <a href="/">Home</a></p>
-</body>
-</html>
+</div>
+{% endblock %}
