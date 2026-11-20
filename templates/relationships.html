@@ -1,163 +1,185 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>My Relationships</title>
-</head>
-<body>
-    <h1>My Relationships</h1>
-
-    <p>Logged in as <strong>{{ session["user_name"] }}</strong></p>
-
-    {% set box_colors = {
-        "success": ["#dff0d8", "#3c763d"],
-        "error": ["#f2dede", "#a94442"],
-        "info": ["#d9edf7", "#31708f"]
-    } %}
-    {% for message_type, message in get_flashed_messages(with_categories=true) %}
-    <p style="padding: 10px; border-radius: 6px; max-width: 600px;
-              background: {{ box_colors[message_type][0] }};
-              color: {{ box_colors[message_type][1] }};">
-        {{ message }}
-    </p>
-    {% endfor %}
+{% extends "base.html" %}
+{% block title %}My Relationships{% endblock %}
+{% block content %}
+<div class="wide-page">
+    <h1 class="mb-1">My Relationships</h1>
+    <p class="text-body-secondary mb-4">Connect with people you know and get a guide to getting along with each other.</p>
 
     {% if missing %}
     {% set test_links = {"DISC": "/disc", "Big Five": "/bigfive"} %}
-    <div style="padding: 10px; border-radius: 6px; max-width: 600px; background: #fcf8e3; color: #8a6d3b;">
-        <p>To connect with someone, please finish the DISC and Big Five tests first. You still need:</p>
-        <ul>
-            {% for test in missing %}
-            <li><a href="{{ test_links[test] }}">{{ test }} test</a></li>
-            {% endfor %}
-        </ul>
-    </div>
-    {% else %}
-
-    <h2>Requests waiting for you</h2>
-    {% if incoming %}
-    {% for r in incoming %}
-    <div style="border: 1px solid #ccc; border-radius: 6px; padding: 10px; margin-bottom: 10px; max-width: 600px;">
-        <p><strong>{{ r.other_name }}</strong> wants to connect with you.</p>
-        <p>If you accept, you will both get a guide to getting along with each other, based on both of your test results.</p>
-        <form method="post" action="/relationships" style="display: inline;">
-            <input type="hidden" name="action" value="accept">
-            <input type="hidden" name="connection_id" value="{{ r._id }}">
-            <label>Relationship:
-                <select name="label" required>
-                    <option value="">Choose...</option>
-                    {% for l in labels %}
-                    <option value="{{ l }}">{{ l }}</option>
-                    {% endfor %}
-                </select>
-            </label>
-            <button type="submit">Accept</button>
-        </form>
-        <form method="post" action="/relationships" style="display: inline;">
-            <input type="hidden" name="action" value="decline">
-            <input type="hidden" name="connection_id" value="{{ r._id }}">
-            <button type="submit">Decline</button>
-        </form>
-    </div>
-    {% endfor %}
-    {% else %}
-    <p>No requests right now.</p>
-    {% endif %}
-
-    <h2>My connections</h2>
-    {% set group_titles = {"Partner": "Partner", "Friend": "Friends", "Family": "Family", "Coworker": "Coworkers"} %}
-    {% set ns = namespace(any=false) %}
-    {% for label in labels %}
-    {% if groups[label] %}
-    {% set ns.any = true %}
-    <h3>{{ group_titles[label] }}</h3>
-    <ul>
-        {% for person in groups[label] %}
-        <li>
-            {{ person.name }} <a href="/relationships/{{ person.id }}">See guide</a>
-            <form method="post" action="/relationships" style="display: inline;"
-                data-question="Remove {{ person.name }} from your connections?"
-                onsubmit="return confirm(this.dataset.question);">
-                <input type="hidden" name="action" value="remove">
-                <input type="hidden" name="connection_id" value="{{ person.id }}">
-                <button type="submit">Remove</button>
-            </form>
-        </li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-    {% endfor %}
-    {% if not ns.any %}
-    <p>You haven't connected with anyone yet.</p>
-    {% endif %}
-
-    <h2>Who can see your Attachment guide?</h2>
-    <p>Your Attachment results are private. You can choose to share your guide with one partner. They will only see advice, never your scores.</p>
-    {% if not has_attachment %}
-    <p>To share it, first <a href="/attachment">take the Attachment test</a>.</p>
-    {% elif groups["Partner"] %}
-    <form method="post" action="/relationships">
-        <input type="hidden" name="action" value="share">
-        <select name="share_with">
-            <option value="nobody">Nobody</option>
-            {% for person in groups["Partner"] %}
-            <option value="{{ person.id }}" {% if person.id == share_with %}selected{% endif %}>Only {{ person.name }}</option>
-            {% endfor %}
-        </select>
-        <button type="submit">Save</button>
-    </form>
-    {% else %}
-    <p>Once you connect with someone as your Partner, you can choose to share it with them here.</p>
-    {% endif %}
-
-    <h2>Your code</h2>
-    <p>Want a guide to getting along with someone? Share your code with them.</p>
-    <ol>
-        <li>Copy your code and send it to them.</li>
-        <li>They enter your code in the app.</li>
-        <li>Accept their request, and you'll both get your guide.</li>
-    </ol>
-    <p style="font-size: 1.5em; font-weight: bold; letter-spacing: 3px;">{{ code }}</p>
-    <button onclick="copyCode()">Copy code</button>
-    <span id="copied" style="color: green;"></span>
-
-    <h2>Connect with someone</h2>
-    <form method="post" action="/relationships">
-        <input type="hidden" name="action" value="send">
-        <label>Their code: <input name="code" maxlength="6" required></label>
-        <br><br>
-        <label>Relationship:
-            <select name="label" required>
-                <option value="">Choose...</option>
-                {% for l in labels %}
-                <option value="{{ l }}">{{ l }}</option>
+    <div class="panel">
+        <div class="empty-state text-center py-3">
+            <i class="bi bi-people empty-icon" aria-hidden="true"></i>
+            <p class="mb-3">To connect with someone, please finish the DISC and Big Five tests first.</p>
+            <div class="d-flex flex-wrap justify-content-center gap-2">
+                {% for test in missing %}
+                <a href="{{ test_links[test] }}" class="btn btn-ink">Take the {{ test }} test</a>
                 {% endfor %}
-            </select>
-        </label>
-        <br><br>
-        <button type="submit">Send request</button>
-    </form>
-
-    <h2>Requests you sent</h2>
-    {% if sent %}
-    <ul>
-        {% for r in sent %}
-        <li>{{ r.other_name }}: waiting for them to accept</li>
-        {% endfor %}
-    </ul>
+            </div>
+        </div>
+    </div>
     {% else %}
-    <p>No requests waiting.</p>
+
+    <div class="row gx-4">
+        <div class="col-lg-7">
+            {% if incoming %}
+            <div class="panel mb-4">
+                <h2><i class="bi bi-envelope me-2" aria-hidden="true"></i>Requests waiting for you</h2>
+                {% for r in incoming %}
+                <div class="request-card">
+                    <p class="mb-1"><strong>{{ r.other_name }}</strong> wants to connect with you.</p>
+                    <p class="text-body-secondary small mb-3">If you accept, you will both get a guide to getting along with each other, based on both of your test results.</p>
+                    <div class="d-flex flex-wrap align-items-end gap-2">
+                        <form method="post" action="/relationships" class="d-flex flex-wrap align-items-end gap-2">
+                            <input type="hidden" name="action" value="accept">
+                            <input type="hidden" name="connection_id" value="{{ r._id }}">
+                            <div>
+                                <label class="form-label small mb-1" for="label_{{ r._id }}">They are my</label>
+                                <select class="form-select" id="label_{{ r._id }}" name="label" required>
+                                    <option value="">Choose one</option>
+                                    {% for l in labels %}
+                                    <option value="{{ l }}">{{ l }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-ink">Accept</button>
+                        </form>
+                        <form method="post" action="/relationships">
+                            <input type="hidden" name="action" value="decline">
+                            <input type="hidden" name="connection_id" value="{{ r._id }}">
+                            <button type="submit" class="btn btn-line">Decline</button>
+                        </form>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <div class="panel mb-4">
+                <h2><i class="bi bi-people me-2" aria-hidden="true"></i>My connections</h2>
+                {% set group_titles = {"Partner": "Partner", "Friend": "Friends", "Family": "Family", "Coworker": "Coworkers"} %}
+                {% set ns = namespace(any=false) %}
+                {% for label in labels %}
+                {% if groups[label] %}
+                {% set ns.any = true %}
+                <h3 class="group-title">{{ group_titles[label] }}</h3>
+                <ul class="person-list">
+                    {% for person in groups[label] %}
+                    <li>
+                        <span class="person-initial" aria-hidden="true">{{ person.name[0] | upper }}</span>
+                        <span class="flex-grow-1">{{ person.name }}</span>
+                        <a href="/relationships/{{ person.id }}" class="btn btn-ink btn-sm">See guide</a>
+                        <form method="post" action="/relationships"
+                            data-question="Remove {{ person.name }} from your connections?"
+                            onsubmit="return confirm(this.dataset.question);">
+                            <input type="hidden" name="action" value="remove">
+                            <input type="hidden" name="connection_id" value="{{ person.id }}">
+                            <button type="submit" class="btn btn-line btn-sm">Remove</button>
+                        </form>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                {% endfor %}
+                {% if not ns.any %}
+                <div class="empty-state text-center py-2">
+                    <i class="bi bi-person-plus empty-icon" aria-hidden="true"></i>
+                    <p class="mb-0">You haven't connected with anyone yet. Share your code to get started.</p>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="panel mb-4">
+                <h2><i class="bi bi-heart me-2" aria-hidden="true"></i>Who can see your Attachment guide?</h2>
+                <p class="text-body-secondary">Your Attachment results are private. You can choose to share your guide with one partner. They will only see advice, never your scores.</p>
+                {% if not has_attachment %}
+                <a href="/attachment" class="btn btn-line">Take the Attachment test</a>
+                {% elif groups["Partner"] %}
+                <form method="post" action="/relationships" class="d-flex flex-wrap gap-2">
+                    <input type="hidden" name="action" value="share">
+                    <select class="form-select w-auto" name="share_with" aria-label="Who can see your Attachment guide">
+                        <option value="nobody">Nobody</option>
+                        {% for person in groups["Partner"] %}
+                        <option value="{{ person.id }}" {% if person.id == share_with %}selected{% endif %}>Only {{ person.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit" class="btn btn-ink">Save</button>
+                </form>
+                {% else %}
+                <p class="mb-0">Once you connect with someone as your Partner, you can choose to share it with them here.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="col-lg-5">
+            <div class="panel code-panel mb-4">
+                <h2><i class="bi bi-key me-2" aria-hidden="true"></i>Your code</h2>
+                <p class="text-body-secondary">Want a guide to getting along with someone? Share your code with them.</p>
+                <div class="code-box">
+                    <span class="code-text">{{ code }}</span>
+                    <button type="button" class="btn btn-ink btn-sm" id="copyButton"><i class="bi bi-clipboard me-1" aria-hidden="true"></i>Copy code</button>
+                </div>
+                <ol class="code-steps">
+                    <li>Copy your code and send it to them.</li>
+                    <li>They enter your code in the app.</li>
+                    <li>Accept their request, and you'll both get your guide.</li>
+                </ol>
+            </div>
+
+            <div class="panel mb-4">
+                <h2><i class="bi bi-person-plus me-2" aria-hidden="true"></i>Connect with someone</h2>
+                <form method="post" action="/relationships">
+                    <input type="hidden" name="action" value="send">
+                    <div class="mb-3">
+                        <label class="form-label" for="code">Their code</label>
+                        <input class="form-control code-input" id="code" name="code" maxlength="6" autocomplete="off" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="sendLabel">They are my</label>
+                        <select class="form-select" id="sendLabel" name="label" required>
+                            <option value="">Choose one</option>
+                            {% for l in labels %}
+                            <option value="{{ l }}">{{ l }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-ink w-100">Send request</button>
+                </form>
+            </div>
+
+            <div class="panel mb-4">
+                <h2><i class="bi bi-hourglass-split me-2" aria-hidden="true"></i>Requests you sent</h2>
+                {% if sent %}
+                <ul class="person-list">
+                    {% for r in sent %}
+                    <li>
+                        <span class="person-initial" aria-hidden="true">{{ r.other_name[0] | upper }}</span>
+                        <span class="flex-grow-1">{{ r.other_name }}</span>
+                        <span class="count-badge">Waiting</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p class="text-body-secondary mb-0">No requests waiting.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
     {% endif %}
-
-    <script>
-        function copyCode() {
-            navigator.clipboard.writeText("{{ code }}").then(function () {
-                document.getElementById("copied").textContent = " Copied!";
-            });
-        }
-    </script>
-    {% endif %}
-
-    <p><a href="/">Home</a> | <a href="/profile">My Profile</a></p>
-
-</body>
-</html>
+</div>
+{% endblock %}
+{% block scripts %}
+{% if not missing %}
+<script>
+    document.getElementById("copyButton").addEventListener("click", function () {
+        var button = this;
+        navigator.clipboard.writeText("{{ code }}").then(function () {
+            button.innerHTML = '<i class="bi bi-check2 me-1" aria-hidden="true"></i>Copied';
+            setTimeout(function () {
+                button.innerHTML = '<i class="bi bi-clipboard me-1" aria-hidden="true"></i>Copy code';
+            }, 2000);
+        });
+    });
+</script>
+{% endif %}
+{% endblock %}
