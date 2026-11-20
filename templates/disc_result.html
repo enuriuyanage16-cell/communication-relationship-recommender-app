@@ -1,16 +1,19 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Your DISC Result</title>
-</head>
-<body>
-    <h1>Your DISC Result</h1>
+{% extends "base.html" %}
+{% block title %}Your DISC result{% endblock %}
+{% block content %}
+<div class="test-page">
+    <p class="result-kicker mb-1">Your DISC result</p>
+    <h1 class="mb-3">{{ "Balanced" if result_type == "Unclear" else result_type }}</h1>
     {% if questions_answered < 32 %}
-    <p>Your result was already clear after {{ questions_answered }} questions, so the test finished early.</p>
+    <div class="alert alert-info d-flex gap-2"><i class="bi bi-lightning-charge" aria-hidden="true"></i><span>Your result was already clear after {{ questions_answered }} questions, so the test finished early.</span></div>
     {% endif %}
-    <h2>{{ "Balanced" if result_type == "Unclear" else result_type }}</h2>
-    <p>How much of your style comes from each colour:</p>
-    {% include "_disc_bar.html" %}
-    <a href="/profile">See my full profile</a> | <a href="/disc">Take test again</a> | <a href="/">Home</a>
-</body>
-</html>
+    <div class="panel mb-4">
+        <h2>How much of your style comes from each colour</h2>
+        {% include "_disc_bar.html" %}
+    </div>
+    <div class="d-flex flex-wrap gap-2">
+        <a href="/profile" class="btn btn-ink">See my full profile</a>
+        <a href="/disc" class="btn btn-line">Take the test again</a>
+    </div>
+</div>
+{% endblock %}
