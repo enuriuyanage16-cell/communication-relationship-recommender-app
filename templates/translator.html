@@ -1,70 +1,115 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Message Translator</title>
-</head>
-<body>
-    <h1>Message Translator</h1>
-    <p>Logged in as <strong>{{ session["user_name"] }}</strong></p>
-
-    <p>Write a message and choose who it is for. The app will rewrite it in a communication style that suits that person.</p>
-    <p style="padding: 10px; border-radius: 6px; max-width: 600px; background: #fcf8e3; color: #8a6d3b;">
-        Your message is sent to Google Gemini to rewrite it. Please don't include private details like phone numbers, addresses or passwords.
-    </p>
+{% extends "base.html" %}
+{% block title %}Message Translator{% endblock %}
+{% block content %}
+<div class="wide-page">
+    <h1 class="mb-1">Message Translator</h1>
+    <p class="text-body-secondary mb-3">Write a message and choose who it is for. Bridge will rewrite it in a communication style that suits that person.</p>
+    <div class="privacy-note mb-4">
+        <i class="bi bi-shield-lock" aria-hidden="true"></i>
+        <span>Your message is sent to Google Gemini to rewrite it. Please don't include private details like phone numbers, addresses or passwords.</span>
+    </div>
 
     {% if error %}
-    <p style="padding: 10px; border-radius: 6px; max-width: 600px; background: #f2dede; color: #a94442;">{{ error }}</p>
+    <div class="alert alert-danger d-flex gap-2"><i class="bi bi-exclamation-circle" aria-hidden="true"></i><span>{{ error }}</span></div>
     {% endif %}
 
-    <form method="post" action="/translator" onsubmit="this.querySelector('button').textContent = 'Rewriting your message...'; this.querySelector('button').disabled = true;">
-        <p>
-            <label>Who is this message for?
-                <select name="recipient" required>
-                    <option value="">Choose a person or a style</option>
-                    {% if recipients %}
-                    <optgroup label="My connections">
-                        {% for r in recipients %}
-                        <option value="connection:{{ r.id }}" {% if form.recipient == "connection:" ~ r.id %}selected{% endif %}>{{ r.name }}</option>
+    <div class="row gx-4">
+        <div class="col-lg-6">
+            <div class="panel mb-4">
+                <h2><i class="bi bi-pencil me-2" aria-hidden="true"></i>Your message</h2>
+                <form method="post" action="/translator" id="translatorForm">
+                    <div class="mb-3">
+                        <label class="form-label" for="recipient">Who is this message for?</label>
+                        <select class="form-select" id="recipient" name="recipient" required>
+                            <option value="">Choose a person or a style</option>
+                            {% if recipients %}
+                            <optgroup label="My connections">
+                                {% for r in recipients %}
+                                <option value="connection:{{ r.id }}" {% if form.recipient == "connection:" ~ r.id %}selected{% endif %}>{{ r.name }}</option>
+                                {% endfor %}
+                            </optgroup>
+                            {% endif %}
+                            <optgroup label="Someone who isn't on the app">
+                                {% for colour, style in styles.items() %}
+                                <option value="style:{{ colour }}" {% if form.recipient == "style:" ~ colour %}selected{% endif %}>{{ style.label }}</option>
+                                {% endfor %}
+                            </optgroup>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="message">What do you want to say?</label>
+                        <textarea class="form-control" id="message" name="message" rows="8" maxlength="1000" required>{{ form.message }}</textarea>
+                        <div class="form-text text-end" id="messageCount" aria-live="polite"></div>
+                    </div>
+                    <button type="submit" class="btn btn-ink w-100" id="rewriteButton"><i class="bi bi-magic me-2" aria-hidden="true"></i>Rewrite my message</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="panel mb-4 result-panel">
+                <h2><i class="bi bi-chat-left-text me-2" aria-hidden="true"></i>Suggested message</h2>
+                {% if result %}
+                <textarea class="form-control result-text" id="result" rows="8" readonly aria-label="Suggested message">{{ result.text }}</textarea>
+                <div class="d-flex flex-wrap align-items-center gap-2 mt-3">
+                    <button type="button" class="btn btn-ink" id="copyButton"><i class="bi bi-clipboard me-1" aria-hidden="true"></i>Copy message</button>
+                    {% if result.used_ai %}<span class="count-badge"><i class="bi bi-stars me-1" aria-hidden="true"></i>Rewritten by AI</span>{% endif %}
+                </div>
+                {% if not result.used_ai %}
+                <div class="fallback-note mt-3">
+                    <p class="mb-2">The AI helper isn't available right now, so Bridge made a few small changes to your message. These tips can help you improve it.</p>
+                    <ul class="mb-0">
+                        {% for tip in result.tips %}
+                        <li>{{ tip }}</li>
                         {% endfor %}
-                    </optgroup>
-                    {% endif %}
-                    <optgroup label="Someone who isn't on the app">
-                        {% for colour, style in styles.items() %}
-                        <option value="style:{{ colour }}" {% if form.recipient == "style:" ~ colour %}selected{% endif %}>{{ style.label }}</option>
-                        {% endfor %}
-                    </optgroup>
-                </select>
-            </label>
-        </p>
-        <p><label>Your message<br>
-            <textarea name="message" rows="6" cols="60" maxlength="1000" required>{{ form.message }}</textarea>
-        </label></p>
-        <button type="submit">Rewrite my message</button>
-    </form>
+                    </ul>
+                </div>
+                {% endif %}
+                <p class="history-note mt-3">Read the message before you send it and change anything that doesn't sound like you.</p>
+                {% else %}
+                <div class="empty-state text-center py-4">
+                    <i class="bi bi-chat-left-text empty-icon" aria-hidden="true"></i>
+                    <p class="mb-0">Your rewritten message will show up here.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+    (function () {
+        var form = document.getElementById("translatorForm");
+        var button = document.getElementById("rewriteButton");
+        var message = document.getElementById("message");
+        var count = document.getElementById("messageCount");
+        var buttonText = button.innerHTML;
 
-    {% if result %}
-    <h2>Suggested message</h2>
-    <textarea id="result" rows="6" cols="60" readonly>{{ result.text }}</textarea>
-    <p><button type="button" onclick="navigator.clipboard.writeText(document.getElementById('result').value); this.textContent = 'Copied';">Copy message</button></p>
-    {% if not result.used_ai %}
-    <p>The AI helper isn't available right now, so this is a simpler version made with basic rules. These tips can help you adjust it.</p>
-    <ul>
-        {% for tip in result.tips %}
-        <li>{{ tip }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-    <p>Read the message before you send it and change anything that doesn't sound like you.</p>
-    {% endif %}
+        function updateCount() { count.textContent = message.value.length + " of 1000 characters"; }
+        message.addEventListener("input", updateCount);
+        updateCount();
 
-    <script>
-        window.addEventListener("pageshow", function () {
-            var button = document.querySelector("form button");
-            button.disabled = false;
-            button.textContent = "Rewrite my message";
+        form.addEventListener("submit", function () {
+            button.disabled = true;
+            button.innerHTML = '<span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>Rewriting your message...';
         });
-    </script>
+        window.addEventListener("pageshow", function () {
+            button.disabled = false;
+            button.innerHTML = buttonText;
+        });
 
-    <p><a href="/">Home</a></p>
-</body>
-</html>
+        var copy = document.getElementById("copyButton");
+        if (copy) {
+            copy.addEventListener("click", function () {
+                navigator.clipboard.writeText(document.getElementById("result").value).then(function () {
+                    copy.innerHTML = '<i class="bi bi-check2 me-1" aria-hidden="true"></i>Copied';
+                    setTimeout(function () {
+                        copy.innerHTML = '<i class="bi bi-clipboard me-1" aria-hidden="true"></i>Copy message';
+                    }, 2000);
+                });
+            });
+        }
+    })();
+</script>
+{% endblock %}
