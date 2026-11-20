@@ -1,147 +1,222 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>{{ team.name }}</title>
-</head>
-<body>
-    <h1>{{ team.name }}</h1>
-    <p>Logged in as <strong>{{ session["user_name"] }}</strong></p>
-
-    {% include "_messages.html" %}
-
-    {% if is_leader %}
-    <h2>Team code</h2>
-    <p>Share this code with people you want in your team.</p>
-    <p style="font-size: 1.5em; font-weight: bold; letter-spacing: 3px;">{{ team.code }}</p>
-    <button type="button" onclick="navigator.clipboard.writeText('{{ team.code }}'); this.textContent = 'Copied';">Copy code</button>
-    {% endif %}
-
-    {% if is_leader and team.events %}
-    <h2>Recent changes</h2>
-    <ul>
-        {% for e in team.events[-5:]|reverse %}
-        <li>{{ e.text }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-
-    <h2>Members</h2>
-    <ul>
-        {% for m in members %}
-        <li>
-            {{ m.name }}
-            {% if m.is_leader %}<strong>Team leader</strong>{% endif %}
-            {% if is_leader and not m.is_leader %}
-            <form method="post" action="/teams/{{ team._id }}" style="display: inline;"
-                  data-question="Remove {{ m.name }} from the team?"
-                  onsubmit="return confirm(this.dataset.question);">
-                <input type="hidden" name="action" value="remove">
-                <input type="hidden" name="member_id" value="{{ m.id }}">
-                <button type="submit">Remove</button>
-            </form>
-            {% endif %}
-        </li>
-        {% endfor %}
-    </ul>
-
-    <h2>Tasks</h2>
-    {% if tasks %}
-    {% for task in tasks %}
-    <div style="border: 1px solid #ddd; border-radius: 6px; padding: 10px; margin-bottom: 10px; max-width: 600px;">
-        <p><strong>{{ task.name }}</strong> ({{ task.type_name }})</p>
-        {% if task.suggested %}
-        <p>Suggested for <strong>{{ task.suggested }}</strong>. {{ task.reasons }}</p>
-        {% if task.also_good %}
-        <p>{{ task.also_good }} is also a good fit.</p>
-        {% endif %}
-        {% endif %}
-        {% if is_leader %}
-        <form method="post" action="/teams/{{ team._id }}"
-              data-question="Delete the task {{ task.name }}?"
-              onsubmit="return confirm(this.dataset.question);">
-            <input type="hidden" name="action" value="delete_task">
-            <input type="hidden" name="task_id" value="{{ task._id }}">
-            <button type="submit">Delete task</button>
-        </form>
-        {% endif %}
+{% extends "base.html" %}
+{% block title %}{{ team.name }}{% endblock %}
+{% block content %}
+<div class="wide-page">
+    <a href="/teams" class="panel-link d-inline-block mb-3"><i class="bi bi-arrow-left me-1" aria-hidden="true"></i>Back to My Teams</a>
+    <div class="guide-header mb-4">
+        <span class="team-icon big" aria-hidden="true">{{ team.name[0] | upper }}</span>
+        <div>
+            <h1 class="mb-1">{{ team.name }}</h1>
+            <p class="text-body-secondary mb-0">{{ members | length }} {{ "member" if members | length == 1 else "members" }}{% if is_leader %}. You are the team leader.{% endif %}</p>
+        </div>
     </div>
-    {% endfor %}
-    <p>These are only suggestions. The team can still decide together who does each task.</p>
-    {% else %}
-    <p>There are no tasks yet.</p>
-    {% endif %}
 
-    {% if is_leader %}
-    <h2>Add a task</h2>
-    <form method="post" action="/teams/{{ team._id }}">
-        <input type="hidden" name="action" value="add_task">
-        <p><label>Task name <input name="name" maxlength="80" required></label></p>
-        <p>Task type</p>
-        {% for key, info in task_types.items() %}
-        <p>
-            <label>
-                <input type="radio" name="type" value="{{ key }}" required>
-                <strong>{{ info.name }}</strong>, for example {{ info.examples }}
-            </label>
-        </p>
-        {% endfor %}
-        <button type="submit">Add task</button>
-    </form>
-    {% endif %}
+    <div class="row gx-4">
+        <div class="col-lg-8">
+            <div class="panel mb-4">
+                <h2><i class="bi bi-list-check me-2" aria-hidden="true"></i>Tasks</h2>
+                {% if tasks %}
+                {% for task in tasks %}
+                <div class="task-card">
+                    <div class="d-flex justify-content-between align-items-start gap-2">
+                        <div>
+                            <h3 class="mb-1">{{ task.name }}</h3>
+                            <span class="count-badge">{{ task.type_name }}</span>
+                        </div>
+                        {% if is_leader %}
+                        <form method="post" action="/teams/{{ team._id }}"
+                              data-question="Delete the task {{ task.name }}?" data-confirm="Delete task">
+                            <input type="hidden" name="action" value="delete_task">
+                            <input type="hidden" name="task_id" value="{{ task._id }}">
+                            <button type="submit" class="btn btn-line btn-sm"><i class="bi bi-trash me-1" aria-hidden="true"></i>Delete</button>
+                        </form>
+                        {% endif %}
+                    </div>
+                    {% if task.suggested %}
+                    <div class="suggestion">
+                        <span class="person-initial" aria-hidden="true">{{ task.suggested[0] | upper }}</span>
+                        <div>
+                            <p class="mb-1">Suggested for <strong>{{ task.suggested }}</strong></p>
+                            <p class="text-body-secondary small mb-0">{{ task.reasons }}</p>
+                            {% if task.also_good %}<p class="small mb-0 mt-1">{{ task.also_good }} is also a good fit.</p>{% endif %}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+                <p class="history-note mt-3">These are only suggestions. The team can still decide together who does each task.</p>
+                {% else %}
+                <div class="empty-state text-center py-2">
+                    <i class="bi bi-list-check empty-icon" aria-hidden="true"></i>
+                    <p class="mb-0">There are no tasks yet.{% if is_leader %} Add one below and Bridge will suggest who fits it best.{% endif %}</p>
+                </div>
+                {% endif %}
+            </div>
 
-    {% if is_leader %}
-    <h2 id="group">Suggest a project group</h2>
-    {% if group_error %}
-    <p style="padding: 10px; border-radius: 6px; max-width: 600px; background: #f2dede; color: #a94442;">{{ group_error }}</p>
-    {% endif %}
-    <p>Need a smaller group for a new project? Choose the task types and the group size, and the app will suggest the best members from this team.</p>
-    <form method="post" action="/teams/{{ team._id }}#group">
-        <input type="hidden" name="action" value="suggest_group">
-        <p>Task types the project needs</p>
-        {% for key, info in task_types.items() %}
-        <p><label><input type="checkbox" name="types" value="{{ key }}"> {{ info.name }}</label></p>
-        {% endfor %}
-        <p><label>Group size <input type="number" name="size" min="2" max="{{ members|length }}" value="2" required></label></p>
-        <p>Who is available</p>
-        {% for m in members %}
-        <p><label><input type="checkbox" name="available" value="{{ m.id }}" checked> {{ m.name }}</label></p>
-        {% endfor %}
-        <button type="submit">Suggest a group</button>
-    </form>
+            {% if is_leader %}
+            <div class="panel mb-4">
+                <h2><i class="bi bi-plus-circle me-2" aria-hidden="true"></i>Add a task</h2>
+                <form method="post" action="/teams/{{ team._id }}">
+                    <input type="hidden" name="action" value="add_task">
+                    <div class="mb-3">
+                        <label class="form-label" for="taskName">Task name</label>
+                        <input class="form-control" id="taskName" name="name" maxlength="80" required>
+                    </div>
+                    <fieldset class="mb-3">
+                        <legend class="form-label fs-6">Task type</legend>
+                        <div class="row g-2">
+                            {% for key, info in task_types.items() %}
+                            <div class="col-md-6">
+                                <input type="radio" class="btn-check" name="type" value="{{ key }}" id="type_{{ key }}" required>
+                                <label class="choice-card" for="type_{{ key }}">
+                                    <strong class="d-block">{{ info.name }}</strong>
+                                    <small class="text-body-secondary">For example {{ info.examples }}</small>
+                                </label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </fieldset>
+                    <button type="submit" class="btn btn-ink">Add task</button>
+                </form>
+            </div>
 
-    {% if group %}
-    <h3>Suggested group</h3>
-    <ul>
-        {% for g in group.members %}
-        <li>
-            <strong>{{ g.person.name }}</strong>{% if g.type_name %} ({{ g.type_name }}){% endif %}.
-            {{ g.reason }}
-        </li>
-        {% endfor %}
-    </ul>
-    {% for c in group.cautions %}
-    <p>{{ c }}</p>
-    {% endfor %}
-    <p>This is only a suggestion. The team can still decide together.</p>
-    {% endif %}
-    {% endif %}
+            <div class="panel mb-4" id="group">
+                <h2><i class="bi bi-people me-2" aria-hidden="true"></i>Suggest a project group</h2>
+                {% if group_error %}
+                <div class="alert alert-danger d-flex gap-2"><i class="bi bi-exclamation-circle" aria-hidden="true"></i><span>{{ group_error }}</span></div>
+                {% endif %}
+                <p class="text-body-secondary">Need a smaller group for a new project? Choose the task types and the group size, and Bridge will suggest the best members from this team.</p>
+                <form method="post" action="/teams/{{ team._id }}#group">
+                    <input type="hidden" name="action" value="suggest_group">
+                    <fieldset class="mb-3">
+                        <legend class="form-label fs-6">Task types the project needs</legend>
+                        <div class="d-flex flex-wrap gap-2">
+                            {% for key, info in task_types.items() %}
+                            <input type="checkbox" class="btn-check" name="types" value="{{ key }}" id="gtype_{{ key }}">
+                            <label class="chip" for="gtype_{{ key }}">{{ info.name }}</label>
+                            {% endfor %}
+                        </div>
+                    </fieldset>
+                    <div class="mb-3">
+                        <label class="form-label" for="groupSize">Group size</label>
+                        <input class="form-control size-input" type="number" id="groupSize" name="size" min="2" max="{{ members | length }}" value="2" required>
+                    </div>
+                    <fieldset class="mb-3">
+                        <legend class="form-label fs-6">Who is available</legend>
+                        <div class="d-flex flex-wrap gap-2">
+                            {% for m in members %}
+                            <input type="checkbox" class="btn-check" name="available" value="{{ m.id }}" id="avail_{{ m.id }}" checked>
+                            <label class="chip" for="avail_{{ m.id }}">{{ m.name }}</label>
+                            {% endfor %}
+                        </div>
+                    </fieldset>
+                    <button type="submit" class="btn btn-ink">Suggest a group</button>
+                </form>
 
-    {% if is_leader %}
-    <form method="post" action="/teams/{{ team._id }}"
-          data-question="Delete {{ team.name }}? This can't be undone."
-          onsubmit="return confirm(this.dataset.question);">
-        <input type="hidden" name="action" value="delete">
-        <button type="submit">Delete team</button>
-    </form>
-    {% else %}
-    <form method="post" action="/teams/{{ team._id }}"
-          data-question="Leave {{ team.name }}?"
-          onsubmit="return confirm(this.dataset.question);">
-        <input type="hidden" name="action" value="leave">
-        <button type="submit">Leave team</button>
-    </form>
-    {% endif %}
+                {% if group %}
+                <div class="group-result">
+                    <h3>Suggested group</h3>
+                    <ul class="person-list">
+                        {% for g in group.members %}
+                        <li class="align-items-start">
+                            <span class="person-initial" aria-hidden="true">{{ g.person.name[0] | upper }}</span>
+                            <div>
+                                <strong>{{ g.person.name }}</strong>
+                                {% if g.type_name %}<span class="count-badge ms-1">{{ g.type_name }}</span>{% endif %}
+                                <p class="text-body-secondary small mb-0 mt-1">{{ g.reason }}</p>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% for c in group.cautions %}
+                    <div class="alert alert-warning d-flex gap-2 mt-3 mb-0"><i class="bi bi-info-circle" aria-hidden="true"></i><span>{{ c }}</span></div>
+                    {% endfor %}
+                    <p class="history-note mt-3">This is only a suggestion. The team can still decide together.</p>
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
 
-    <p><a href="/teams">Back to My Teams</a> | <a href="/">Home</a></p>
-</body>
-</html>
+        <div class="col-lg-4">
+            {% if is_leader %}
+            <div class="panel mb-4">
+                <h2><i class="bi bi-key me-2" aria-hidden="true"></i>Team code</h2>
+                <p class="text-body-secondary">Share this code with people you want in your team.</p>
+                <div class="code-box">
+                    <span class="code-text">{{ team.code }}</span>
+                    <button type="button" class="btn btn-ink btn-sm" id="copyButton"><i class="bi bi-clipboard me-1" aria-hidden="true"></i>Copy code</button>
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="panel mb-4">
+                <h2><i class="bi bi-person-lines-fill me-2" aria-hidden="true"></i>Members</h2>
+                <ul class="person-list">
+                    {% for m in members %}
+                    <li>
+                        <span class="person-initial" aria-hidden="true">{{ m.name[0] | upper }}</span>
+                        <span class="flex-grow-1">{{ m.name }}</span>
+                        {% if m.is_leader %}<span class="count-badge">Team leader</span>{% endif %}
+                        {% if is_leader and not m.is_leader %}
+                        <form method="post" action="/teams/{{ team._id }}"
+                              data-question="Remove {{ m.name }} from the team?" data-confirm="Remove">
+                            <input type="hidden" name="action" value="remove">
+                            <input type="hidden" name="member_id" value="{{ m.id }}">
+                            <button type="submit" class="btn btn-line btn-sm">Remove</button>
+                        </form>
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            {% if is_leader and team.events %}
+            <div class="panel mb-4">
+                <h2><i class="bi bi-clock-history me-2" aria-hidden="true"></i>Recent changes</h2>
+                <ul class="event-list">
+                    {% for e in team.events[-5:] | reverse %}
+                    <li>{{ e.text }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+
+            <div class="panel mb-4">
+                {% if is_leader %}
+                <h2>Delete this team</h2>
+                <p class="text-body-secondary">This deletes the team for everyone in it.</p>
+                <form method="post" action="/teams/{{ team._id }}"
+                      data-question="Delete {{ team.name }}? This can't be undone." data-confirm="Delete team">
+                    <input type="hidden" name="action" value="delete">
+                    <button type="submit" class="btn btn-danger-line">Delete team</button>
+                </form>
+                {% else %}
+                <h2>Leave this team</h2>
+                <p class="text-body-secondary">You can join again later if the team leader shares the code with you.</p>
+                <form method="post" action="/teams/{{ team._id }}"
+                      data-question="Leave {{ team.name }}?" data-confirm="Leave team">
+                    <input type="hidden" name="action" value="leave">
+                    <button type="submit" class="btn btn-danger-line">Leave team</button>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+{% if is_leader %}
+<script>
+    document.getElementById("copyButton").addEventListener("click", function () {
+        var button = this;
+        navigator.clipboard.writeText("{{ team.code }}").then(function () {
+            button.innerHTML = '<i class="bi bi-check2 me-1" aria-hidden="true"></i>Copied';
+            setTimeout(function () {
+                button.innerHTML = '<i class="bi bi-clipboard me-1" aria-hidden="true"></i>Copy code';
+            }, 2000);
+        });
+    });
+</script>
+{% endif %}
+{% endblock %}
