@@ -1,86 +1,121 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>My Results History</title>
-</head>
-<body>
-    <h1>My Results History</h1>
+{% extends "base.html" %}
+{% block title %}My Results History{% endblock %}
+{% macro times(count) %}{% if count == 1 %}once{% else %}{{ count }} times{% endif %}{% endmacro %}
+{% block content %}
+<div class="wide-page">
+    <h1 class="mb-1">My Results History</h1>
+    <p class="text-body-secondary mb-4">Every time you take a test, the result is saved here.</p>
 
-    <h2>DISC test</h2>
-    <p>You have taken the DISC test {{ disc_results|length }} time(s).</p>
-    {% if disc_results %}
-    <table border="1" cellpadding="6">
-        <tr>
-            <th>Time</th>
-            <th>Type</th>
-            <th>Green</th>
-            <th>Yellow</th>
-            <th>Blue</th>
-            <th>Red</th>
-        </tr>
-        {% for r in disc_results %}
-        <tr>
-            <td>{{ r.created_at.strftime("%Y-%m-%d %H:%M") }}</td>
-            <td>{{ "Balanced" if r.result_type == "Unclear" else r.result_type }}</td>
-            <td>{{ r.percentages.Green }}%</td>
-            <td>{{ r.percentages.Yellow }}%</td>
-            <td>{{ r.percentages.Blue }}%</td>
-            <td>{{ r.percentages.Red }}%</td>
-        </tr>
-        {% endfor %}
-    </table>
-    <p>The percentages show how much of each colour is in your style.</p>
-    {% endif %}
+    <div class="panel mb-4">
+        <div class="d-flex justify-content-between align-items-baseline flex-wrap gap-2 mb-2">
+            <h2 class="mb-0"><i class="bi bi-palette me-2" aria-hidden="true"></i>DISC test</h2>
+            {% if disc_results %}<span class="count-badge">Taken {{ times(disc_results | length) }}</span>{% endif %}
+        </div>
+        {% if disc_results %}
+        <div class="table-responsive">
+            <table class="table history-table align-middle">
+                <thead>
+                    <tr>
+                        <th scope="col">Date</th>
+                        <th scope="col">Type</th>
+                        <th scope="col"><i class="dot" style="background: #c8463d;"></i>Red</th>
+                        <th scope="col"><i class="dot" style="background: #e3a92b;"></i>Yellow</th>
+                        <th scope="col"><i class="dot" style="background: #3b8a6e;"></i>Green</th>
+                        <th scope="col"><i class="dot" style="background: #2e6da4;"></i>Blue</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for r in disc_results %}
+                    <tr>
+                        <td class="text-nowrap">{{ r.created_at.strftime("%d %b %Y, %H:%M") }}</td>
+                        <td>{{ "Balanced" if r.result_type == "Unclear" else r.result_type }}</td>
+                        <td>{{ r.percentages.Red }}%</td>
+                        <td>{{ r.percentages.Yellow }}%</td>
+                        <td>{{ r.percentages.Green }}%</td>
+                        <td>{{ r.percentages.Blue }}%</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <p class="history-note">The percentages show how much of each colour is in your style.</p>
+        {% else %}
+        <p class="empty-state mb-0">You haven't taken this test yet. <a href="/disc">Take the DISC test</a></p>
+        {% endif %}
+    </div>
 
-    <h2>Big Five test</h2>
-    <p>You have taken the Big Five test {{ bigfive_results|length }} time(s).</p>
-    {% if bigfive_results %}
-    <table border="1" cellpadding="6">
-        <tr>
-            <th>Time</th>
-            <th>Extraversion</th>
-            <th>Agreeableness</th>
-            <th>Conscientiousness</th>
-            <th>Neuroticism</th>
-            <th>Openness</th>
-        </tr>
-        {% for r in bigfive_results %}
-        <tr>
-            <td>{{ r.created_at.strftime("%Y-%m-%d %H:%M") }}</td>
-            <td>{{ r.scores.EXT }}</td>
-            <td>{{ r.scores.AGR }}</td>
-            <td>{{ r.scores.CSN }}</td>
-            <td>{{ r.scores.EST }}</td>
-            <td>{{ r.scores.OPN }}</td>
-        </tr>
-        {% endfor %}
-    </table>
-    <p>Scores are out of 50.</p>
-    {% endif %}
+    <div class="panel mb-4">
+        <div class="d-flex justify-content-between align-items-baseline flex-wrap gap-2 mb-2">
+            <h2 class="mb-0"><i class="bi bi-bar-chart me-2" aria-hidden="true"></i>Big Five test</h2>
+            {% if bigfive_results %}<span class="count-badge">Taken {{ times(bigfive_results | length) }}</span>{% endif %}
+        </div>
+        {% if bigfive_results %}
+        <div class="table-responsive">
+            <table class="table history-table align-middle">
+                <thead>
+                    <tr>
+                        <th scope="col">Date</th>
+                        <th scope="col">Extraversion</th>
+                        <th scope="col">Agreeableness</th>
+                        <th scope="col">Conscientiousness</th>
+                        <th scope="col">Neuroticism</th>
+                        <th scope="col">Openness</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for r in bigfive_results %}
+                    <tr>
+                        <td class="text-nowrap">{{ r.created_at.strftime("%d %b %Y, %H:%M") }}</td>
+                        <td>{{ r.scores.EXT }}</td>
+                        <td>{{ r.scores.AGR }}</td>
+                        <td>{{ r.scores.CSN }}</td>
+                        <td>{{ r.scores.EST }}</td>
+                        <td>{{ r.scores.OPN }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <p class="history-note">Scores are out of 50.</p>
+        {% else %}
+        <p class="empty-state mb-0">You haven't taken this test yet. <a href="/bigfive">Take the Big Five test</a></p>
+        {% endif %}
+    </div>
 
-    <h2>Attachment test</h2>
-    <p>You have taken the Attachment test {{ attachment_results|length }} time(s).</p>
-    {% if attachment_results %}
-    <table border="1" cellpadding="6">
-        <tr>
-            <th>Time</th>
-            <th>Style</th>
-            <th>Anxiety</th>
-            <th>Avoidance</th>
-        </tr>
-        {% for r in attachment_results %}
-        <tr>
-            <td>{{ r.created_at.strftime("%Y-%m-%d %H:%M") }}</td>
-            <td>{{ r.style }}</td>
-            <td>{{ r.scores.Anxiety }}</td>
-            <td>{{ r.scores.Avoidance }}</td>
-        </tr>
-        {% endfor %}
-    </table>
-    <p>Anxiety and Avoidance are averages from 1 to 7.</p>
-    {% endif %}
+    <div class="panel mb-4">
+        <div class="d-flex justify-content-between align-items-baseline flex-wrap gap-2 mb-2">
+            <h2 class="mb-0"><i class="bi bi-heart me-2" aria-hidden="true"></i>Attachment test</h2>
+            {% if attachment_results %}<span class="count-badge">Taken {{ times(attachment_results | length) }}</span>{% endif %}
+        </div>
+        {% if attachment_results %}
+        <div class="table-responsive">
+            <table class="table history-table align-middle">
+                <thead>
+                    <tr>
+                        <th scope="col">Date</th>
+                        <th scope="col">Style</th>
+                        <th scope="col">Anxiety</th>
+                        <th scope="col">Avoidance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for r in attachment_results %}
+                    <tr>
+                        <td class="text-nowrap">{{ r.created_at.strftime("%d %b %Y, %H:%M") }}</td>
+                        <td>{{ r.style }}</td>
+                        <td>{{ r.scores.Anxiety }}</td>
+                        <td>{{ r.scores.Avoidance }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <p class="history-note">Anxiety and Avoidance are averages from 1 to 7.</p>
+        {% else %}
+        <p class="empty-state mb-0">You haven't taken this test yet. <a href="/attachment">Take the Attachment test</a></p>
+        {% endif %}
+    </div>
 
-    <br>
-    <a href="/">Home</a> | <a href="/profile">My Profile</a>
-</body>
-</html>
+    <a href="/profile" class="btn btn-line">Back to my profile</a>
+</div>
+{% endblock %}
